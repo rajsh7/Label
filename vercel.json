@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/process-scheduled-batches",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
