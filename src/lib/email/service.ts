@@ -8,6 +8,10 @@ export interface EmailOptions {
 }
 
 export async function sendEmail({ to, subject, html, text }: EmailOptions) {
+  if (!resend) {
+    return { success: false, error: 'Email service not configured' }
+  }
+
   try {
     const result = await resend.emails.send({
       from: EMAIL_CONFIG.from,
