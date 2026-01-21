@@ -1,10 +1,8 @@
 import { Resend } from 'resend'
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY is required')
-}
+const resendApiKey = process.env.RESEND_API_KEY
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+export const resend = resendApiKey ? new Resend(resendApiKey) : null
 
 export const EMAIL_CONFIG = {
   from: 'LabelPro <noreply@labelpro.com>',
@@ -24,6 +22,13 @@ export async function sendEmail({
   html,
   text,
 }: SendEmailParams): Promise<{ success: boolean; error?: string }> {
+  if (!resend) {
+    return {
+      success: false,
+      error: 'Email service not configured',
+    }
+  }
+
   try {
     await resend.emails.send({
       from: EMAIL_CONFIG.from,
