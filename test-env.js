@@ -1,0 +1,5 @@
+console.log('Environment Variables Check:')
+console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+console.log('NEXT_PUBLIC_APP_URL:', process.env.NEXT_PUBLIC_APP_URL)
+console.log('NODE_OPTIONS:', process.env.NODE_OPTIONS)
+console.log('Current working directory:', process.cwd())

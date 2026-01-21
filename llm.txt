@@ -1,0 +1,230 @@
+# LabelPro - LLM Documentation
+
+## Project Overview
+
+LabelPro is a professional label resizing SaaS platform for e-commerce sellers. It supports 255+ label formats across major marketplaces (Amazon FBA, Walmart FWA, eBay, Shopify, Etsy) and shipping carriers (USPS, FedEx, UPS, DHL).
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v3 with custom design system
+- **Database**: Supabase (PostgreSQL) with Row-Level Security (RLS)
+- **Authentication**: Supabase Auth (email/password + OAuth: Google, Amazon)
+- **State Management**: Zustand
+- **Form Validation**: Zod
+- **PDF Generation**: PDFKit
+- **Barcode Generation**: jsBarcode
+- **Charts**: Recharts
+
+## Architecture
+
+### Directory Structure
+
+```
+src/
+├── app/                      # Next.js App Router
+│   ├── (auth)/              # Authentication pages (login, signup, reset-password)
+│   ├── (dashboard)/         # Protected dashboard pages
+│   ├── (marketing)/         # Public marketing pages (pricing, faq, blog)
+│   ├── api/                 # API routes
+│   │   ├── admin/           # Admin-only endpoints
+│   │   ├── auth/            # Authentication endpoints
+│   │   ├── batch/           # Batch processing endpoints
+│   │   ├── labels/          # Label operations
+│   │   ├── templates/       # Template CRUD
+│   │   ├── printers/        # Printer management
+│   │   └── user/            # User data (export, delete account)
+│   ├── auth/                # OAuth callback handler
+│   ├── layout.tsx           # Root layout with StructuredData
+│   ├── sitemap.ts           # XML sitemap generation
+│   └── robots.ts            # Robots.txt generation
+│
+├── components/
+│   ├── features/            # Feature-specific components
+│   │   ├── LabelEditor/     # Drag-and-drop label editor
+│   │   ├── LabelBrowser/    # Label format browser
+│   │   ├── BatchProcessor/  # Batch processing wizard
+│   │   ├── Admin/           # Admin dashboard components
+│   │   ├── Auth/            # OAuth buttons, auth forms
+│   │   └── Settings/        # User settings tabs
+│   ├── layout/              # Layout components (Header, Footer, Sidebar)
+│   ├── seo/                 # SEO components (StructuredData)
+│   └── ui/                  # Reusable UI components (Button, Card, Input, etc.)
+│
+├── lib/
+│   ├── supabase/            # Supabase client setup
+│   │   ├── client.ts        # Client-side Supabase
+│   │   └── server.ts        # Server-side Supabase
+│   ├── rateLimit/           # API rate limiting
+│   ├── validation/          # Zod schemas
+│   ├── constants/           # App constants (labels, pricing, config)
+│   ├── email/               # Email configuration and templates
+│   ├── pdf/                 # PDF generation utilities
+│   ├── store/               # Zustand stores (editorStore, appStore)
+│   ├── hooks/               # Custom React hooks
+│   └── utils/               # Utility functions
+│
+├── server/
+│   └── actions/             # Server actions
+│       ├── email.ts         # Email sending functions
+│       ├── designs.ts       # Design CRUD operations
+│       ├── batch.ts         # Batch processing logic
+│       └── printers.ts      # Printer operations
+│
+├── types/                   # TypeScript type definitions
+└── styles/                  # Global styles (globals.css, variables)
+
+scripts/                     # Database scripts and seed data
+public/                      # Static assets (robots.txt)
+```
+
+## Key Patterns & Conventions
+
+### Authentication
+
+- **Client-side**: Use `supabase` from `@/lib/supabase/client`
+- **Server-side**: Use `createUserClient()` from `@/lib/supabase/server`
+- **OAuth**: Google/Amazon OAuth via Supabase, callback at `/auth/callback`
+- **Session**: Checked via `session?.user` in API routes
+
+### API Routes
+
+- All API routes use Next.js App Router convention (`route.ts`)
+- Rate limiting via `rateLimitAPI()` from `@/lib/rateLimit/apiRateLimit`
+- Rate limits: 
+  - Default: 100 req/min
+  - Auth: 10 req/15min
+  - Batch: 20 req/min
+  - Export/Delete: 5 req/hour
+- Authentication checked with `createUserClient()` and `session?.user`
+- Error responses: `{ error: string }` with appropriate status codes
+
+### Database Schema (Supabase)
+
+Main tables:
+- `profiles` - User accounts (subscription_tier, subscription_status)
+- `labels` - 255+ label format definitions
+- `label_designs` - User-created label designs
+- `templates` - Reusable templates (or designs with `is_template=true`)
+- `batch_jobs` - Batch processing jobs
+- `printers` - User printer configurations
+- `favorites` - User favorite label formats
+- `print_history` - Print job history
+
+**Soft deletes**: All tables use `deleted_at` timestamp for soft deletion
+
+### State Management
+
+- **Editor state**: `useEditorStore()` from `@/lib/store/editorStore` (Zustand)
+- **Global app state**: `useAppStore()` from `@/lib/store/appStore`
+- **UI state**: Local React state or Zustand stores
+
+### Subscription Tiers
+
+- **free** (Starter): 200 labels/month, 4 batches/month
+- **pro** (Professional): Unlimited labels, 50 batches/month, $7.99/month
+- **enterprise**: Unlimited everything, API access, $39.99/month
+
+**Note**: Stripe integration removed. Subscription tiers managed manually via admin panel or database updates.
+
+### Label Editor
+
+- Canvas-based editor using HTML5 Canvas
+- Elements: Text, Image, Barcode, Shape
+- Properties panel for selected element
+- Layers panel for z-index management
+- Auto-save every 10 seconds
+- Keyboard shortcuts: Ctrl+Z (undo), Delete (remove), etc.
+
+### Rate Limiting
+
+- In-memory rate limiter (not Redis)
+- Configuration in `src/lib/rateLimit/rateLimiter.ts`
+- Applied to API routes via `rateLimitAPI()` helper
+- Rate limit headers included in responses
+
+### GDPR Compliance
+
+- **Data Export**: `GET /api/user/export-data` - Returns JSON with all user data
+- **Account Deletion**: `DELETE /api/user/delete-account` - Soft deletes all user data
+- Both endpoints rate-limited to 5 requests/hour
+
+### SEO
+
+- Schema.org structured data in `src/components/seo/StructuredData.tsx`
+- Included in root layout.tsx
+- Sitemap: `src/app/sitemap.ts` (includes all pages and blog posts)
+- Robots.txt: `src/app/robots.ts` (Next.js) + `public/robots.txt` (static)
+
+### Email System
+
+- Email functions in `src/server/actions/email.ts`
+- Templates in `src/lib/email/templates/`
+- Types: welcome, verification, password reset, batch complete, team invitation
+- Email config in `src/lib/email/config.ts`
+
+## Important API Endpoints
+
+### Authentication
+- `POST /api/auth/signup` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `GET /auth/callback` - OAuth callback handler
+
+### User Data
+- `GET /api/user/export-data` - GDPR data export (rate limited: 5/hour)
+- `DELETE /api/user/delete-account` - Account deletion (rate limited: 5/hour)
+
+### Labels & Designs
+- `GET /api/labels` - List all label formats
+- `POST /api/labels/download` - Download label as PDF (rate limited)
+- `GET /api/designs` - List user's designs
+- `POST /api/designs` - Create design
+- `PUT /api/designs/[id]` - Update design
+- `DELETE /api/designs/[id]` - Delete design (soft delete)
+
+### Batch Processing
+- `POST /api/batch` - Create batch job (rate limited: 20/min)
+
+### Admin
+- `GET /api/admin/analytics` - Admin analytics dashboard (admin only)
+  - Returns: MRR, ARR, churn rate, user growth, conversion rate, feature usage
+
+## Environment Variables
+
+Required in `.env.local`:
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (server-only)
+- `NEXT_PUBLIC_APP_URL` - App URL for redirects and emails
+
+## Design System
+
+- Colors defined in CSS variables (see `src/styles/globals.css`)
+- Component variants: `primary`, `secondary`, `outline`, `destructive`
+- Responsive breakpoints: Tailwind defaults (sm, md, lg, xl, 2xl)
+- Typography: Inter font family
+
+## Testing
+
+- Test files: `**/__tests__/**/*.test.tsx`
+- Components tested with React Testing Library
+- Mock Supabase client for tests
+
+## Deployment
+
+- Built with Next.js static export or server deployment
+- Supabase database required
+- Environment variables must be set
+- Static files in `public/` directory
+
+## Key Files to Know
+
+- `src/lib/constants/labels.ts` - All 255 label format definitions
+- `src/lib/store/editorStore.ts` - Label editor state management
+- `src/app/layout.tsx` - Root layout with SEO structured data
+- `src/components/seo/StructuredData.tsx` - Schema.org markup
+- `src/lib/rateLimit/rateLimiter.ts` - Rate limiting implementation
+- `scripts/database-schema.sql` - Database schema definition
+

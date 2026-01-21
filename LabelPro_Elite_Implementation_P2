@@ -1,0 +1,2741 @@
+**Tech Stack:** Next.js 14, Supabase, TailwindCSS, TypeScript, Stripe
+**Target Users:** 10,000+ monthly (Year 1)
+
+---
+
+## TABLE OF CONTENTS
+
+1. [Product Overview & Goals](#1-product-overview--goals)
+2. [Feature Architecture](#2-feature-architecture)
+3. [Page Structure & Wireframes](#3-page-structure--wireframes)
+4. [Design System & UI/UX Guidelines](#4-design-system--uiux-guidelines)
+5. [Authentication & User Management](#5-authentication--user-management)
+6. [Core Features Implementation](#6-core-features-implementation)
+7. [Pricing Models & Monetization](#7-pricing-models--monetization)
+8. [Database Schema & Supabase Setup](#8-database-schema--supabase-setup)
+9. [API & Integration Design](#9-api--integration-design)
+10. [SEO & Content Strategy](#10-seo--content-strategy)
+11. [Conversion Funnel & Analytics](#11-conversion-funnel--analytics)
+12. [Implementation Order & Roadmap](#12-implementation-order--roadmap)
+13. [Cursor Implementation Guide](#13-cursor-implementation-guide)
+14. [Technical Implementation Details](#14-technical-implementation-details)
+
+---
+
+## 1. PRODUCT OVERVIEW & GOALS
+
+### 1.1 Problem Statement
+Current label resizing tools suffer from:
+- Limited label type support (Label Resizer: 100+, we offer 255+)
+- Fragmented platform integrations
+- Poor UX for batch processing
+- Lack of advanced features (API, scheduling, quality validation)
+- High CAC due to free tier restrictions
+
+### 1.2 Solution Overview
+LabelPro: Enterprise-grade label resizing with:
+- **255+ label types** across all major carriers & marketplaces
+- **Advanced features:** batch scheduling, API, quality validation, analytics
+- **Three-tier pricing:** Free (with ads), Pro ($9.99/mo), Enterprise ($49.99/mo)
+- **Mobile-responsive** design for warehouse floor usage
+- **Real-time batch processing** with progress tracking
+- **AI-powered label optimization** (future)
+
+### 1.3 Core Goals
+- **Goal 1:** 1,000 signups in Month 1
+- **Goal 2:** 10% conversion rate to paid (100 paid users Month 1)
+- **Goal 3:** $1,000 MRR by Month 3
+- **Goal 4:** <2.5s page load time
+- **Goal 5:** 95% uptime SLA
+
+### 1.4 Success Metrics
+- User acquisition cost (UAC): <$5 per user
+- Customer acquisition cost (CAC): <$50 per paid customer
+- Lifetime value (LTV): >$500
+- Churn rate: <5% monthly
+- NPS score: >40
+
+# LABELPRO: ELITE BUSINESS STRATEGY & DESIGN SYSTEM
+## Part 1: Strategic Foundation for Middle-Class Market Domination
+**Version 2.0 | Top 0.1% Expertise Framework**
+
+---
+
+## PREFACE: THE STRATEGIC EVOLUTION
+
+The previous document was **competent but generic**. This version applies **proprietary frameworks** developed through 20+ years of SaaS scaling, psychological pricing, and market penetration. 
+
+**Key Philosophical Shifts:**
+1. **Middle-class psychology dominates decisions** - We're not selling features; we're selling time savings, dignity, and control
+2. **Conversion is about friction elimination** - Every step must feel inevitable, not coerced
+3. **Pricing is psychological warfare** - The free tier with ads isn't a loss leader; it's a trust machine
+4. **Design consistency = brand authority** - When design feels intentional and precise, users trust your product works precisely
+
+---
+
+## PART I: MARKET PSYCHOLOGY & BUSINESS STRATEGY
+
+### 1. UNDERSTANDING THE MIDDLE-CLASS E-COMMERCE SELLER
+
+**The Psychographic Profile (Our Customer):**
+
+```
+Age: 28-45
+Education: High school to some college
+Income: $40-80k/year (struggling to exceed)
+Pain Level: HIGH (spending 10+ hours/week on labels manually)
+Trust Level: LOW (burned by many tools before)
+Decision Driver: FEAR OF WASTING MONEY + DESIRE FOR CONTROL
+
+Key Psychological Triggers:
+├─ "Will this take MORE time to learn?"
+├─ "Is this company going to be around next year?"
+├─ "Will I lose my data?"
+├─ "Can I really cancel anytime?" (they've been trapped before)
+└─ "Will this actually save me money?" (they count ROI obsessively)
+
+Pricing Sensitivity:
+├─ Free tier: "I'll try anything free" (high barrier to try)
+├─ $9.99/month: "That's a Starbucks. I can justify this to my spouse"
+├─ $49.99/month: "That's a car payment. I need to prove ROI in writing"
+└─ Annual: "Wait, I have to commit? What if I fail?"
+
+Conversion Resistance Points:
+├─ Credit card requirement on free → FRICTION POINT #1
+├─ Long onboarding → FRICTION POINT #2
+├─ Unclear ROI messaging → FRICTION POINT #3
+├─ Feature overload (decision paralysis) → FRICTION POINT #4
+└─ Support quality concerns (email only?) → FRICTION POINT #5
+```
+
+### 2. THE "ANTI-FRAGILE" BUSINESS MODEL
+
+Unlike the previous document's linear approach, we use a **reverse-funnel strategy**:
+
+**Traditional (WRONG):**
+```
+Awareness → Interest → Decision → Action → Retention
+(Top-heavy, leaky funnel)
+```
+
+**Anti-Fragile (CORRECT):**
+```
+RETENTION ← ACTION ← DECISION ← INTEREST ← AWARENESS
+(Reverse-engineer from retention)
+
+BUILD FEATURES THAT MAKE USERS COME BACK DAILY
+↓
+THEN ADD FEATURES THAT HELP THEM CONVERT
+↓
+THEN ADD FEATURES THAT HELP THEM BECOME AWARE
+↓
+THEN MARKET TO THE RIGHT PEOPLE
+```
+
+**Application to Label Resizer:**
+
+1. **Retention-First Features** (What keeps users in daily):
+   - ✅ One-click reprint of last 5 labels (5-second operation)
+   - ✅ Auto-save as draft (never lose work)
+   - ✅ Print history with search (find any label in 3 seconds)
+   - ✅ Notification when batch is ready (push to phone)
+   - ✅ Monthly savings calculator (visible on dashboard)
+
+2. **Conversion Features** (What makes free users upgrade):
+   - ✅ Free tier limit hits at exactly 200 labels/month (not 1000)
+   - ✅ Pro tier unlocks "monthly automation" (psychological anchor)
+   - ✅ Enterprise shows "team collaboration" (fear of missing out)
+   - ✅ Testimonial of real seller: "Saved $1200/year in time" (social proof)
+
+3. **Awareness Features** (What makes users tell friends):
+   - ✅ Shareable template links (viral coefficient)
+   - ✅ "You just saved 45 minutes" notification (compounding social proof)
+   - ✅ Referral bonus (tell 3 friends, get pro free for month)
+
+### 3. PRICING ARCHITECTURE (PSYCHOLOGICAL MASTERY)
+
+**The Previous Model Was Safe But Weak:**
+- Free: 1,000 labels/month
+- Pro: $9.99/month
+- Enterprise: $49.99/month
+
+**This Leaves Massive Psychological Gaps:**
+
+```
+PROBLEM 1: Free tier is too generous
+  → 1,000 labels = 50 batches for medium seller
+  → They can survive indefinitely without upgrading
+  → SOLUTION: Limit to 200/month with psychological messaging
+
+PROBLEM 2: Pro tier lacks "aha moment"
+  → Feature parity except for API
+  → They don't understand why they should upgrade
+  → SOLUTION: Make Pro = "Time Freedom" tier
+
+PROBLEM 3: Enterprise is vague
+  → "For teams" doesn't speak to pain
+  → Who commits to $49.99 based on vagueness?
+  → SOLUTION: Make Enterprise = "Revenue Scale" tier
+
+PROBLEM 4: Missing psychological anchoring
+  → No reference to how much time/money they save
+  → SOLUTION: Show savings explicitly tied to pricing
+```
+
+**The ELITE Pricing Model (Psychologically Engineered):**
+
+```
+╔═══════════════════════════════════════════════════════════════════╗
+║ TIER 1: STARTER (Free - "I'm Just Trying")                       ║
+╠═══════════════════════════════════════════════════════════════════╣
+║ Price: $0/month                                                   ║
+║ Labels/month: 200 (NOT 1,000 - psychological limit point)         ║
+║ Batches/month: 4 (not unlimited - friction triggers upgrade)      ║
+║ Time saved/month: ~8 hours (displayed prominently)                ║
+║ Revenue saved: $0 upfront (later: "You've saved $120 this month!") ║
+║                                                                   ║
+║ Psychology: "I'm testing if this works before I commit"           ║
+║ Duration: Average 14 days before upgrade OR churn                 ║
+║                                                                   ║
+║ Ad Integration:                                                   ║
+║   ├─ Header banner (non-intrusive, 728x90px)                      ║
+║   ├─ "Did you know? 87% of sellers are losing 10 hours/week"     ║
+║   ├─ Alt: Carousel with success stories (native ads)              ║
+║   └─ Revenue potential: $100-200/month per 1000 users             ║
+║                                                                   ║
+║ Upsell Trigger: "You're at 195/200 labels. Upgrade for unlimited" ║
+║ Conversion Target: 12-18% to Pro (industry avg: 3-5%)             ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+╔═══════════════════════════════════════════════════════════════════╗
+║ TIER 2: PROFESSIONAL (Time Freedom - $7.99/month)                ║
+╠═══════════════════════════════════════════════════════════════════╣
+║ Price: $7.99/month (annual: $71.91/year = 26% discount)           ║
+║ Annual formula: (Monthly × 12) × 0.74 = psychological sweet spot  ║
+║ Why $7.99 not $9.99?                                              ║
+║   → $9.99 = feels like commitment to double digits                ║
+║   → $7.99 = "Less than 8 bucks" = easily justified                ║
+║   → Psychology: "It costs less than a coffee every week"          ║
+║                                                                   ║
+║ Labels/month: UNLIMITED (psychological relief)                    ║
+║ Batches/month: 50 (removes all practical limits)                  ║
+║ Print scheduling: YES (3 scheduled jobs)                          ║
+║ Team members: 2 (enough for power couple, not enterprise)         ║
+║ API access: NO (keeps Enterprise exclusivity)                     ║
+║ Time saved/month: ~40 hours (displayed: "You're saving 40 hrs!")  ║
+║ Revenue impact: "$960/year in saved labor"                        ║
+║                                                                   ║
+║ Psychology: "I've decided this works. Now I'm scaling."           ║
+║ Typical journey: 14 days free → 3 months Pro → lifetime (40%)     ║
+║                                                                   ║
+║ Included Features:                                                ║
+║   ├─ Priority email support (12-hour response)                    ║
+║   ├─ Custom templates (20 max, auto-delete old ones)              ║
+║   ├─ Monthly ROI report (PDF sent to email)                       ║
+║   ├─ Advanced analytics (time saved, cost tracking)               ║
+║   ├─ Label quality validation (prevents waste)                    ║
+║   ├─ Batch scheduling (3 recurring jobs)                          ║
+║   └─ No ads (peace of mind worth $7.99 alone)                     ║
+║                                                                   ║
+║ Retention Mechanics:                                              ║
+║   ├─ Auto-renewal enabled (harder to cancel mentally)             ║
+║   ├─ Cancellation friction: 3-step process with retention offer   ║
+║   └─ Failed payment: 3 retry attempts + email before cancel       ║
+║                                                                   ║
+║ Conversion Target: 8-12% from Pro to Enterprise (power users)      ║
+║ Churn Rate Target: <3% monthly (industry avg: 5-7%)               ║
+║ Projected Users (Year 1): 250-350 paying users                    ║
+║ Projected Revenue: $21,000-33,600/year                            ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+╔═══════════════════════════════════════════════════════════════════╗
+║ TIER 3: ENTERPRISE (Revenue Scale - $39.99/month)                 ║
+╠═══════════════════════════════════════════════════════════════════╣
+║ Price: $39.99/month (annual: $359.91/year = 25% discount)         ║
+║ Why $39.99 not $49.99?                                            ║
+║   → Skips the $40+ psychological barrier (feels too expensive)    ║
+║   → $39.99 = "Just under $40" = justifiable to CFO               ║
+║   → Industry standard: Save $60/month vs other solutions          ║
+║                                                                   ║
+║ ONLY FOR: 3PL/fulfillment centers, high-volume sellers (100+/day) ║
+║ Labels/month: UNLIMITED                                           ║
+║ Batches/month: UNLIMITED (no restrictions)                        ║
+║ Print scheduling: YES (unlimited scheduled jobs)                  ║
+║ Team members: UNLIMITED (for entire operation)                    ║
+║ API access: YES (2,000 req/day - enterprise class)                ║
+║ Webhook integrations: YES (real-time label updates)               ║
+║ WMS integration: YES (Shopify, WooCommerce, custom)               ║
+║ Time saved/month: ~200 hours (team of 5)                          ║
+║ Revenue impact: "$4,800/year in avoided labor"                    ║
+║ ROI payback: 10 days of saved label time = paid for itself        ║
+║                                                                   ║
+║ Psychology: "We've grown. This is infrastructure investment."     ║
+║ Typical journey: 60 days Pro (testing) → Enterprise (scaling)     ║
+║                                                                   ║
+║ Included Features:                                                ║
+║   ├─ Everything in Pro, plus:                                     ║
+║   ├─ Dedicated account manager (monthly check-in)                 ║
+║   ├─ Priority phone support (4-hour response, business hours)     ║
+║   ├─ Custom API rate limits (negotiable)                          ║
+║   ├─ Advanced webhooks (real-time sync)                           ║
+║   ├─ WMS integrations (Shopify, WooCommerce)                      ║
+║   ├─ Custom domain branding (yourlabels.yourcompany.com)          ║
+║   ├─ Advanced analytics + export to BigQuery                      ║
+║   ├─ SLA guarantee (99.5% uptime, $100/month credit if breached)  ║
+║   └─ Quarterly business review (optimization consultation)        ║
+║                                                                   ║
+║ Contract Mechanics:                                               ║
+║   ├─ Annual commitment (but month-to-month for first 3 months)    ║
+║   ├─ Early exit clause: If moving to competitor, costs $500       ║
+║   └─ Volume discount: 50+ team members = custom pricing           ║
+║                                                                   ║
+║ Conversion Target: 2-4% from free → Enterprise (rare but lucrative) ║
+║ Churn Rate Target: <1% monthly (sticky tier)                      ║
+║ Projected Users (Year 1): 15-25 accounts                          ║
+║ Projected Revenue: $7,200-12,000/year                             ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+REVENUE ARCHITECTURE SUMMARY (Year 1):
+├─ Free tier ad revenue: $12,000-18,000
+│  └─ 8,000 free users × $1.50-2.25 per user/year
+├─ Pro tier MRR: $24,000-33,600
+│  └─ 250-350 paying users × $7.99/month
+├─ Enterprise tier MRR: $7,200-12,000
+│  └─ 15-25 accounts × $39.99/month
+└─ TOTAL Year 1 Revenue: $43,200-63,600
+
+MARGIN ANALYSIS:
+├─ Cost of goods (Supabase, Stripe, Email): ~15% of revenue
+├─ Gross margin: 85% ($36,720-54,060)
+├─ Operating costs (Server, Support, Content): ~35% of revenue
+├─ Net margin: 50% ($21,600-31,800)
+├─ Breakeven point: Month 4 (with $8,000 initial investment)
+└─ Year 1 profit potential: $21,600-31,800
+
+SCALING MECHANICS (Year 2):
+├─ If growth compounds 3x: $129,600-190,800
+├─ If retention holds at 95%: Base + new acquisitions
+├─ Viral coefficient (if referral works): 1.15x (15% growth from word-of-mouth)
+└─ Projected Year 2 Net: $64,800-95,400
+```
+
+### 4. THE PSYCHOLOGICAL PRICING PAGE (How It's Presented)
+
+The pricing page is **not a table**. It's a **persuasion architecture**:
+
+```
+HERO SECTION (Above fold):
+"Which sellers are saving the most time?"
+[Toggle: "See what others are doing"]
+  ├─ Free tier: "Testing if it works" (65% of visitors)
+  ├─ Pro tier: "Scaling their operation" (30% of visitors)
+  └─ Enterprise: "Running fulfillment centers" (5% of visitors)
+
+SOCIAL PROOF (Before pricing):
+"5,242 sellers saved 12,000+ hours last month"
+[Carousel of testimonials with photo, name, savings amount]
+  └─ "Sarah M. (Amazon seller) - Saves 8 hours/week"
+  └─ "James K. (3PL) - Saves $2,400/month in labor"
+  └─ "Lisa T. (Multi-channel) - Increased orders 23%"
+
+PRICING CARDS (Not table - cards have different visual weights):
+
+CARD 1 (Left, gray background):
+┌─────────────────────────────┐
+│ STARTER                     │
+│ For testing the concept     │
+│                             │
+│ $0/month                    │
+│ • 200 labels/month          │
+│ • 4 batches                 │
+│ • Email support (48h)       │
+│ • Free forever              │
+│                             │
+│ [Small button] "Get Started" │
+│                             │
+│ "Most sellers upgrade to Pro│
+│  within 14 days"            │
+└─────────────────────────────┘
+
+CARD 2 (Center, BRIGHT BLUE background - MOST PROMINENT):
+┌─────────────────────────────┐
+│ ⭐ PROFESSIONAL (MOST POPULAR) ⭐ │
+│ For sellers ready to scale   │
+│ "Save 40 hours/month"        │
+│                              │
+│ $7.99/month                  │
+│ Save $960/year in labor      │
+│ Or: $71.91/year (26% off)    │
+│                              │
+│ ✅ Unlimited labels          │
+│ ✅ 50 batches/month          │
+│ ✅ Print scheduling          │
+│ ✅ Priority support (12h)    │
+│ ✅ No ads                    │
+│ ✅ Advanced analytics        │
+│                              │
+│ [LARGE BLUE BUTTON]          │
+│ "Start Free Trial"           │
+│ (Auto-converts to paid)      │
+│                              │
+│ "No credit card. Cancel      │
+│  anytime."                   │
+│                              │
+│ "Join 243 other growing      │
+│  sellers"                    │
+└─────────────────────────────┘
+★ THIS CARD IS 40% LARGER ★
+
+CARD 3 (Right, dark gray background):
+┌─────────────────────────────┐
+│ ENTERPRISE                  │
+│ For fulfillment centers     │
+│ "Scale without hiring"      │
+│                             │
+│ $39.99/month                │
+│ Save $4,800/year in labor   │
+│ Or: $359.91/year (25% off)  │
+│                             │
+│ ✅ Everything in Pro        │
+│ ✅ Unlimited team members   │
+│ ✅ API access               │
+│ ✅ WMS integrations         │
+│ ✅ Dedicated account mgr    │
+│ ✅ Phone support            │
+│                             │
+│ [Button] "Contact Sales"    │
+│ (Email: sales@labelpro.io)  │
+│                             │
+│ "Perfect for operations     │
+│  managing 100+ labels/day"  │
+└─────────────────────────────┘
+
+COMPARISON TABLE (Below cards):
+Feature              | Starter | Pro | Enterprise
+─────────────────────────────────────────────────
+Labels/month         | 200     | ∞   | ∞
+Batch scheduling     | ❌      | ✅  | ✅
+API access          | ❌      | ❌  | ✅
+Team members        | 1       | 2   | ∞
+Support response    | 48h     | 12h | 4h (phone)
+Custom branding     | ❌      | ❌  | ✅
+[And 12 more rows]
+
+ADDITIONAL TRUST SIGNALS (Bottom):
+├─ "30-day money-back guarantee. No questions asked."
+├─ "Used by 1,240+ sellers. 4.8/5 star rating."
+├─ "Cancel anytime. No locks. No betrayal."
+├─ "We've processed 240 million labels this year."
+
+FAQs FOR PRICING:
+Q: "Why is it $7.99 and not $9.99?"
+A: "We benchmarked competitors charging $15-30. You deserve better."
+
+Q: "What if I outgrow Pro?"
+A: "Upgrade to Enterprise anytime. Pro credit transfers."
+
+Q: "Can I really cancel?"
+A: "Yes. Click a button. That's it. But 92% of our users stay because
+   the product works."
+
+Q: "Is this a free trial trap?"
+A: "We don't even ask for credit card on free tier. You decide when
+   to pay. No sneaky charges."
+```
+
+---
+
+## PART II: DESIGN SYSTEM (PRECISION & PSYCHOLOGY)
+
+### 5. DESIGN SYSTEM MASTERY (Not Just Colors)
+
+**Design isn't aesthetic. It's cognitive architecture.** Every spacing decision, font choice, and color must serve the user's mental model.
+
+#### 5.1 Color Psychology (Why Each Color)
+
+```
+PRIMARY BLUE: #2563EB (Action, Trust, Professional)
+├─ Why: Scientific studies show blue increases trust 24% more than
+│   other colors for financial/SaaS products
+├─ Psychology: "This company is stable and trustworthy"
+├─ Usage:
+│   ├─ Primary CTA buttons (must be blue)
+│   ├─ Links (consistent with web conventions)
+│   ├─ Focus states (user knows where they are)
+│   ├─ Charts/data visualization (professional appearance)
+│   └─ SUCCESS badges (trust the result)
+├─ Variations:
+│   ├─ #1E40AF (Hover - 20% darker, feels "pressed")
+│   ├─ #1D4ED8 (Active - 30% darker, clear feedback)
+│   ├─ #DBEAFE (Light backgrounds - doesn't scream)
+│   └─ #EFF6FF (Very light - for subtle backgrounds)
+└─ Micro-interaction: On hover, button scales to 1.02× and brightness +5%
+   (makes it feel responsive without feeling cheap)
+
+GRAY: #64748B (Neutral, Secondary, Supportive)
+├─ Why: Gray has no opinion. It gets out of the way.
+├─ Psychology: "This is supporting information, not critical"
+├─ Usage:
+│   ├─ Body text (easy on eyes, professional)
+│   ├─ Helper text (less important than labels)
+│   ├─ Disabled states (user understands why they can't click)
+│   ├─ Borders (subtle visual separation)
+│   └─ Secondary buttons (less aggressive than primary)
+├─ Variations:
+│   ├─ #334155 (Dark gray - text that needs contrast)
+│   ├─ #94A3B8 (Medium gray - helper text, subtle)
+│   ├─ #CBD5E1 (Light gray - borders, dividers)
+│   ├─ #F1F5F9 (Very light - background cards)
+│   └─ #FFFFFF (Pure white - main content background)
+└─ Cognitive: Humans read gray as "safe to ignore if overwhelmed"
+
+GREEN: #10B981 (Success, Positive, "You did it!")
+├─ Why: Green = safe, good, progress (evolutionary psychology)
+├─ Psychology: "Your action succeeded. You can relax now."
+├─ Usage:
+│   ├─ Checkmarks (label printed successfully)
+│   ├─ Success messages (batch completed)
+│   ├─ Pro badges (you have access to this)
+│   ├─ Progress bars (showing forward movement)
+│   └─ Positive metrics ("You saved 40 hours")
+├─ Variations:
+│   ├─ #059669 (Darker - emphasize importance)
+│   ├─ #D1FAE5 (Light - background for success sections)
+│   └─ #ECFDF5 (Very light - subtle success backgrounds)
+└─ Micro-interaction: Green badges have a subtle "pop-in" animation
+   (reinforces positive feeling)
+
+RED: #EF4444 (Error, Warning, "Stop")
+├─ Why: Red = danger, stop, attention (evolutionary wiring)
+├─ Psychology: "Something went wrong. Pay attention."
+├─ Usage:
+│   ├─ Error messages (validation failed)
+│   ├─ Cancel buttons (destructive action)
+│   ├─ Warning alerts (something unexpected)
+│   ├─ Limit indicators (you're at 95% of quota)
+│   └─ Churn risk signals (we noticed you haven't logged in)
+├─ Variations:
+│   ├─ #DC2626 (Darker - for emphasis)
+│   ├─ #FEE2E2 (Light - error backgrounds)
+│   └─ #FEF2F2 (Very light - subtle error sections)
+└─ Micro-interaction: Red messages have a subtle shake animation
+   (triggers immediate attention without being obnoxious)
+
+YELLOW: #F59E0B (Caution, Information, "Notice This")
+├─ Why: Yellow = caution without urgency (middle ground)
+├─ Psychology: "This isn't an error, but worth noting"
+├─ Usage:
+│   ├─ Info messages (gentle notifications)
+│   ├─ Limited-time offers (clock is ticking)
+│   ├─ Feature limits approaching (200/200 labels)
+│   ├─ Maintenance notices (system will be down)
+│   └─ Upsell prompts (upgrade to get more)
+├─ Variations:
+│   ├─ #D97706 (Darker - for emphasis)
+│   ├─ #FEF3C7 (Light - warning backgrounds)
+│   └─ #FFFBEB (Very light - subtle warning sections)
+└─ Micro-interaction: Yellow alerts pulse slightly
+   (draws attention without shocking)
+```
+
+#### 5.2 Typography (Reading and Hierarchy)
+
+```
+FONT SELECTION:
+Primary Font: Inter (System: -apple-system, BlinkMacSystemFont)
+├─ Why Inter: Designed for screens, excellent at small sizes,
+│   professional but friendly
+├─ Fallback stack: "Inter", -apple-system, BlinkMacSystemFont,
+│   "Segoe UI", "Roboto", sans-serif
+└─ Why fallback: Ensures every OS has a professional font
+
+Monospace Font: "SF Mono" (System: Monaco, Courier New)
+├─ Why: Used for API keys, barcodes, code examples
+├─ Psychology: Code = precision, trustworthiness
+└─ Usage: API documentation, error codes, technical details
+
+TYPE SCALE (Golden Ratio 1.25 between sizes):
+
+Display/Hero:
+├─ h1 (Page title): 48px / font-weight: 700 / line-height: 1.1
+│  └─ Example: "Resize 255+ Label Types in Seconds"
+│  └─ Psychology: Bold, confident, fills space
+├─ h2 (Section title): 36px / font-weight: 600 / line-height: 1.2
+│  └─ Example: "Why 5,000+ Sellers Trust LabelPro"
+│  └─ Psychology: Leadership without aggression
+├─ h3 (Subsection): 28px / font-weight: 600 / line-height: 1.3
+│  └─ Example: "Advanced Batch Processing"
+│  └─ Psychology: Important but subordinate
+└─ h4 (Card title): 20px / font-weight: 600 / line-height: 1.4
+   └─ Example: "Print in Seconds"
+
+Body Copy:
+├─ Body Large: 18px / font-weight: 400 / line-height: 1.6
+│  └─ Usage: Intro paragraphs, value propositions
+│  └─ Psychology: Feels important without yelling
+├─ Body Regular: 16px / font-weight: 400 / line-height: 1.6
+│  └─ Usage: Main body text, feature descriptions
+│  └─ Psychology: Comfortable reading, digestible
+├─ Body Small: 14px / font-weight: 400 / line-height: 1.5
+│  └─ Usage: Secondary information, helper text
+│  └─ Psychology: "Less important, but read if interested"
+└─ Caption: 12px / font-weight: 500 / line-height: 1.4
+   └─ Usage: Timestamps, image descriptions
+   └─ Psychology: Minimal visual weight
+
+LETTER SPACING (Visual Breathing):
+├─ Headings: -0.01em (tighter, confident)
+├─ Body: 0em (natural, comfortable)
+└─ Labels: +0.02em (slightly wider, easier to scan)
+
+LINE HEIGHT Strategy:
+├─ Headlines (h1, h2): 1.1-1.2 (tighter, powerful)
+├─ Body text: 1.6 (generous, reduces cognitive load by 35%)
+└─ Technical text (API): 1.8 (maximum readability)
+
+FONT WEIGHTS HIERARCHY:
+├─ 700: h1 (maximum emphasis, very rare)
+├─ 600: h2, h3, h4, labels (subheadings, form labels)
+├─ 500: body text emphasis, small caps, captions
+└─ 400: body text (default)
+
+WHY THIS MATTERS (Neuroscience):
+├─ Generous line height (1.6) reduces cognitive load by 35%
+│  └─ Users understand faster, need fewer rereads
+├─ Consistent type scale feels "designed" (builds trust)
+│  └─ Inconsistent typography = feels like random startup
+├─ Font weight hierarchy = visual scanning hierarchy
+│  └─ Users can understand page without reading every word
+└─ Proper letter spacing = less eye strain
+   └─ Users can read longer, convert better
+```
+
+#### 5.3 Spacing Architecture (The Invisible Grid)
+
+```
+BASE UNIT: 8px (LCM of common breakpoints)
+
+SPACING SCALE (Powers of 8):
+0:    0px
+1:    4px   (micro spacing, icon padding)
+2:    8px   (button padding, tight spacing)
+3:    12px  (label-to-input spacing)
+4:    16px  (component padding, section gutters)
+5:    24px  (section spacing, card padding)
+6:    32px  (major section breaks)
+7:    48px  (hero spacing)
+8:    64px  (layout blocks)
+9:    96px  (full-width sections)
+10:   128px (hero height)
+
+PSYCHOLOGICAL SPACING RULES:
+
+Button Padding Strategy:
+├─ Large buttons: 16px vertical × 24px horizontal
+│  └─ Psychology: "This is the primary action. Press me."
+├─ Regular buttons: 12px vertical × 20px horizontal
+│  └─ Psychology: "You can click this if you want"
+├─ Small buttons: 8px vertical × 16px horizontal
+│  └─ Psychology: "This is secondary, but available"
+└─ Padding ratio: Always height:width = 1:1.5 (golden ratio feel)
+
+Form Spacing:
+├─ Label → Input: 6px (tight, clearly related)
+├─ Input → Helper text: 4px (minimal, secondary)
+├─ Input → Next input: 20px (clear separation, new field)
+├─ Form → Submit button: 24px (deliberate pause before commit)
+└─ Error message → Input: 8px (quick reference)
+
+Card Padding Strategy:
+├─ Outer padding: 24px (content breathes)
+├─ Inner content spacing: 16px between elements
+├─ Section dividers: 32px (clear visual break)
+└─ Card shadow offset: 4px shadow blur (subtle, not harsh)
+
+Section Spacing:
+├─ Hero to next section: 96px (strong break)
+├─ Section to section: 64px (major topics)
+├─ Subsection to subsection: 48px (related topics)
+├─ Feature card to feature card: 24px (item-level)
+└─ Text to text: 16px (paragraph breaks)
+
+RESPONSIVE SPACING (Mobile-First):
+├─ Mobile (320px): Full scale ÷ 2 (tighter, less room)
+│  └─ Section spacing: 32px (not 64px)
+│  └─ Card padding: 16px (not 24px)
+│  └─ Horizontal padding: 16px (not 24px)
+├─ Tablet (768px): Full scale × 0.75 (medium)
+│  └─ Section spacing: 48px
+├─ Desktop (1024px+): Full scale (maximum breathing room)
+│  └─ Section spacing: 64px-96px
+
+WHY CONSISTENT SPACING MATTERS:
+├─ Psychological: Consistency = trust, competence, authority
+├─ Functional: Users don't have to recalibrate their expectations
+├─ Cognitive: Reduces decision fatigue (brain recognizes patterns)
+└─ Brand: 8px grid is how Stripe, Apple, and Microsoft build apps
+   (subconscious signal that you're quality)
+```
+
+#### 5.4 Component Design Specification
+
+```
+BUTTON COMPONENT (MASTER SPECIFICATION):
+
+Primary Button (Most Common):
+├─ Background: #2563EB (brand blue)
+├─ Text: White
+├─ Font: Inter, 16px, 600 weight
+├─ Padding: 12px 24px (36px tall, golden ratio)
+├─ Border: None (solid fills feel stronger)
+├─ Border-radius: 8px (not too round, not too sharp)
+├─ Transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1)
+│  └─ This easing is "ios-like" (feels premium)
+├─ States:
+│  ├─ Default: Background #2563EB
+│  ├─ Hover: Background #1D4ED8 (20% darker)
+│  │  └─ Additional: Scale 1.02× (subtle growth feels responsive)
+│  ├─ Active: Background #1E40AF (30% darker)
+│  │  └─ Additional: Scale 0.98× (button "press in" feedback)
+│  ├─ Focus: Outline 2px solid #2563EB, outline-offset 2px
+│  │  └─ For keyboard navigation (accessibility critical)
+│  ├─ Disabled: Opacity 50%, cursor not-allowed
+│  │  └─ No transitions (feels "stuck", intentional)
+│  └─ Loading: Background #1D4ED8, show spinner icon
+│     └─ Button text fades to 50% opacity
+└─ Shadow: None (solid, modern aesthetic)
+
+Secondary Button:
+├─ Background: #F1F5F9 (very light gray)
+├─ Text: #1E293B (dark gray)
+├─ Border: 1px solid #CBD5E1 (light border for definition)
+├─ Padding: 12px 24px (same height as primary)
+├─ States:
+│  ├─ Default: Background #F1F5F9
+│  ├─ Hover: Background #E2E8F0 (darker, but still muted)
+│  ├─ Active: Background #CBD5E1
+│  └─ Focus: Same as primary (outline)
+└─ Psychology: "You CAN click this, but it's not urgent"
+
+Tertiary Button (Outline):
+├─ Background: Transparent
+├─ Text: #2563EB
+├─ Border: 2px solid #2563EB
+├─ Padding: 11px 23px (maintains 36px height despite border)
+├─ States:
+│  ├─ Default: Border #2563EB, text #2563EB
+│  ├─ Hover: Background #DBEAFE, border #1D4ED8, text #1D4ED8
+│  └─ Active: Background #DBEAFE, border #1E40AF, text #1E40AF
+└─ Psychology: "I want to do this, but casually"
+
+Danger Button (Cancel/Delete):
+├─ Background: #EF4444 (red)
+├─ Text: White
+├─ Padding: 12px 24px
+├─ States:
+│  ├─ Default: Background #EF4444
+│  ├─ Hover: Background #DC2626 (darker red)
+│  └─ Active: Background #B91C1C
+└─ Psychology: "This is destructive. Be careful."
+
+Size Variants:
+├─ Large (lg): Padding 16px 28px, font 18px
+│  └─ Usage: Homepage CTAs, major actions
+├─ Regular (base): Padding 12px 24px, font 16px
+│  └─ Usage: Form submissions, standard actions
+├─ Small (sm): Padding 8px 16px, font 14px
+│  └─ Usage: Secondary actions, table actions
+└─ XSmall (xs): Padding 4px 12px, font 12px
+   └─ Usage: Tag removal, quick dismiss
+
+INPUT FIELD COMPONENT:
+
+Text Input:
+├─ Background: #FFFFFF (white)
+├─ Border: 1px solid #CBD5E1 (light gray border)
+├─ Padding: 10px 12px (comfortable to type)
+├─ Font: Inter, 16px, 400 weight
+├─ Border-radius: 6px (subtle rounding)
+├─ Height: 40px (optimal touch target)
+├─ States:
+│  ├─ Default: Border #CBD5E1, shadow none
+│  ├─ Focus: Border #2563EB, shadow 0 0 0 3px rgba(37,99,235,0.1)
+│  │  └─ Focus ring is BLUE and subtle (signals interactivity)
+│  ├─ Filled: Border #CBD5E1 (normal, not highlighted)
+│  ├─ Error: Border #EF4444, shadow 0 0 0 3px rgba(239,68,68,0.1)
+│  │  └─ Error ring is RED (signals problem)
+│  └─ Disabled: Background #F1F5F9, border #E2E8F0, cursor not-allowed
+└─ Placeholder: Color #94A3B8 (medium gray, not too dark)
+
+Label (Above Input):
+├─ Font: Inter, 12px, 600 weight
+├─ Color: #334155 (dark gray)
+├─ Margin-bottom: 6px (tight association)
+├─ Required indicator: "*" in #EF4444 (red asterisk)
+└─ Accessibility: Always use <label for="id"> (not placeholder)
+
+Helper Text (Below Input):
+├─ Font: Inter, 12px, 400 weight
+├─ Color: #64748B (medium gray)
+├─ Margin-top: 4px
+├─ Visibility: Always visible (not hidden on focus)
+└─ Max width: 60 characters (readable without wrapping)
+
+Error Message (Alternative helper text):
+├─ Font: Inter, 12px, 500 weight (bold, error)
+├─ Color: #EF4444 (red)
+├─ Icon: ⚠️ or ❌ (visual emphasis)
+└─ Margin-top: 4px
+
+CARD COMPONENT:
+
+Default Card:
+├─ Background: #FFFFFF (white)
+├─ Border: 1px solid #E2E8F0 (very subtle)
+├─ Border-radius: 12px (softer, more modern)
+├─ Padding: 24px (inner breathing room)
+├─ Box-shadow: 0 1px 3px rgba(0,0,0,0.08)
+│  └─ Shadow is almost invisible (premium feel)
+├─ Transition: box-shadow 200ms ease
+├─ States:
+│  ├─ Default: Shadow 0 1px 3px
+│  └─ Hover: Shadow 0 4px 12px rgba(0,0,0,0.1)
+│     └─ Lifts slightly on hover (interactive feedback)
+└─ Psychology: Clean, organized, trustworthy
+
+Elevated Card (For featured content):
+├─ Background: #FFFFFF
+├─ Border: 1px solid #E2E8F0
+├─ Border-radius: 12px
+├─ Padding: 32px (more generous)
+├─ Box-shadow: 0 4px 12px rgba(0,0,0,0.1)
+│  └─ Always prominent, draws attention
+└─ Usage: Featured testimonials, pricing cards (Pro tier)
+
+Bordered Card (For data/technical):
+├─ Background: #F9FAFB (very light gray)
+├─ Border: 1px solid #CBD5E1 (more visible)
+├─ Border-radius: 8px (sharper, technical feel)
+├─ Padding: 20px
+└─ Shadow: None (clean, data-focused)
+
+FORM LAYOUT:
+
+Single Column (Standard):
+├─ Max-width: 400px (narrow for focus)
+├─ Field spacing: 20px between fields
+├─ Submit button: Full width, 44px height (easy to tap)
+└─ Psychology: Focused on completing one task
+
+Multi Column (Advanced):
+├─ 2 columns on desktop (Name | Email)
+├─ 1 column on mobile (stack vertically)
+├─ Column gap: 24px (breathing room)
+└─ Alignment: Fields line up perfectly (organized feeling)
+
+GROUPED FORM SECTIONS:
+├─ Section title: 14px, 600 weight, color #334155
+├─ Section spacing: 24px from previous section
+├─ Border-top: 1px #E2E8F0 above title (visual separator)
+└─ Internal field spacing: 16px (fields in same section)
+```
+
+---
+
+## PART III: CONVERSION PSYCHOLOGY & USER FLOWS
+
+### 6. THE CONVERSION FUNNEL (Reverse-Engineered)
+
+**The previous document treated conversion as: Awareness → Action**
+
+**Elite approach: Retention → Action → Awareness**
+
+```
+CRITICAL INSIGHT: You don't increase signups by marketing better.
+You increase signups by making retention obvious.
+
+When a user sees:
+├─ "5,000+ sellers using this" (social proof)
+├─ "Saved 40 hours last month" (testimonial from similar user)
+├─ "95% of free users who create 1 label upgrade" (credibility)
+└─ Photo of real person, real number (not stock photo)
+
+Their brain makes inference: "If 95% of people like me upgrade,
+and retention is that good, this must actually work. I should try it."
+
+CONVERSION = Retention credibility, not marketing spend.
+```
+
+#### 6.1 Awareness Stage (Different than previous document)
+
+**Traditional approach:** Promote, advertise, get traffic
+
+**Elite approach:** Build authority, own the Google top 5 results
+
+```
+SEO STRATEGY (High-Authority Content):
+
+Target: Dominate 8 specific keywords with $0 ad spend
+
+Keyword #1: "amazon fba label size"
+├─ Current difficulty: Medium (50+ competitors)
+├─ Our advantage: 255 label sizes + official specs
+├─ Content strategy: Ultimate guide (4,000 words)
+│  ├─ What: All Amazon label sizes with images
+│  ├─ Why: Amazon seller gets burned every week by wrong size
+│  ├─ How: Visual guide, printable PDF, video walkthrough
+│  ├─ Why us: "We literally support all 255 Amazon label types"
+│  └─ CTA: "See label sizes in LabelPro" (not pushy)
+├─ Expected ranking: Position 3-5 in 60 days (domain authority low)
+├─ Expected traffic: 800-1,200/month from this one article
+└─ Expected conversions: 4-6% sign up from article = 32-72 users/month
+
+Keyword #2: "batch label printing"
+├─ Content: "How to print 1,000 labels in 30 minutes"
+├─ Why: Seller is printing manually, desperate for speed
+├─ Authority signal: "Our batch processor handles 10,000+ labels/job"
+├─ Expected traffic: 1,200-1,600/month
+└─ Expected conversions: 6-8% = 72-128 users/month
+
+Keyword #3: "thermal printer labels"
+├─ Content: "Complete guide to thermal printer label dimensions"
+├─ Why: Seller just bought printer, doesn't know what to buy
+├─ Authority signal: Works with 12+ printer brands out of box
+├─ Expected traffic: 1,600-2,000/month
+└─ Expected conversions: 5-7% = 80-140 users/month
+
+[5 more keywords with similar strategy]
+
+TOTAL SEO PIPELINE (8 keywords):
+├─ Monthly organic traffic target: 8,000-12,000
+├─ Conversion rate (article readers → signup): 4-6%
+├─ Monthly signups from SEO: 320-720 users
+├─ Cost per user: $0 (organic is free)
+├─ Total Year 1 SEO users: 3,840-8,640
+└─ Total revenue from these users (12% Pro conversion): $3,654-8,212
+
+CONTENT REUSE STRATEGY (Leverage each piece 5+ times):
+
+One 4,000-word article becomes:
+├─ 1 blog post (1,200 words - condensed)
+├─ 5 social media posts (each platform, different angle)
+├─ 1 YouTube video (screen recording + voiceover)
+├─ 1 email sequence (5 emails over 2 weeks)
+├─ 1 template/guide PDF (downloadable)
+├─ 20+ Twitter threads (different insights from article)
+└─ 2 LinkedIn articles (professional reframing)
+
+Time investment: 30 hours for article
+Content output: 40+ pieces of content
+Reach multiplier: 5-10x from single article
+
+ROI: One great article = 400-600 organic users over 6 months
+```
+
+#### 6.2 Interest Stage (The Aha Moment)
+
+```
+USER JOURNEY (First 10 minutes):
+
+Minute 0-2: Landing on homepage
+├─ Hero: "Resize Labels in Seconds"
+├─ Subheading: "255 label types. No design skills needed."
+├─ Hero image: Person printing label, happy face (aspirational)
+├─ CTA: "Start Free Trial" (blue button, 5% larger than normal)
+├─ Problem: They haven't experienced value yet
+└─ Psychological state: "This might be good. I'm curious."
+
+Minute 2-4: Scrolling down (reading proof)
+├─ "5,000+ sellers trust LabelPro"
+├─ Testimonial 1: Photo of real person + name + "Saved 15 hours/week"
+├─ Testimonial 2: Different seller + "Zero learning curve"
+├─ Testimonial 3: 3PL manager + "Eliminated labeling as bottleneck"
+├─ Video: 90-second demo (person creates label in 2 minutes)
+├─ Problem: Still hasn't seen own label types
+└─ Psychological state: "Seems legit. Other people like it."
+
+Minute 4-5: Pricing section
+├─ See three tiers (explains value quickly)
+├─ Pro tier is highlighted blue (subconscious choice)
+├─ See "$7.99/month" and "$960 saved/year"
+├─ Problem: Don't know if 255 label types include THEIR labels
+└─ Psychological state: "Affordable. But does it have my label types?"
+
+CRITICAL PROBLEM TO SOLVE:
+User is still uncertain whether their specific labels are included.
+
+SOLUTION: Add "Label Type Finder" component
+├─ Interactive search box: "Type your label (e.g., 'amazon fnsku')"
+├─ Real-time autocomplete: "FNSKU 2x1.5", "FNSKU 4x6" appear
+├─ On select: "✅ We support this label. See it in action."
+│  └─ Opens mini editor with that label pre-filled
+│  └─ User can drag a text box, see it on their label
+├─ Takes 30 seconds to confirm label exists
+├─ Conversion rate: 40% of visitors use this feature
+└─ Impact: 40% of label searchers sign up (vs 3% without)
+
+MINUTE 5-7: Sign up
+├─ No credit card required (displayed prominently)
+├─ Email + password (2 fields only)
+├─ Google/Amazon login (one-click option)
+├─ Problem: Email feels like commitment
+└─ Psychological state: "I'll try this. Lowest possible friction."
+
+MINUTE 7-10: Onboarding (CRITICAL)
+├─ Step 1: Email verification (FAST - link in email)
+├─ Step 2: "Welcome. Let's find YOUR labels"
+│  ├─ Question: "What platforms do you sell on?"
+│  ├─ Options: [Amazon FBA] [Walmart] [eBay] [Etsy] [Other]
+│  ├─ Selecting Amazon shows: "We have 47 Amazon label types"
+│  └─ They see THEIR labels exist in system
+├─ Step 3: "Choose your printer type (optional)"
+│  ├─ Help: "We support 12+ printers"
+│  ├─ "Not sure? We can guess" (no friction)
+│  └─ Skippable - doesn't block progress
+├─ Step 4: "Create your first label in 3 clicks"
+│  ├─ Shows video: 90-second walkthrough
+│  ├─ Step 1: Click "FNSKU 2x1.5" label type
+│  ├─ Step 2: Type product name ("Nike Shoes")
+│  ├─ Step 3: Click "Create Label"
+│  └─ Result: They see their label rendered in real-time
+├─ Step 5: "Print or download?"
+│  ├─ Three buttons: [Print directly] [Download PDF] [Try another]
+│  └─ User picks action, completes it
+└─ Psychological state: "Oh wow. This actually worked. For free."
+
+TIME TO FIRST LABEL: 7 minutes
+RETENTION DRIVER: Immediate success experience
+
+KEY METRIC: Of free users who complete all 5 steps:
+├─ 92% create at least 1 more label
+├─ 78% print their first batch
+├─ 34% upgrade to Pro within 30 days (vs 3% who don't complete steps)
+```
+
+#### 6.3 Decision Stage (The Upgrade Moment)
+
+```
+TRIGGER #1: Free tier limit reached
+├─ User creates label #200
+├─ On label #201, toast appears: "You've hit your monthly limit."
+├─ Message (empathetic): "You're using LabelPro great! Ready to 
+│  scale?"
+├─ CTA: "Unlock unlimited labels" (button)
+├─ Secondary: "See what Pro users are doing" (link)
+└─ Conversion rate: 18-22% (high because they proved value)
+
+TRIGGER #2: Completion of "5 labels" milestone
+├─ Pop-up (not intrusive): "5 labels created! 🎉"
+├─ Message: "You're saving ~45 minutes vs manual labels."
+├─ CTA: "See your savings potential" (button)
+│  └─ Opens analytics showing: "$960/year if you used Pro"
+├─ Secondary: "I'm just trying it out" (dismiss)
+└─ Conversion rate: 12-16% (medium, less urgent than limit)
+
+TRIGGER #3: Batch completion
+├─ User generates batch of 50 labels
+├─ Success page: "50 labels generated in 2 minutes! 📊"
+├─ Message: "That's $120 in saved labor costs"
+├─ CTA: "Automate this process" (Pro scheduling feature)
+├─ Secondary: "Not interested" (dismiss)
+└─ Conversion rate: 8-12% (lower urgency)
+
+TRIGGER #4: Return visitor (Day 2+)
+├─ User hasn't logged in for 2 days
+├─ Email: "Missing you. Come back and unlock your free upgrade."
+│  └─ Subject: "We added scheduling to Pro"
+│  └─ This is email marketing, not in-app
+├─ Conversion rate: 4-6% (email is weaker channel)
+└─ But reaches users who left the funnel
+
+TRIGGER #5: Feature gate
+├─ User clicks "Schedule batch for tomorrow"
+├─ Dialog appears: "This feature is Pro only"
+├─ Message: "Automate your label printing. 3 jobs/month."
+├─ Show real example: "Print 100 FBA labels every Monday at 9am"
+├─ CTA: "Upgrade to Pro" (button)
+└─ Conversion rate: 22-28% (highest - they want feature NOW)
+
+CRITICAL: Do NOT show all triggers at once
+├─ Use rules:
+│  ├─ Show limit trigger first (happens naturally)
+│  ├─ Don't show 2 triggers in same session
+│  ├─ Wait 5 days before sending email trigger
+│  └─ Feature gates are highest friction (last resort)
+
+CONVERSION RATE TARGETS:
+├─ Free tier signup: 5% of visitors
+├─ At least 1 label created: 65% of signups
+├─ Upgrade within 30 days: 18% of active users
+├─ Overall conversion (visitor → paying): 0.45% (industry: 0.08%)
+└─ This 5.6x industry benchmark is through psychology, not more ads
+```
+
+#### 6.4 Action Stage (Reducing Friction to Payment)
+
+```
+THE SUBSCRIPTION FLOW (4 steps, 90 seconds):
+
+Step 1: Choose plan (2 seconds)
+├─ Pro card is pre-highlighted blue
+├─ "This plan is right for most sellers"
+├─ Click: "Start Free Trial"
+├─ Note: Called "Free Trial", not "Buy". Psychological difference.
+
+Step 2: Stripe integration (30 seconds)
+├─ Stripe form appears (trusted payment processor)
+├─ Asks: Name, email, card
+├─ Card is required on first payment (but we call it "Free Trial")
+├─ Trust signals: Lock icon, "Stripe.com", "Secure"
+├─ Message: "No auto-charge. We'll email before renewal."
+│  └─ This is CRITICAL messaging (reduces cancellation anxiety)
+
+Step 3: Email confirmation (5 seconds)
+├─ System sends confirmation email
+├─ "Your free trial starts today. It's unlimited access."
+├─ "Your card will be charged $7.99 on [DATE, 14 days from now]"
+│  └─ Specific date builds trust, removes surprise
+├─ One-click link: "Extend trial" (if they want more time)
+└─ 25% of users click extend (we get extra 14 days contact)
+
+Step 4: Dashboard access (20 seconds)
+├─ User redirected to Pro dashboard
+├─ Green banner: "🎉 Pro plan activated! [14 days remaining]"
+├─ CTA: "Unlock Pro features" (button)
+│  └─ Opens tutorial: "Here's what you can do now"
+├─ Pro features unlocked immediately:
+│  ├─ Unlimited labels (vs 200 free)
+│  ├─ 50 batches (vs 4 free)
+│  ├─ Scheduling (vs none)
+│  ├─ Priority support
+│  └─ No ads (feels clean, peaceful)
+└─ Time to first Pro feature use: 3 minutes
+
+RETENTION MECHANICS:
+
+Day 1-5: Love the features
+├─ User explores Pro features
+├─ Completes batch scheduling tutorial
+├─ Sets up first recurring job
+├─ Psychological anchor: "This is saving me SO much time"
+
+Day 6-10: Returns are good
+├─ Email: "Your 1st batch ran automatically! Details: [snapshot]"
+├─ User sees proof that automation works
+├─ Psychological anchor: "This is passive income for my time"
+
+Day 11-13: Renewal warning (early)
+├─ Email: "Your trial ends in 3 days. Here's what you've saved:"
+│  ├─ "50 labels created"
+│  ├─ "~15 hours saved"
+│  ├─ "Estimated value: $360"
+├─ Message: "Keep Pro access? Your card charges $7.99 on [DATE]"
+├─ Secondary: "Need more time? Extend trial 14 more days (button)"
+│  └─ 35% click extend (we get contact with them again)
+└─ Conversion: 62% of Pro trial users convert to paid
+
+Day 14: Charge card (if not extended)
+├─ Card charged $7.99
+├─ Email: "Welcome to Pro! Here's your receipt."
+├─ Dashboard: Upgrade banner removed, replaced with "Pro Active"
+└─ User is now paying, recurring customer
+```
+
+---
+
+## PART IV: ADVANCED IMPLEMENTATION STRATEGY
+
+### 7. WHY THE PREVIOUS DOCUMENT FAILED (Common Mistakes)
+
+```
+MISTAKE #1: Feature parity in free tier
+├─ Problem: Free tier had label editor + batch processing
+├─ Result: Users get value forever, never upgrade
+├─ SOLUTION: Limit free tier to creating 1 label type at a time
+│  (batch comes in Pro only)
+
+MISTAKE #2: Vague success metrics
+├─ Problem: "Goal: 1,000 signups in Month 1"
+├─ Result: No feedback loop. You don't know if marketing works.
+├─ SOLUTION: Every metric must be measurable and weekly
+│  ├─ Week 1: 50 signups (organic + Product Hunt)
+│  ├─ Week 2: 80 signups (SEO starting to work)
+│  ├─ Week 3: 120 signups (content getting shared)
+│  └─ Week 4: 200 signups (compound growth from week 1)
+
+MISTAKE #3: Assumed conversion funnel is linear
+├─ Problem: Awareness → Action (straight line)
+├─ Reality: Awareness → Skepticism → Comparison shopping
+│           → Asking friend → Coming back → Finally trying
+├─ SOLUTION: Every step must address specific objections
+│  ├─ Skepticism: Testimonials with faces, specific numbers
+│  ├─ Comparison: Direct comparison chart vs. named competitors
+│  ├─ Friend advice: Shareable links, referral bonus
+│  └─ Friction: One-click signup, no credit card upfront
+
+MISTAKE #4: Under-invested in onboarding
+├─ Problem: Onboarding was 3 steps (sign up, profile, verify)
+├─ Reality: Users need help experiencing "aha moment"
+├─ SOLUTION: Onboarding is 5-7 steps, takes 7 minutes
+│  ├─ Goal: Every new user creates at least 1 label
+│  ├─ Goal: Every new user prints or downloads
+│  ├─ Goal: Every new user sees time savings calculation
+│  └─ These are the "sticky" users (34% convert to Pro)
+
+MISTAKE #5: Pricing wasn't tested
+├─ Problem: $9.99 and $49.99 picked from thin air
+├─ Reality: Every dollar matters for middle-class buyer
+├─ SOLUTION: A/B test pricing in beta
+│  ├─ Test A: $7.99 vs $9.99 Pro (expect $7.99 to convert 18% better)
+│  ├─ Test B: Monthly vs Annual discount (expect 40% to pick annual)
+│  └─ Test C: $29.99 vs $39.99 Enterprise (expect $39.99 to feel "safer")
+
+MISTAKE #6: Didn't account for middle-class psychology
+├─ Problem: Marketing spoke to "entrepreneurs and innovators"
+├─ Reality: Our users are "stressed and just trying to survive"
+├─ SOLUTION: Marketing messaging focuses on:
+│  ├─ Time savings (they count hours obsessively)
+│  ├─ No risk (money-back guarantee, easy cancellation)
+│  ├─ Proof from people like them (testimonials from small sellers)
+│  └─ Simple (not "AI-powered" or "revolutionary")
+
+MISTAKE #7: Design system was incomplete
+├─ Problem: Colors defined, but not spacing or hierarchy
+├─ Reality: Inconsistent design feels unprofessional and untrustworthy
+├─ SOLUTION: Every spacing, font size, and interaction must be
+│  defined (see section 5 above)
+```
+
+---
+
+**[DOCUMENT CONTINUES - PART 2 WILL INCLUDE:**
+
+**Section 8: File Structure (Optimized for Cursor)**
+**Section 9: Database Schema (Enhanced)**
+**Section 10: Cursor Prompts (Specific, Detailed)**
+**Section 11: Implementation Roadmap (Week-by-week)**
+**Section 12: Quality Checklist (Pre-launch)**
+**Appendix: A/B Testing Framework**
+**Appendix: Customer Psychology Reference**
+
+*This Part 1 establishes the strategic and design foundation. Part 2 will provide exact implementation details.*
+
+# LABELPRO: IMPLEMENTATION MASTERY & CURSOR PROMPTS
+## Part 2: From Strategy to Code - Professional Build Plan
+**Version 2.0 | Production-Ready Framework**
+
+---
+
+## PART V: ADVANCED FILE STRUCTURE & ARCHITECTURE
+
+### 8. OPTIMIZED FILE STRUCTURE (For Cursor AI Efficiency)
+
+**Why This Structure is Better:**
+
+The previous document used generic folder organization. This structure is:
+- **Cursor-aware:** Cursor understands parent-child relationships
+- **DDD-enabled:** Domain-Driven Design for scalability
+- **Feature-flagged:** Easy to toggle Pro/Enterprise features
+- **Test-first:** Unit tests next to components
+
+```
+label-pro/
+│
+├─ README.md (Detailed setup instructions for Cursor)
+├─ CURSOR.md (Cursor-specific guidance)
+├─ .env.example (All variables documented)
+├─ .cursor (Cursor config - see section below)
+│
+├─ public/
+│  ├─ assets/
+│  │  ├─ logo.svg
+│  │  ├─ favicon.ico
+│  │  ├─ og-image.png
+│  │  ├─ icons/ (all 24px, 32px variants)
+│  │  │  ├─ plus.svg
+│  │  │  ├─ minus.svg
+│  │  │  ├─ check.svg
+│  │  │  ├─ alert.svg
+│  │  │  └─ [20+ icons]
+│  │  └─ images/
+│  │     ├─ hero-1.webp (alt: png for fallback)
+│  │     ├─ hero-2.webp
+│  │     ├─ testimonial-1.webp
+│  │     └─ [other images]
+│  └─ fonts/
+│     ├─ inter-var.woff2 (variable font)
+│     └─ sfmono-regular.woff2
+│
+├─ src/
+│  │
+│  ├─ _app/ (App root - single source of truth)
+│  │  ├─ page.tsx (Homepage - entry point for public)
+│  │  ├─ layout.tsx (Root layout - global providers)
+│  │  ├─ globals.css (Global styles - must be minimal)
+│  │  ├─ not-found.tsx (404 handling)
+│  │  ├─ error.tsx (Error boundary)
+│  │  └─ middleware.ts (Auth + Analytics)
+│  │
+│  ├─ app/ (Public pages - no auth required)
+│  │  ├─ (marketing)/ (Group - marketing pages)
+│  │  │  ├─ page.tsx (Homepage)
+│  │  │  ├─ features/page.tsx
+│  │  │  ├─ pricing/page.tsx
+│  │  │  ├─ labels/page.tsx
+│  │  │  ├─ blog/page.tsx
+│  │  │  ├─ blog/[slug]/page.tsx
+│  │  │  ├─ blog/[slug]/layout.tsx (Blog-specific layout)
+│  │  │  ├─ docs/page.tsx
+│  │  │  └─ about/page.tsx
+│  │  │
+│  │  ├─ (auth)/ (Group - auth pages)
+│  │  │  ├─ login/page.tsx
+│  │  │  ├─ login/layout.tsx (Centered auth layout)
+│  │  │  ├─ signup/page.tsx
+│  │  │  ├─ reset-password/page.tsx
+│  │  │  ├─ reset-password/[token]/page.tsx
+│  │  │  └─ verify-email/[token]/page.tsx
+│  │  │
+│  │  ├─ (dashboard)/ (Group - protected pages)
+│  │  │  │ ← This entire group requires auth middleware
+│  │  │  ├─ layout.tsx (Dashboard wrapper with sidebar)
+│  │  │  │
+│  │  │  ├─ dashboard/ (Homepage for authenticated users)
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ loading.tsx (Skeleton for great UX)
+│  │  │  │
+│  │  │  ├─ editor/ (Label Editor feature)
+│  │  │  │  ├─ page.tsx (Empty editor)
+│  │  │  │  ├─ [id]/page.tsx (Edit existing design)
+│  │  │  │  ├─ layout.tsx (Editor-specific layout)
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  ├─ templates/ (Template management)
+│  │  │  │  ├─ page.tsx (List templates)
+│  │  │  │  ├─ [id]/page.tsx (Edit template)
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  ├─ batch/ (Batch processing)
+│  │  │  │  ├─ page.tsx (Batch wizard)
+│  │  │  │  ├─ [id]/page.tsx (View batch results)
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  ├─ history/ (Print history)
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  ├─ printers/ (Printer settings)
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  ├─ settings/ (User settings)
+│  │  │  │  ├─ page.tsx
+│  │  │  │  ├─ account/page.tsx
+│  │  │  │  ├─ billing/page.tsx (Pro+ only)
+│  │  │  │  ├─ api/page.tsx (Pro+ only)
+│  │  │  │  └─ loading.tsx
+│  │  │  │
+│  │  │  └─ @modals/ (Parallel routes for modals)
+│  │  │     ├─ (.)label-details/[id]/page.tsx
+│  │  │     ├─ (.)confirm-delete/[id]/page.tsx
+│  │  │     └─ default.tsx (Empty for modal routes)
+│  │  │
+│  │  └─ api/ (Backend API routes)
+│  │     ├─ auth/
+│  │     │  ├─ login/route.ts (Email/password)
+│  │     │  ├─ signup/route.ts
+│  │     │  ├─ logout/route.ts
+│  │     │  ├─ refresh/route.ts
+│  │     │  └─ google/callback/route.ts (OAuth)
+│  │     │
+│  │     ├─ labels/
+│  │     │  ├─ route.ts (GET all labels, POST new design)
+│  │     │  ├─ [id]/route.ts (GET/PUT/DELETE specific label)
+│  │     │  └─ generate/route.ts (POST - generate PDF/image)
+│  │     │
+│  │     ├─ templates/
+│  │     │  ├─ route.ts (GET all templates)
+│  │     │  └─ [id]/route.ts (GET/PUT/DELETE)
+│  │     │
+│  │     ├─ batch/
+│  │     │  ├─ route.ts (POST new batch)
+│  │     │  └─ [id]/route.ts (GET status)
+│  │     │
+│  │     ├─ printers/
+│  │     │  ├─ route.ts (GET/POST)
+│  │     │  └─ [id]/route.ts (PUT/DELETE)
+│  │     │
+│  │     ├─ webhooks/
+│  │     │  ├─ stripe/route.ts (Stripe payment events)
+│  │     │  ├─ supabase/route.ts (Real-time events)
+│  │     │  └─ batch-complete/route.ts (Batch done)
+│  │     │
+│  │     └─ admin/ (Private admin APIs)
+│  │        ├─ analytics/route.ts (Metrics)
+│  │        └─ users/route.ts (Bulk operations)
+│  │
+│  ├─ components/ (Reusable React components)
+│  │  │ ← All components are ISOLATED, single-responsibility
+│  │  │
+│  │  ├─ ui/ (Atomic design: atoms only)
+│  │  │  ├─ Button.tsx
+│  │  │  │  ├─ __tests__/Button.test.tsx (Unit test)
+│  │  │  │  └─ index.ts (Export)
+│  │  │  ├─ Input.tsx
+│  │  │  ├─ Card.tsx
+│  │  │  ├─ Dialog.tsx
+│  │  │  ├─ Badge.tsx
+│  │  │  ├─ Spinner.tsx
+│  │  │  ├─ Toast.tsx
+│  │  │  ├─ Skeleton.tsx
+│  │  │  └─ [20+ atomic components]
+│  │  │
+│  │  ├─ layout/ (Layout components)
+│  │  │  ├─ Header.tsx
+│  │  │  ├─ Sidebar.tsx (Dashboard sidebar)
+│  │  │  ├─ Footer.tsx
+│  │  │  ├─ DashboardLayout.tsx
+│  │  │  └─ AuthLayout.tsx
+│  │  │
+│  │  ├─ forms/ (Form components - molecules)
+│  │  │  ├─ LoginForm.tsx
+│  │  │  ├─ SignupForm.tsx
+│  │  │  ├─ ProfileForm.tsx
+│  │  │  ├─ PrinterSetupForm.tsx
+│  │  │  └─ [10+ forms]
+│  │  │
+│  │  ├─ sections/ (Page sections - organisms)
+│  │  │  ├─ marketing/
+│  │  │  │  ├─ HeroSection.tsx
+│  │  │  │  ├─ FeaturesSection.tsx
+│  │  │  │  ├─ PricingSection.tsx
+│  │  │  │  ├─ TestimonialSection.tsx
+│  │  │  │  ├─ CTASection.tsx
+│  │  │  │  └─ FAQSection.tsx
+│  │  │  │
+│  │  │  ├─ dashboard/
+│  │  │  │  ├─ StatsSection.tsx
+│  │  │  │  ├─ RecentActivitySection.tsx
+│  │  │  │  ├─ QuickActionsSection.tsx
+│  │  │  │  └─ UpgradePromoSection.tsx
+│  │  │  │
+│  │  │  └─ editor/
+│  │  │     ├─ CanvasSection.tsx
+│  │  │     ├─ ToolbarSection.tsx
+│  │  │     ├─ PropertiesPanelSection.tsx
+│  │  │     └─ PreviewSection.tsx
+│  │  │
+│  │  ├─ features/ (Complex feature components)
+│  │  │  ├─ LabelBrowser/
+│  │  │  │  ├─ LabelBrowser.tsx (Main component)
+│  │  │  │  ├─ LabelCard.tsx (Card for each label)
+│  │  │  │  ├─ LabelFilter.tsx (Filter sidebar)
+│  │  │  │  ├─ __tests__/LabelBrowser.test.tsx
+│  │  │  │  └─ index.ts
+│  │  │  │
+│  │  │  ├─ LabelEditor/
+│  │  │  │  ├─ LabelEditor.tsx (Main editor)
+│  │  │  │  ├─ Canvas.tsx (Drawing surface)
+│  │  │  │  ├─ ToolPanel.tsx (Tools)
+│  │  │  │  ├─ PropertiesPanel.tsx (Edit properties)
+│  │  │  │  ├─ LayersPanel.tsx (Layer management)
+│  │  │  │  ├─ elements/
+│  │  │  │  │  ├─ TextElement.tsx
+│  │  │  │  │  ├─ ImageElement.tsx
+│  │  │  │  │  ├─ BarcodeElement.tsx
+│  │  │  │  │  └─ ShapeElement.tsx
+│  │  │  │  ├─ __tests__/LabelEditor.test.tsx
+│  │  │  │  └─ index.ts
+│  │  │  │
+│  │  │  ├─ BatchProcessor/
+│  │  │  │  ├─ BatchProcessor.tsx (Main component)
+│  │  │  │  ├─ UploadStep.tsx
+│  │  │  │  ├─ ColumnMapperStep.tsx
+│  │  │  │  ├─ PreviewStep.tsx
+│  │  │  │  ├─ DownloadStep.tsx
+│  │  │  │  └─ index.ts
+│  │  │  │
+│  │  │  └─ TemplateLibrary/
+│  │  │     ├─ TemplateLibrary.tsx
+│  │  │     ├─ TemplateCard.tsx
+│  │  │     ├─ TemplateGrid.tsx
+│  │  │     └─ index.ts
+│  │  │
+│  │  └─ common/ (Utility components)
+│  │     ├─ ProtectedRoute.tsx (Auth guard)
+│  │     ├─ ErrorBoundary.tsx
+│  │     ├─ LoadingBoundary.tsx
+│  │     ├─ FeatureFlag.tsx (Pro+ feature gating)
+│  │     └─ Analytics.tsx (Tracking wrapper)
+│  │
+│  ├─ lib/ (Core utilities and hooks)
+│  │  │
+│  │  ├─ hooks/ (Custom React hooks)
+│  │  │  ├─ useAuth.ts (Get current user)
+│  │  │  │  ├─ Returns: { user, loading, error }
+│  │  │  │  └─ Usage: const { user } = useAuth()
+│  │  │  │
+│  │  │  ├─ useLabels.ts (Fetch all labels)
+│  │  │  ├─ useDesigns.ts (User designs)
+│  │  │  ├─ useTemplates.ts (User templates)
+│  │  │  ├─ useBatch.ts (Batch processing)
+│  │  │  ├─ usePrinters.ts (Printer management)
+│  │  │  ├─ useLocalStorage.ts (Persist data)
+│  │  │  ├─ useDebounce.ts (Debounce input)
+│  │  │  ├─ useAsync.ts (Async operations)
+│  │  │  └─ [other hooks]
+│  │  │
+│  │  ├─ supabase/ (Database client)
+│  │  │  ├─ client.ts (Client-side Supabase instance)
+│  │  │  ├─ server.ts (Server-side instance)
+│  │  │  ├─ types.ts (Generated types from DB)
+│  │  │  └─ queries.ts (Pre-built query functions)
+│  │  │
+│  │  ├─ stripe/ (Payment integration)
+│  │  │  ├─ client.ts (Public Stripe instance)
+│  │  │  ├─ server.ts (Server Stripe instance)
+│  │  │  └─ webhooks.ts (Webhook handlers)
+│  │  │
+│  │  ├─ pdf/ (PDF generation)
+│  │  │  ├─ generator.ts (Main PDF generator)
+│  │  │  ├─ templates.ts (Template engines)
+│  │  │  └─ utils.ts (Helper functions)
+│  │  │
+│  │  ├─ auth/ (Authentication logic)
+│  │  │  ├─ validators.ts (Email/password validation)
+│  │  │  ├─ tokens.ts (JWT handling)
+│  │  │  ├─ session.ts (Session management)
+│  │  │  └─ oauth.ts (Google/Amazon OAuth)
+│  │  │
+│  │  ├─ validation/ (Data validation)
+│  │  │  ├─ schemas.ts (Zod/Joi schemas)
+│  │  │  ├─ email.ts (Email validation)
+│  │  │  ├─ label.ts (Label validation)
+│  │  │  └─ batch.ts (Batch data validation)
+│  │  │
+│  │  ├─ utils/ (Utility functions)
+│  │  │  ├─ cn.ts (Class name merger for Tailwind)
+│  │  │  ├─ format.ts (String/number formatting)
+│  │  │  ├─ date.ts (Date utilities)
+│  │  │  ├─ currency.ts (Money formatting)
+│  │  │  ├─ error.ts (Error formatting)
+│  │  │  └─ [other utils]
+│  │  │
+│  │  ├─ constants/ (App constants)
+│  │  │  ├─ labels.ts (All 255 label definitions)
+│  │  │  ├─ sizes.ts (Dimension conversions)
+│  │  │  ├─ pricing.ts (Plan definitions)
+│  │  │  ├─ features.ts (Feature flags)
+│  │  │  └─ config.ts (Global config)
+│  │  │
+│  │  ├─ analytics/ (Analytics integration)
+│  │  │  ├─ ga.ts (Google Analytics)
+│  │  │  ├─ events.ts (Event definitions)
+│  │  │  └─ tracking.ts (Tracking utilities)
+│  │  │
+│  │  └─ store/ (State management)
+│  │     ├─ appStore.ts (Zustand global store)
+│  │     ├─ editorStore.ts (Editor state)
+│  │     └─ uiStore.ts (UI state)
+│  │
+│  ├─ server/ (Server-side code)
+│  │  │
+│  │  ├─ actions/ (Server Actions - Next.js)
+│  │  │  ├─ auth.ts (Login/signup/logout)
+│  │  │  ├─ labels.ts (Label operations)
+│  │  │  ├─ designs.ts (Design CRUD)
+│  │  │  ├─ batch.ts (Batch processing)
+│  │  │  └─ printers.ts (Printer operations)
+│  │  │
+│  │  ├─ jobs/ (Background jobs)
+│  │  │  ├─ batchProcessor.ts (Generate labels)
+│  │  │  ├─ emailSender.ts (Send notifications)
+│  │  │  ├─ analytics.ts (Aggregate metrics)
+│  │  │  └─ cleanup.ts (Delete old records)
+│  │  │
+│  │  ├─ cron/ (Scheduled tasks)
+│  │  │  ├─ dailyReport.ts (Email daily stats)
+│  │  │  ├─ weeklyReport.ts (Email weekly summary)
+│  │  │  ├─ paymentReminder.ts (Renewal reminders)
+│  │  │  └─ churnPrevention.ts (Win-back campaigns)
+│  │  │
+│  │  └─ services/ (Business logic)
+│  │     ├─ labelService.ts (Label domain logic)
+│  │     ├─ designService.ts (Design operations)
+│  │     ├─ subscriptionService.ts (Billing logic)
+│  │     ├─ pdfService.ts (PDF generation)
+│  │     └─ emailService.ts (Email templates)
+│  │
+│  ├─ styles/ (Global styles)
+│  │  ├─ globals.css (Theme variables + base styles)
+│  │  ├─ variables.css (Color/spacing/typography variables)
+│  │  ├─ animations.css (Reusable animations)
+│  │  └─ accessibility.css (WCAG compliance)
+│  │
+│  ├─ types/ (TypeScript definitions)
+│  │  ├─ index.ts (Export all types)
+│  │  ├─ user.ts (User types)
+│  │  ├─ label.ts (Label types)
+│  │  ├─ design.ts (Design types)
+│  │  ├─ batch.ts (Batch types)
+│  │  ├─ api.ts (API types)
+│  │  └─ supabase.ts (DB types from Supabase)
+│  │
+│  └─ config/ (Configuration)
+│     ├─ site.ts (Site config - name, URLs, etc.)
+│     ├─ feature-flags.ts (Feature toggles for Pro/Enterprise)
+│     ├─ stripe.ts (Stripe plan definitions)
+│     └─ seo.ts (SEO defaults)
+│
+├─ tests/ (Test suite)
+│  ├─ e2e/ (End-to-end tests with Playwright)
+│  │  ├─ auth.spec.ts
+│  │  ├─ editor.spec.ts
+│  │  ├─ batch.spec.ts
+│  │  └─ pricing.spec.ts
+│  │
+│  ├─ unit/ (Unit tests - jest)
+│  │  ├─ utils/
+│  │  ├─ hooks/
+│  │  └─ lib/
+│  │
+│  └─ fixtures/ (Test data)
+│     ├─ labels.json (255 label definitions)
+│     ├─ users.json (Test users)
+│     └─ designs.json (Test designs)
+│
+├─ docs/ (Documentation)
+│  ├─ API.md (REST API documentation)
+│  ├─ DATABASE.md (Schema documentation)
+│  ├─ SETUP.md (Development setup)
+│  ├─ DEPLOYMENT.md (Production deployment)
+│  ├─ ARCHITECTURE.md (System design)
+│  └─ TROUBLESHOOTING.md (Common issues)
+│
+└─ scripts/ (Build scripts)
+   ├─ db-seed.ts (Populate 255 labels)
+   ├─ db-migrate.ts (Run migrations)
+   ├─ generate-types.ts (Generate Supabase types)
+   └─ build-labels.ts (Generate label definitions)
+```
+
+### 9. CURSOR CONFIGURATION FILE (.cursor)
+
+```yaml
+# .cursor - Configuration for Cursor AI
+# This file tells Cursor how to understand your project
+
+project:
+  name: "LabelPro"
+  description: "Label resizing SaaS for e-commerce sellers"
+  version: "2.0"
+
+structure:
+  root: "src"
+  components: "src/components"
+  pages: "src/app"
+  lib: "src/lib"
+  server: "src/server"
+  styles: "src/styles"
+  types: "src/types"
+  tests: "tests"
+
+rules:
+  # Components
+  - pattern: "src/components/**/*.tsx"
+    description: "React components - use 'use client' if needed client-side"
+    rules:
+      - "Export with named export + default"
+      - "Add JSDoc comments for props"
+      - "Include __tests__ folder for unit tests"
+      - "Use TypeScript props interface"
+  
+  # Hooks
+  - pattern: "src/lib/hooks/**/*.ts"
+    description: "Custom React hooks"
+    rules:
+      - "Must start with 'use' prefix"
+      - "Return tuple or object, not void"
+      - "Include error handling"
+  
+  # API Routes
+  - pattern: "src/app/api/**/*.ts"
+    description: "Next.js API routes"
+    rules:
+      - "Export separate GET, POST, PUT, DELETE functions"
+      - "Include error handling with 400/401/500"
+      - "Validate auth before processing"
+      - "Log all errors for debugging"
+  
+  # Database
+  - pattern: "src/lib/supabase/**/*.ts"
+    description: "Supabase client and queries"
+    rules:
+      - "Use server.ts for secret operations"
+      - "Use client.ts for public operations"
+      - "All queries must use RLS"
+  
+  # Styles
+  - pattern: "src/styles/*.css"
+    description: "Global CSS - use design system variables"
+    rules:
+      - "All colors must use CSS variables from design system"
+      - "All spacing must use 8px units"
+      - "No inline styles in components"
+
+dependencies:
+  critical:
+    - "next@14"
+    - "@supabase/supabase-js@2"
+    - "react@18"
+    - "tailwindcss@3"
+    - "stripe@14"
+  
+  recommended:
+    - "zustand" (state management)
+    - "react-hook-form" (forms)
+    - "zod" (validation)
+    - "date-fns" (dates)
+    - "next-auth" (alternative auth)
+
+environment:
+  required:
+    - NEXT_PUBLIC_SUPABASE_URL
+    - NEXT_PUBLIC_SUPABASE_ANON_KEY
+    - SUPABASE_SERVICE_ROLE_KEY
+    - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    - STRIPE_SECRET_KEY
+    - STRIPE_WEBHOOK_SECRET
+    - DATABASE_URL
+
+standards:
+  code:
+    - "Use TypeScript strict mode"
+    - "No any types - always specific"
+    - "Use const assertions for constants"
+    - "Prefer functional components"
+  
+  naming:
+    - "Components: PascalCase (Button.tsx)"
+    - "Utilities: camelCase (cn.ts)"
+    - "Constants: UPPER_SNAKE_CASE"
+    - "Types: PascalCase (UserType.ts)"
+  
+  imports:
+    - "Absolute imports from @/lib, @/components"
+    - "Group imports: React → external → local"
+    - "One import per line for clarity"
+
+testing:
+  framework: "Jest + React Testing Library"
+  coverage:
+    - "Components: 80% coverage minimum"
+    - "Utilities: 90% coverage minimum"
+    - "Critical paths: 100% coverage"
+  
+  pattern:
+    - "Test file in __tests__ folder next to source"
+    - "Name: ComponentName.test.tsx"
+    - "Describe blocks by responsibility"
+
+performance:
+  targets:
+    - "FCP: <2.5s"
+    - "LCP: <2.5s"
+    - "CLS: <0.1"
+    - "Bundle size: <150KB"
+  
+  rules:
+    - "Lazy load heavy components"
+    - "Image optimization (next/image)"
+    - "Code splitting by route"
+    - "No inline large objects"
+
+accessibility:
+  wcag_level: "AA"
+  requirements:
+    - "All inputs have labels"
+    - "All images have alt text"
+    - "Keyboard navigation support"
+    - "Color contrast 4.5:1"
+    - "ARIA labels where needed"
+
+database:
+  provider: "Supabase (PostgreSQL)"
+  
+  tables:
+    users:
+      - id (UUID, PK)
+      - email (unique)
+      - subscription_tier (free|pro|enterprise)
+      - created_at
+    
+    labels:
+      - id (UUID, PK)
+      - name (unique)
+      - width_mm, height_mm
+      - category (amazon_fba|walmart_wfs|etc)
+    
+    label_designs:
+      - id (UUID, PK)
+      - user_id (FK)
+      - label_base_id (FK)
+      - elements (JSONB)
+  
+  security:
+    - "Enable RLS on all tables"
+    - "User can only see own data"
+    - "Labels table is public read"
+
+prompts:
+  core:
+    - "Create component with TypeScript props interface"
+    - "Add error boundaries and loading states"
+    - "Use design system (spacing, colors)"
+    - "Include accessibility (labels, ARIA)"
+  
+  api:
+    - "Validate input with Zod"
+    - "Check auth status first"
+    - "Return proper HTTP codes"
+    - "Log errors for debugging"
+  
+  database:
+    - "Always use parameterized queries"
+    - "Include RLS in queries"
+    - "Handle errors gracefully"
+```
+
+---
+
+## PART VI: DETAILED CURSOR PROMPTS (Ready to Copy-Paste)
+
+### 10. SYSTEM-LEVEL PROMPTS (For Cursor Setup)
+
+**Prompt 1: Project Initialization**
+
+```
+I'm building LabelPro, a label resizing SaaS for e-commerce sellers.
+
+Tech Stack:
+- Frontend: Next.js 14 with App Router, TypeScript, React 18
+- Styling: Tailwind CSS v3 with custom design system
+- Database: Supabase (PostgreSQL) with Row-Level Security
+- Auth: Supabase Auth + OAuth (Google, Amazon)
+- Payment: Stripe for Pro/Enterprise tiers
+- Hosting: Vercel
+
+Please help me:
+1. Create new Next.js 14 project with TypeScript
+2. Install and configure Tailwind CSS
+3. Set up Supabase client (both client and server)
+4. Create the file structure as defined in .cursor
+5. Create initial layout.tsx with provider setup
+6. Create environment variables template
+
+Show me exact commands and all configuration files needed.
+```
+
+**Prompt 2: Design System Implementation**
+
+```
+I need to implement a professional design system that communicates trust, 
+precision, and expertise.
+
+Color Palette:
+- Primary Blue: #2563EB (actions, trust, professional)
+- Gray for neutral elements: #64748B
+- Success Green: #10B981
+- Error Red: #EF4444
+- Warning Yellow: #F59E0B
+
+Typography:
+- Primary font: Inter (system fallbacks)
+- Monospace: SF Mono/Monaco
+- Type scale: golden ratio 1.25x
+
+Spacing:
+- Base unit: 8px (all spacing multiples of 8)
+- 8px, 16px, 24px, 32px, 48px, 64px
+
+Create:
+1. src/styles/globals.css with CSS custom properties
+2. src/styles/variables.css with complete design token system
+3. tailwind.config.ts with design system integrated
+4. src/components/ui/Button.tsx with all variants
+5. src/components/ui/Input.tsx with all states
+6. src/components/ui/Card.tsx with shadow/border variants
+
+All components must use CSS variables, not hardcoded colors.
+All spacing must be 8px multiples.
+```
+
+**Prompt 3: Authentication System**
+
+```
+Implement complete authentication with Supabase Auth including:
+- Email/password signup and login
+- Google OAuth integration
+- Amazon Account login integration
+- Password reset flow
+- Email verification
+- Session management
+- Protected routes via middleware
+
+Create:
+1. src/lib/auth/validators.ts - Email/password validation rules
+2. src/lib/auth/session.ts - Session management
+3. src/lib/hooks/useAuth.ts - Auth context hook
+4. src/app/(auth)/signup/page.tsx - Signup form
+5. src/app/(auth)/login/page.tsx - Login form
+6. src/app/(auth)/reset-password/page.tsx - Reset form
+7. src/app/middleware.ts - Auth middleware
+8. src/app/api/auth/[...routes]/route.ts - Auth API
+
+Auth flow must be:
+- Zero friction (3-5 fields maximum)
+- Mobile responsive (tested on 320px)
+- Progress indication (current step of total)
+- Social login prominently displayed
+```
+
+---
+
+### 11. FEATURE-LEVEL PROMPTS (Advanced Implementation)
+
+**Prompt 4: Label Browser Component (Complex)**
+
+```
+I need to build the Label Browser feature - the core way users discover
+and select from 255+ label types.
+
+Requirements:
+- Display 255+ label types in searchable, filterable interface
+- Real-time search (debounced 300ms)
+- Multi-filter sidebar (category, size, printer, marketplace)
+- Responsive grid (4 columns desktop, 2 tablet, 1 mobile)
+- Label preview cards showing:
+  * Thumbnail preview (50x100px)
+  * Label name
+  * Dimensions (width x height)
+  * Category badge
+  * Print method (thermal/inkjet/desktop)
+  * Star icon for favorites
+  * "Select" button
+
+Tech Requirements:
+- Use React Query for data fetching (useLabelQuery hook)
+- Implement favorites using Supabase + localStorage
+- Show 20 labels per page with "Load More" button
+- Smooth loading states with skeletons
+- Keyboard navigation support
+- SEO metadata for each label type
+
+Files to create:
+1. src/components/features/LabelBrowser/LabelBrowser.tsx
+2. src/components/features/LabelBrowser/LabelCard.tsx
+3. src/components/features/LabelBrowser/LabelFilter.tsx
+4. src/components/features/LabelBrowser/LabelDetails.tsx (modal)
+5. src/lib/hooks/useLabels.ts (data hook)
+6. src/lib/constants/labels.ts (all 255 label definitions)
+
+Design Requirements:
+- Use blue button (#2563EB) for select action
+- Card padding 16px (not oversized)
+- Spacing: 24px between card rows
+- Loading skeleton matches card dimensions
+- Error state shows retry button with friendly message
+
+Performance:
+- Debounce search by 300ms
+- Virtual scroll for 255 items (don't render all at once)
+- Image lazy loading with blur placeholder
+- Initial load: max 20 items only
+```
+
+**Prompt 5: Label Editor Component (Very Complex)**
+
+```
+Build the core Label Editor - a drag-and-drop label design tool.
+
+Visual Layout (Two-panel):
+LEFT PANEL (Canvas Area):
+- White canvas showing label design at current DPI
+- DPI selector dropdown (203, 300, custom)
+- Zoom controls (25%-400%)
+- Undo/Redo buttons
+- Crosshair cursor during element placement
+
+RIGHT PANEL (Properties):
+- Layers panel (list of all elements on label)
+- Properties inspector (changes based on selected element)
+- Save as template button
+- Preview/Print button
+
+Element Types Supported:
+1. TEXT: Font, size, weight, color, alignment, rotation
+2. IMAGE: Upload, resize, position, rotation
+3. BARCODE: Type, value, human-readable toggle
+4. SHAPE: Rectangle, line, circle, fill/border color
+
+Interactions:
+- Click canvas to select element
+- Drag element to move
+- Resize handles on corners/edges
+- Delete key or delete button to remove
+- Properties panel updates in real-time
+
+Tech Requirements:
+- Use React DnD or similar for drag-drop
+- Store design as JSON (not image)
+- Canvas rendering with HTML5 Canvas or SVG
+- Real-time preview at multiple DPIs
+- Undo/redo stack management
+- Auto-save draft every 10 seconds to localStorage
+- Keyboard shortcuts: Ctrl+Z (undo), Ctrl+Shift+Z (redo), Delete, Cmd+S
+
+Files to create:
+1. src/components/features/LabelEditor/LabelEditor.tsx (main)
+2. src/components/features/LabelEditor/Canvas.tsx (drawing area)
+3. src/components/features/LabelEditor/ToolPanel.tsx (toolbar)
+4. src/components/features/LabelEditor/PropertiesPanel.tsx
+5. src/components/features/LabelEditor/LayersPanel.tsx
+6. src/components/features/LabelEditor/elements/*.tsx (text, image, barcode)
+7. src/lib/hooks/useEditor.ts (state management)
+8. src/lib/store/editorStore.ts (Zustand store)
+
+Design Requirements:
+- Use 8px grid for alignment
+- Element outline on selection: 2px blue border
+- Resize handles: 6px circles at corners
+- Delete button only appears when element selected
+- Undo button disabled if no history
+- Canvas background: white (#FFFFFF)
+- Grid lines optional (toggle in settings)
+
+Data Structure (Design JSON):
+{
+  "id": "uuid",
+  "label_base_id": "uuid",
+  "width_px": 576,
+  "height_px": 432,
+  "dpi": 300,
+  "elements": [
+    {
+      "id": "uuid",
+      "type": "text",
+      "x": 100,
+      "y": 50,
+      "width": 300,
+      "height": 40,
+      "rotation": 0,
+      "z_index": 1,
+      "properties": {
+        "text": "Product Name",
+        "font": "Inter",
+        "size": 24,
+        "weight": 600,
+        "color": "#000000",
+        "align": "left"
+      }
+    }
+  ]
+}
+```
+
+**Prompt 6: Batch Processing System**
+
+```
+Build batch label processing - upload CSV, map columns, generate 100+ labels.
+
+Wizard Flow (4 Steps):
+
+STEP 1: Template Selection
+- Dropdown to choose saved template
+- Show template preview
+- Button: "Next"
+
+STEP 2: Data Source
+- Upload CSV/Excel (drag-drop support)
+- OR paste data as text
+- Auto-detect headers
+- Show sample data from uploaded file
+- Button: "Next"
+
+STEP 3: Column Mapping
+- List each column from uploaded file
+- Dropdown for each: match to template variable
+- Sample row preview below mapping
+- Show example: Column "Name" → Template variable "product_name"
+- Button: "Next"
+
+STEP 4: Review & Generate
+- Preview first 5 labels
+- Printer selection dropdown
+- Show total label count: "Generating 250 labels"
+- Estimated generation time: "~30 seconds"
+- Button: "Generate & Download" or "Print Directly"
+- After generation: Show download button or open print dialog
+
+Technical Requirements:
+- CSV parsing with error handling
+- Support: .csv, .xlsx (Excel), paste as text
+- Column mapping state management
+- Progress bar during generation (simulate 30-second generation)
+- Generate PDF with all labels (use PDFKit library)
+- Error message for invalid data (show row number and error)
+- Toast notification on success
+
+Files to create:
+1. src/components/features/BatchProcessor/BatchProcessor.tsx (wizard container)
+2. src/components/features/BatchProcessor/UploadStep.tsx
+3. src/components/features/BatchProcessor/ColumnMapperStep.tsx
+4. src/components/features/BatchProcessor/PreviewStep.tsx
+5. src/components/features/BatchProcessor/DownloadStep.tsx
+6. src/lib/hooks/useBatch.ts (state hook)
+7. src/lib/pdf/generator.ts (PDF generation)
+8. src/app/api/batch/route.ts (backend processing)
+
+Design Requirements:
+- Progress indicator at top: Steps 1 of 4, 2 of 4, etc.
+- Back button on steps 2-4 (return to previous step)
+- Disabled state on "Next" until valid
+- Drag-drop zone for file upload: dashed blue border
+- Loading spinner while processing
+- Success page shows generated label count + "Download" button
+
+Error Handling:
+- File too large: "Max 10MB. Your file is 25MB."
+- Invalid format: "Please upload CSV or Excel file"
+- Column mismatch: "Column 'SKU' not found. Map to template variable"
+- Data error: "Row 15: Product name is empty"
+```
+
+---
+
+## PART VII: BUILD ROADMAP & QUALITY CHECKLIST
+
+### 12. WEEK-BY-WEEK IMPLEMENTATION ROADMAP
+
+```
+WEEK 1-2: FOUNDATION & AUTHENTICATION
+├─ Time: 40-50 hours
+├─ Dependencies: None (parallel work possible)
+├─ Tasks:
+│  ├─ [4h] Project setup, git repo, dependencies
+│  ├─ [4h] Supabase setup (DB, auth, storage)
+│  ├─ [6h] Design system implementation (colors, spacing, fonts)
+│  ├─ [8h] Core UI components (Button, Input, Card, etc.)
+│  ├─ [6h] Authentication system (signup/login/reset)
+│  ├─ [4h] Middleware and protected routes
+│  ├─ [4h] Basic dashboard layout
+│  ├─ [4h] Testing and bug fixes
+│  └─ [Deliverable] Users can sign up, log in, see dashboard
+│
+├─ Success Criteria:
+│  ├─ Signup takes <30 seconds
+│  ├─ Email verification works
+│  ├─ Login persists session for 30 days
+│  ├─ Dashboard loads in <2 seconds
+│  └─ Mobile responsive (tested on 320px)
+│
+└─ Cursor Prompts Needed: #1, #2, #3 from section 10
+
+WEEK 3: LABEL LIBRARY & BROWSER
+├─ Time: 30-40 hours
+├─ Dependencies: Week 1-2 complete
+├─ Tasks:
+│  ├─ [4h] Create labels database table + seed 255 labels
+│  ├─ [8h] LabelBrowser component (search, filter, grid)
+│  ├─ [6h] LabelCard component with preview
+│  ├─ [6h] LabelFilter sidebar
+│  ├─ [4h] Label details modal
+│  ├─ [6h] Favorites system (database + UI)
+│  ├─ [4h] Testing and optimization
+│  └─ [Deliverable] Browse all 255 label types with filters
+│
+├─ Success Criteria:
+│  ├─ Search results appear within 300ms
+│  ├─ Filter works: category, size, printer type, marketplace
+│  ├─ Favorites save to database
+│  ├─ Label preview visible for all 255 types
+│  ├─ Mobile responsive (scrollable list)
+│  └─ SEO: Each label type has metadata
+│
+└─ Cursor Prompts Needed: #4 from section 11
+
+WEEK 4-5: LABEL EDITOR (MOST COMPLEX)
+├─ Time: 60-80 hours (longest week)
+├─ Dependencies: Week 3 complete
+├─ Tasks:
+│  ├─ [6h] Design editor UI (canvas + panels)
+│  ├─ [10h] Canvas rendering (HTML5 Canvas or SVG)
+│  ├─ [10h] Text element (add, edit, style, delete)
+│  ├─ [8h] Image element (upload, position, resize)
+│  ├─ [8h] Barcode element (generate, display, options)
+│  ├─ [6h] Shape element (rectangle, line, properties)
+│  ├─ [4h] Layers panel (list, select, reorder)
+│  ├─ [4h] Properties panel (update element properties)
+│  ├─ [6h] Undo/Redo functionality
+│  ├─ [6h] Keyboard shortcuts (delete, undo, save)
+│  ├─ [6h] Draft auto-save (every 10 seconds)
+│  ├─ [6h] Template save/load
+│  ├─ [8h] Testing all features
+│  └─ [Deliverable] Create and save label designs
+│
+├─ Success Criteria:
+│  ├─ First label created in <2 minutes (onboarding)
+│  ├─ Drag element positions smoothly (no lag)
+│  ├─ Text editing happens inline on canvas
+│  ├─ Barcode generates from entered value
+│  ├─ Design saves as draft automatically
+│  ├─ Template saves and loads correctly
+│  ├─ Undo/redo works 10+ levels deep
+│  └─ Canvas responsive (zoom 25%-400%)
+│
+└─ Cursor Prompts Needed: #5 from section 11
+
+WEEK 6: BATCH PROCESSING
+├─ Time: 35-45 hours
+├─ Dependencies: Week 5 complete (label editor works)
+├─ Tasks:
+│  ├─ [8h] Batch wizard UI (4 step layout)
+│  ├─ [6h] CSV upload (drag-drop, validation)
+│  ├─ [10h] Column mapping (match CSV columns to template)
+│  ├─ [6h] Preview batch (show first 5 labels)
+│  ├─ [8h] PDF generation (all labels to single PDF)
+│  ├─ [6h] Backend batch processing
+│  ├─ [4h] Error handling and validation
+│  └─ [Deliverable] Generate PDF with 100+ labels
+│
+├─ Success Criteria:
+│  ├─ CSV upload works for 1,000+ rows
+│  ├─ Column mapping is intuitive (drag to match)
+│  ├─ PDF generation takes <30 seconds
+│  ├─ All labels render correctly in PDF
+│  ├─ Error messages are specific (not generic)
+│  ├─ Works with multiple file types (.csv, .xlsx)
+│  └─ Batch history saved in user account
+│
+└─ Cursor Prompts Needed: #6 from section 11
+
+WEEK 7: PRINTER INTEGRATION
+├─ Time: 25-30 hours
+├─ Dependencies: Week 6 complete
+├─ Tasks:
+│  ├─ [6h] Printer settings page (add/edit/delete)
+│  ├─ [6h] Printer type selection (DYMO, Zebra, Rollo, Desktop)
+│  ├─ [6h] Print dialog integration (browser print)
+│  ├─ [4h] Test print functionality
+│  ├─ [4h] Printer compatibility guide
+│  ├─ [4h] Error handling (offline printer, wrong size)
+│  └─ [Deliverable] Print labels directly from editor
+│
+├─ Success Criteria:
+│  ├─ Add printer takes <2 minutes
+│  ├─ Print dialog opens with correct settings
+│  ├─ Test print sends small 5-label PDF
+│  ├─ Desktop printer works (system printer)
+│  ├─ Error: "Printer offline" shown if unavailable
+│  └─ Support documentation for each printer type
+│
+└─ Cursor Prompts Needed: Standard component prompts
+
+WEEK 8: PRICING & STRIPE INTEGRATION
+├─ Time: 30-40 hours
+├─ Dependencies: Week 7 complete
+├─ Tasks:
+│  ├─ [6h] Stripe setup and plan configuration
+│  ├─ [8h] Pricing page (3 tiers with comparison)
+│  ├─ [8h] Subscription checkout (free trial flow)
+│  ├─ [6h] Billing management dashboard
+│  ├─ [6h] Webhook handlers (payment, subscription change)
+│  ├─ [6h] Feature gates (Pro+ features locked)
+│  ├─ [4h] Testing and error handling
+│  └─ [Deliverable] Monetization system live
+│
+├─ Success Criteria:
+│  ├─ Free → Pro conversion: 12-18% of active free users
+│  ├─ Trial is actually free (no charge until renewal)
+│  ├─ Subscription renewal email sent 3 days before
+│  ├─ Upgrade from free to Pro: <2 minutes
+│  ├─ Pro features hidden on free tier (disabled buttons)
+│  ├─ Failed payment: 3 retry attempts before cancel
+│  └─ Payment processing rate: >99.5%
+│
+└─ Cursor Prompts Needed: Stripe integration prompts
+
+WEEK 9: SEO & CONTENT
+├─ Time: 40-50 hours (mostly writing, not coding)
+├─ Dependencies: Week 8 complete (product ready)
+├─ Tasks:
+│  ├─ [4h] SEO meta tags on all pages
+│  ├─ [4h] XML sitemap generation
+│  ├─ [4h] Schema.org markup (Organization, SoftwareApplication)
+│  ├─ [20h] Blog content (3-5 articles, 1,500-2,000 words each)
+│  ├─ [6h] FAQ page content
+│  ├─ [4h] robots.txt and DNS setup
+│  ├─ [4h] Google Analytics 4 implementation
+│  ├─ [4h] Search Console verification
+│  └─ [Deliverable] SEO optimized, indexable site
+│
+├─ Success Criteria:
+│  ├─ All pages have unique, descriptive titles (50-60 chars)
+│  ├─ Meta descriptions: 150-160 characters
+│  ├─ Internal links: 3-5 per blog post
+│  ├─ Images have alt text
+│  ├─ Page speed: <2.5s FCP on 4G
+│  ├─ Google Search Console: 0 errors
+│  └─ Schema markup validates with structured-data.org
+│
+└─ Cursor Prompts: Not needed (writing, not coding)
+
+WEEK 10: ANALYTICS & CONVERSION
+├─ Time: 20-25 hours
+├─ Dependencies: Week 9 complete
+├─ Tasks:
+│  ├─ [6h] Google Analytics 4 event tracking
+│  ├─ [6h] Conversion funnel setup (sign up → paid)
+│  ├─ [4h] Dashboard analytics (MRR, churn, CAC)
+│  ├─ [4h] Heatmap integration (optional)
+│  ├─ [4h] Email capture optimization
+│  └─ [Deliverable] Data-driven dashboard live
+│
+├─ Success Criteria:
+│  ├─ Track events: signup, first_label, upgrade, payment
+│  ├─ Conversion funnel visible: visitors → users → paid
+│  ├─ Custom events: feature_used, error_occurred
+│  ├─ Dashboard shows: Daily signups, MRR, churn rate
+│  ├─ Weekly reports via email
+│  └─ No PII in analytics (privacy-compliant)
+│
+└─ Cursor Prompts: Standard API/integration prompts
+
+WEEK 11: QA & OPTIMIZATION
+├─ Time: 40-50 hours
+├─ Dependencies: Weeks 1-10 complete
+├─ Tasks:
+│  ├─ [8h] Cross-browser testing (Chrome, Firefox, Safari, Edge)
+│  ├─ [8h] Mobile responsiveness (320px-2560px)
+│  ├─ [6h] Performance optimization (bundle size, images)
+│  ├─ [6h] Security audit (OWASP Top 10)
+│  ├─ [8h] Load testing (simulate 1,000 concurrent users)
+│  ├─ [6h] Accessibility audit (WCAG 2.1 AA)
+│  ├─ [6h] Bug fixes and refinement
+│  └─ [Deliverable] Production-ready MVP
+│
+├─ Success Criteria:
+│  ├─ Lighthouse score: >90 (Performance, Accessibility, Best Practices)
+│  ├─ No JavaScript errors in console
+│  ├─ All forms submit successfully
+│  ├─ Keyboard navigation works everywhere
+│  ├─ Color contrast: 4.5:1 minimum
+│  ├─ Page load time: <2.5s on 4G
+│  ├─ Zero critical security vulnerabilities
+│  └─ 10,000 concurrent users: no downtime
+│
+└─ Cursor Prompts: Testing/debugging prompts
+
+WEEK 12: LAUNCH & MARKETING
+├─ Time: 20-25 hours
+├─ Dependencies: Week 11 complete (product production-ready)
+├─ Tasks:
+│  ├─ [4h] Deploy to production (Vercel)
+│  ├─ [2h] Set up monitoring (Sentry, uptime monitoring)
+│  ├─ [4h] Email marketing setup (Mailchimp/Substack)
+│  ├─ [4h] Create Product Hunt post
+│  ├─ [4h] Social media content (Twitter, LinkedIn)
+│  ├─ [4h] Influencer outreach (micro-influencers)
+│  ├─ [2h] Press release (optional)
+│  └─ [Deliverable] Live, publicly available product
+│
+├─ Success Criteria:
+│  ├─ Product Hunt: Top 10 in "Product" category
+│  ├─ Initial 100 signups in first week
+│  ├─ Social media: 50+ followers/subscribers
+│  ├─ Email list: 200+ subscribers
+│  ├─ Uptime: 99.5%+ (no unplanned downtime)
+│  ├─ Support response: <24 hours
+│  └─ Revenue: $1-2k within 30 days
+│
+└─ Cursor Prompts: Not needed (marketing/DevOps)
+
+TOTAL TIME: 300-420 hours (9-12 weeks of 40 hour/week development)
+TEAM SIZE: 1-2 people (1 full-stack dev + 0.5 content writer)
+```
+
+---
+
+## PART VIII: QUALITY CHECKLIST (Pre-Launch)
+
+### 13. FINAL QUALITY ASSURANCE CHECKLIST
+
+```
+═══════════════════════════════════════════════════════════════════
+
+FUNCTIONAL REQUIREMENTS CHECKLIST
+
+Authentication
+☐ Signup with email/password
+☐ Login with email/password
+☐ Google OAuth login
+☐ Amazon OAuth login
+☐ Password reset flow (6-step process)
+☐ Email verification (required before using app)
+☐ Session persistence (30 days)
+☐ Logout functionality
+☐ Remember me (optional, 90 days)
+☐ Multi-device sessions (logout all devices option)
+
+Label Management
+☐ Browse 255+ label types
+☐ Search labels (real-time, debounced 300ms)
+☐ Filter labels (category, size, printer, marketplace)
+☐ View label specifications (dimensions, barcode format)
+☐ Favorite labels (save + star)
+☐ Label preview (visual thumbnail)
+
+Label Editor
+☐ Create new label design
+☐ Add text element (font, size, weight, color, alignment)
+☐ Add image element (upload, position, resize)
+☐ Add barcode element (type, value, human readable)
+☐ Add shape element (rectangle, line, circle)
+☐ Move elements (drag on canvas)
+☐ Resize elements (corner handles)
+☐ Delete elements (DEL key or button)
+☐ Select elements (click on canvas or layers panel)
+☐ Layer management (z-index, reorder)
+☐ Undo/Redo (10+ levels)
+☐ Save as template
+☐ Auto-save draft (every 10 seconds)
+☐ Keyboard shortcuts (Ctrl+Z, Ctrl+Shift+Z, DEL, Cmd+S)
+☐ Canvas zoom (25%-400%)
+☐ DPI selector (203, 300, custom)
+
+Batch Processing
+☐ Upload CSV file (drag-drop or file picker)
+☐ Upload Excel file (.xlsx)
+☐ Paste data as text
+☐ Auto-detect CSV headers
+☐ Map columns to template variables
+☐ Show sample data preview
+☐ Validate data (check for required fields)
+☐ Generate labels (convert to PDF)
+☐ Download PDF (all labels in one file)
+☐ Print directly (browser print dialog)
+☐ Show generation progress
+☐ Error messages (specific, actionable)
+☐ Save batch to history
+☐ Reprint previous batches
+
+Printer Integration
+☐ Add new printer
+☐ Edit printer settings
+☐ Delete printer
+☐ Set default printer
+☐ Printer type: DYMO, Zebra, Rollo, Brother, Desktop
+☐ Connection type: USB, Network IP, System printer
+☐ DPI settings (203, 300)
+☐ Print darkness adjustment
+☐ Label gap configuration
+☐ Test print (send small PDF)
+☐ Error handling (printer offline, wrong size)
+
+Subscription & Billing
+☐ Free tier: 200 labels/month, 4 batches
+☐ Pro tier: $7.99/month, unlimited labels, 50 batches
+☐ Enterprise tier: $39.99/month, unlimited everything
+☐ Signup for free trial (Pro tier, 14 days)
+☐ Upgrade from free to Pro
+☐ Switch between Pro/Enterprise
+☐ View billing history
+☐ Download invoice
+☐ Update payment method
+☐ Cancel subscription (with retention offer)
+☐ Renewal reminder email (3 days before)
+☐ Failed payment retry (3 attempts)
+
+Feature Gates
+☐ Free users: Can't access batch scheduling
+☐ Free users: Can't access API
+☐ Free users: Can't use team features
+☐ Pro users: Can't use enterprise features
+☐ Pro users: Can use batch scheduling (2 jobs)
+☐ Enterprise users: Unlimited everything
+
+Settings & Profile
+☐ Update profile name, company
+☐ Change password
+☐ Update email address
+☐ Delete account
+☐ Download account data (GDPR)
+☐ Notification preferences (email on upload, etc.)
+☐ Connected accounts (Google, Amazon)
+☐ Timezone selection
+☐ Language selection (English primary)
+
+Admin Features
+☐ View user count (dashboard)
+☐ View MRR breakdown
+☐ View churn rate
+☐ View top features used
+☐ Send admin email
+
+═══════════════════════════════════════════════════════════════════
+
+DESIGN & UX CHECKLIST
+
+Visual Consistency
+☐ Color palette consistent (blue, gray, green, red, yellow)
+☐ Typography consistent (Inter font, 4-5 font sizes)
+☐ Spacing consistent (8px multiples: 8, 16, 24, 32, 48)
+☐ Component styles consistent (buttons all match)
+☐ Button sizes consistent (lg 44px, md 40px, sm 36px)
+☐ Input heights consistent (40px)
+☐ Card shadows consistent (1px or 4px, never mixed)
+☐ Border radius consistent (6px or 8px, not varied)
+
+User Flows
+☐ Signup: <30 seconds from landing to dashboard
+☐ First label: <2 minutes (onboarding)
+☐ First batch: <5 minutes (after tutorial)
+☐ Free → Pro upgrade: <2 minutes, no friction
+☐ Printing: <10 seconds (once printer set up)
+
+Mobile Responsiveness
+☐ Homepage: 320px - 2560px (no horizontal scroll)
+☐ Forms: Stack vertically on mobile
+☐ Buttons: 44px minimum height (thumb-friendly)
+☐ Text: Readable without zooming (16px minimum)
+☐ Images: Responsive (max-width: 100%)
+☐ Modals: Full-screen on mobile
+☐ Sidebar: Collapse on <768px
+
+Accessibility (WCAG 2.1 AA)
+☐ Color contrast: 4.5:1 (normal text)
+☐ Large text (18px+): 3:1 contrast minimum
+☐ All inputs have associated labels
+☐ All images have alt text
+☐ All buttons have text (not icon-only)
+☐ Keyboard navigation (Tab, Enter, Escape)
+☐ Focus indicators visible on all interactive elements
+☐ Form errors clearly marked
+☐ Required fields marked with asterisk
+☐ Aria labels where needed (for screen readers)
+☐ Page title describes page content
+☐ Heading structure logical (h1 → h2 → h3)
+
+Loading States
+☐ Show skeleton while loading
+☐ Show spinner for async operations
+☐ Disable buttons while submitting
+☐ Show progress bar for batch generation
+☐ Show estimated time for long operations
+☐ Never show blank white screen
+
+Error Handling
+☐ Error messages are specific (not "Error occurred")
+☐ Error messages suggest solution
+☐ Error messages are friendly (not technical)
+☐ Errors don't break the page (error boundary)
+☐ Validation errors show next to field
+☐ Network errors show retry button
+☐ 404 page has helpful links
+☐ 500 page shows status + support contact
+
+═══════════════════════════════════════════════════════════════════
+
+PERFORMANCE CHECKLIST
+
+Page Speed
+☐ Homepage: <2.5s FCP (First Contentful Paint)
+☐ Dashboard: <2.5s FCP
+☐ Editor: <3s initial load (then interactive)
+☐ LCP (Largest Contentful Paint): <2.5s
+☐ CLS (Cumulative Layout Shift): <0.1
+☐ TTI (Time to Interactive): <3.5s
+
+Bundle Size
+☐ JavaScript: <150KB (gzipped)
+☐ CSS: <40KB (gzipped)
+☐ Images: Optimized (no >100KB images)
+☐ Fonts: System font or variable font (not multiple files)
+
+Images
+☐ Use WebP format with PNG fallback
+☐ Images optimized with ImageOptim or similar
+☐ Lazy load off-screen images
+☐ Responsive images (srcset for different sizes)
+☐ No images larger than 2MB
+
+JavaScript
+☐ Code split by route (no monolithic bundle)
+☐ No unused libraries (tree-shaking enabled)
+☐ No console errors or warnings
+☐ No memory leaks (check DevTools Memory)
+☐ Event listeners cleaned up on component unmount
+
+CSS
+☐ No unused CSS (PurgeCSS or similar)
+☐ Critical CSS inlined in HTML
+☐ Unused selectors removed
+☐ No inline styles (all in CSS file)
+
+Third-party Scripts
+☐ Google Analytics: Loaded async
+☐ Stripe: Loaded from CDN
+☐ Chat widget (if used): Lazy loaded
+
+═══════════════════════════════════════════════════════════════════
+
+SECURITY CHECKLIST
+
+Authentication
+☐ Passwords hashed (bcrypt or similar)
+☐ Password minimum: 8 characters
+☐ Password reset token expires (15 minutes)
+☐ Session tokens expire (30 days)
+☐ Refresh token rotation enabled
+☐ CSRF protection on all forms
+☐ SQL injection protection (parameterized queries)
+☐ XSS protection (input sanitization)
+
+API Security
+☐ API requires authentication (JWT or session)
+☐ Rate limiting enabled (100 req/min per IP)
+☐ Request validation (Zod or similar)
+☐ No sensitive data in logs
+☐ CORS configured correctly
+☐ No API keys in frontend code
+
+Data Protection
+☐ All data encrypted in transit (HTTPS)
+☐ All data encrypted at rest (database)
+☐ Database backups enabled
+☐ PII data masked in logs
+☐ Data retention policy documented
+☐ GDPR compliance (data export, deletion)
+☐ Row-level security enabled on all tables
+
+File Upload
+☐ File size limit: 10MB maximum
+☐ File type whitelist (only CSV, XLSX, images)
+☐ Virus scan on upload (optional but recommended)
+☐ Files stored outside web root
+☐ Filenames sanitized (no path traversal)
+
+Third-party Integrations
+☐ Stripe API key kept secret (env variable)
+☐ Google OAuth secrets secure
+☐ Supabase keys rotated regularly
+☐ No credentials in git history
+
+═══════════════════════════════════════════════════════════════════
+
+SEO CHECKLIST
+
+On-Page
+☐ Title tag: 50-60 characters, includes main keyword
+☐ Meta description: 150-160 characters, includes call-to-action
+☐ H1 tag: Only one per page, includes main keyword
+☐ Headings: Logical hierarchy (H1 → H2 → H3)
+☐ Keywords: 1-2% density, natural language
+☐ Internal links: 3-5 per page, descriptive anchor text
+☐ External links: 2-3 per page to authority sites
+☐ Image alt text: Descriptive, includes keyword
+
+Technical SEO
+☐ Robots.txt: Configured correctly
+☐ Sitemap.xml: Submitted to Google Search Console
+☐ Canonical URLs: Prevent duplicate content
+☐ Structured data: Schema.org markup
+☐ Mobile responsive: Passes Mobile-Friendly Test
+☐ Page speed: <3s on 4G
+☐ SSL/HTTPS: Enabled site-wide
+☐ No mixed content (HTTPS images, not HTTP)
+
+Content
+☐ Blog posts: 1,200-2,200 words (minimum 800)
+☐ Keyword research: Validated target keywords
+☐ Content unique: Not copied from competitors
+☐ Images: High quality, relevant to content
+☐ Video: Optional but recommended
+☐ FAQ: Covers common questions
+☐ Links: Point to relevant, authoritative sources
+☐ Update frequency: Published date and update date shown
+
+═══════════════════════════════════════════════════════════════════
+
+BROWSER & DEVICE TESTING
+
+Browsers (Desktop)
+☐ Chrome (latest 2 versions)
+☐ Firefox (latest 2 versions)
+☐ Safari (latest 2 versions)
+☐ Edge (latest 2 versions)
+
+Devices (Mobile)
+☐ iPhone 12 (390px)
+☐ iPhone 14 Pro (430px)
+☐ Pixel 6 (412px)
+☐ iPad (768px)
+☐ iPad Pro (1024px)
+
+OS Versions
+☐ iOS 15+ (Apple)
+☐ iOS 16+ (latest)
+☐ Android 11+ (Google)
+☐ Android 13+ (latest)
+
+Features
+☐ Touch interactions work (tap, swipe)
+☐ Long-press works (context menus)
+☐ Pinch-zoom works (where appropriate)
+☐ Keyboard appears when typing
+☐ Keyboard doesn't cover important buttons
+
+═══════════════════════════════════════════════════════════════════
+
+DEPLOYMENT CHECKLIST
+
+Pre-Launch
+☐ Environment variables set (.env.production)
+☐ Database migrated to production
+☐ Backups configured (automatic, daily)
+☐ Monitoring enabled (Sentry, uptime, logs)
+☐ CDN configured (if using Cloudflare/similar)
+☐ Email sending tested (confirmation, reset, marketing)
+☐ Payment processing tested (Stripe sandbox → live)
+☐ Analytics verified (Google Analytics receiving data)
+
+Launch
+☐ DNS pointing to Vercel
+☐ SSL certificate valid (HTTPS working)
+☐ Status page created (for incident communication)
+☐ Support email ready (support@labelpro.io)
+☐ Chat support configured (Crisp or Intercom)
+☐ Documentation live (API docs, help center)
+☐ Marketing email sent (launch announcement)
+☐ Social media posts scheduled
+
+Post-Launch (First Week)
+☐ Monitor error rates (<0.1%)
+☐ Check server performance (CPU, memory, database)
+☐ Review user feedback (Twitter, Product Hunt, email)
+☐ Fix critical bugs immediately
+☐ Respond to support tickets within 24 hours
+☐ Track signups and conversion rates
+☐ Monitor payment processing success rate
+
+═══════════════════════════════════════════════════════════════════
+```
+
+---
+
+**[DOCUMENT CONTINUES]**
+
+*This Part 2 provides exact implementation guidance with week-by-week roadmap and comprehensive quality checklist.*
+
+*Ready to build? Start with Prompts #1, #2, #3 in Cursor, then progress through the remaining 12 weeks following the roadmap.*
+
