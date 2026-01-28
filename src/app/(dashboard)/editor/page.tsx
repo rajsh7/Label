@@ -1,8 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+type Label = {
+  id: string
+  name: string
+  category: string
+  marketplace?: string
+  width_mm: number
+  height_mm: number
+  width_px_203dpi?: number
+  height_px_203dpi?: number
+  print_method: string
+}
 
 type Element = {
   id: number
@@ -16,6 +35,26 @@ export default function EditorPage() {
   const [elements, setElements] = useState<Element[]>([])
   const [name, setName] = useState('Shipping Label 4x6')
   const [selected, setSelected] = useState<number | null>(null)
+  const [labels, setLabels] = useState<Label[]>([])
+  const [selectedLabel, setSelectedLabel] = useState<Label | null>(null)
+  const [showLabelSelector, setShowLabelSelector] = useState(true)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchLabels() {
+      const { data, error } = await supabase
+        .from('labels')
+        .select('*')
+        .order('name')
+      
+      if (data && !error) {
+        setLabels(data)
+        setSelectedLabel(data[0])
+      }
+      setLoading(false)
+    }
+    fetchLabels()
+  }, [])
 
   const addElement = (type: 'text' | 'barcode' | 'image') => {
     const newEl: Element = {
@@ -38,97 +77,72 @@ export default function EditorPage() {
 
   const selectedEl = elements.find(el => el.id === selected)
 
-  return (
-    <div className="flex flex-col lg:flex-row h-screen bg-background">
-      {/* Mobile: 2 cards per row layout */}
-      <div className="lg:hidden">
-        <div className="grid grid-cols-2 gap-4 p-4">
-          {/* Tools Card */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold mb-4 text-sm">Elements</h2>
-            <div className="space-y-2">
-              <Button onClick={() => addElement('text')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                📝 Text
-              </Button>
-              <Button onClick={() => addElement('barcode')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                🔲 Barcode
-              </Button>
-              <Button onClick={() => addElement('image')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                🖼️ Image
-              </Button>
-            </div>
-          </div>
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="text-center">Loading labels...</div>
+      </div>
+    )
+  }
 
-          {/* Properties Card */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold mb-4 text-sm">Properties</h2>
-            {selectedEl ? (
-              <div className="space-y-2">
-                <div>
-                  <label className="text-xs font-medium">Content</label>
-                  <Input 
-                    value={selectedEl.content}
-                    onChange={e => {
-                      setElements(elements.map(el => 
-                        el.id === selected ? {...el, content: e.target.value} : el
-                      ))
-                    }}
-                    className="text-xs"
-                  />
-                </div>
-                <Button onClick={deleteElement} variant="destructive" className="w-full text-xs" size="sm">
-                  Delete
-                </Button>
-              </div>
-            ) : (
-              <p className="text-xs text-muted-foreground">Select element</p>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Canvas */}
-        <div className="p-4">
-          <div className="border-b pb-4 mb-4">
-            <Input 
-              value={name} 
-              onChange={e => setName(e.target.value)}
-              className="mb-2"
-            />
-            <Button size="sm">Save Label</Button>
-          </div>
-          
-          <div className="flex items-center justify-center bg-gray-100 p-4">
-            <div className="bg-white w-full max-w-[300px] h-[400px] relative border-2 shadow-xl">
-              {elements.map(el => (
-                <div 
-                  key={el.id}
-                  onClick={() => setSelected(el.id)}
-                  style={{
-                    position: 'absolute',
-                    left: el.x,
-                    top: el.y,
-                    border: selected === el.id ? '2px solid blue' : '1px solid transparent',
-                    padding: '4px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {el.type === 'barcode' ? (
-                    <div className="bg-black text-white px-2 py-1 font-mono text-xs">
-                      |||||| {el.content}
-                    </div>
-                  ) : (
-                    <span className="text-sm">{el.content}</span>
-                  )}
-                </div>
+  if (showLabelSelector) {
+    return (
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6">Create New Label</h1>
+        <div className="max-w-md">
+          <label className="block text-sm font-medium mb-2">Select Label Type ({labels.length} available)</label>
+          <Select value={selectedLabel?.id} onValueChange={(value) => {
+            const label = labels.find(l => l.id === value)
+            if (label) setSelectedLabel(label)
+          }}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {labels.map(label => (
+                <SelectItem key={label.id} value={label.id}>
+                  {label.name} ({label.width_mm}x{label.height_mm}mm)
+                </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+          {selectedLabel && (
+            <div className="mt-4 p-4 bg-muted rounded">
+              <h3 className="font-medium">{selectedLabel.name}</h3>
+              <p className="text-sm text-muted-foreground">
+                {selectedLabel.width_mm}x{selectedLabel.height_mm}mm • {selectedLabel.marketplace} • {selectedLabel.print_method}
+              </p>
             </div>
-          </div>
+          )}
+          <Button onClick={() => setShowLabelSelector(false)} className="mt-4" disabled={!selectedLabel}>
+            Start Designing
+          </Button>
         </div>
       </div>
+    )
+  }
 
-      {/* Desktop: Original 3-column layout */}
-      <div className="hidden lg:flex lg:h-screen lg:w-full">
-        {/* Left Sidebar - Tools */}
+  return (
+    <div className="flex flex-col h-screen bg-background">
+      {/* Header */}
+      <div className="border-b p-4 flex items-center gap-4">
+        <Button variant="outline" onClick={() => setShowLabelSelector(true)}>
+          ← Change Label
+        </Button>
+        <Input 
+          value={name} 
+          onChange={e => setName(e.target.value)}
+          className="max-w-xs"
+          placeholder="Label name"
+        />
+        <div className="text-sm text-muted-foreground">
+          {selectedLabel?.name} ({selectedLabel?.width_mm}x{selectedLabel?.height_mm}mm)
+        </div>
+        <Button className="ml-auto">Save Label</Button>
+      </div>
+
+      <div className="flex flex-1">
+        {/* Left Panel - Tools */}
         <div className="w-64 border-r p-4 overflow-y-auto">
           <h2 className="font-bold mb-4">Elements</h2>
           <div className="space-y-2">
@@ -149,60 +163,60 @@ export default function EditorPage() {
               <div 
                 key={el.id}
                 onClick={() => setSelected(el.id)}
-                className={`p-2 rounded cursor-pointer ${selected === el.id ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+                className={`p-2 rounded cursor-pointer text-sm ${
+                  selected === el.id ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
+                }`}
               >
-                {el.type === 'text' ? '📝' : el.type === 'barcode' ? '🔲' : '🖼️'} {el.content}
+                {el.type === 'text' ? '📝' : el.type === 'barcode' ? '🔲' : '🖼️'} {el.content.substring(0, 20)}
               </div>
             ))}
           </div>
         </div>
 
         {/* Center - Canvas */}
-        <div className="flex-1 flex flex-col">
-          <div className="border-b p-4 flex items-center gap-4">
-            <Input 
-              value={name} 
-              onChange={e => setName(e.target.value)}
-              className="max-w-xs"
-            />
-            <Button>Save Label</Button>
-          </div>
-          
-          <div className="flex-1 flex items-center justify-center bg-gray-100 p-8">
-            <div className="bg-white w-[400px] h-[600px] relative border-2 shadow-xl">
-              {elements.map(el => (
-                <div 
-                  key={el.id}
-                  onClick={() => setSelected(el.id)}
-                  style={{
-                    position: 'absolute',
-                    left: el.x,
-                    top: el.y,
-                    border: selected === el.id ? '2px solid blue' : '1px solid transparent',
-                    padding: '4px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {el.type === 'barcode' ? (
-                    <div className="bg-black text-white px-2 py-1 font-mono text-xs">
-                      |||||| {el.content}
-                    </div>
-                  ) : (
-                    <span>{el.content}</span>
-                  )}
-                </div>
-              ))}
-            </div>
+        <div className="flex-1 flex items-center justify-center bg-gray-50 p-8">
+          <div 
+            className="bg-white relative border-2 shadow-xl"
+            style={{
+              width: `${selectedLabel?.width_px_203dpi || 400}px`,
+              height: `${selectedLabel?.height_px_203dpi || 600}px`,
+              maxWidth: '600px',
+              maxHeight: '800px',
+              transform: 'scale(0.8)'
+            }}
+          >
+            {elements.map(el => (
+              <div 
+                key={el.id}
+                onClick={() => setSelected(el.id)}
+                style={{
+                  position: 'absolute',
+                  left: el.x,
+                  top: el.y,
+                  border: selected === el.id ? '2px solid blue' : '1px solid transparent',
+                  padding: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                {el.type === 'barcode' ? (
+                  <div className="bg-black text-white px-2 py-1 font-mono text-xs">
+                    |||||| {el.content}
+                  </div>
+                ) : (
+                  <span className="text-sm">{el.content}</span>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Right Sidebar - Properties */}
+        {/* Right Panel - Properties */}
         <div className="w-64 border-l p-4 overflow-y-auto">
           <h2 className="font-bold mb-4">Properties</h2>
           {selectedEl ? (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Content</label>
+                <label className="text-sm font-medium block mb-1">Content</label>
                 <Input 
                   value={selectedEl.content}
                   onChange={e => {
@@ -213,7 +227,7 @@ export default function EditorPage() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">X Position</label>
+                <label className="text-sm font-medium block mb-1">X Position</label>
                 <Input 
                   type="number"
                   value={selectedEl.x}
@@ -225,7 +239,7 @@ export default function EditorPage() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Y Position</label>
+                <label className="text-sm font-medium block mb-1">Y Position</label>
                 <Input 
                   type="number"
                   value={selectedEl.y}

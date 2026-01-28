@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase/client"
-import { Monitor, Sun, Moon } from "lucide-react"
 
 export function AppearanceSettings() {
-  const [theme, setTheme] = useState("system")
   const [accentColor, setAccentColor] = useState("#3b82f6")
   const [defaultView, setDefaultView] = useState("grid")
   const [labelsPerPage, setLabelsPerPage] = useState(24)
@@ -16,27 +14,8 @@ export function AppearanceSettings() {
   }, [])
 
   useEffect(() => {
-    applyTheme(theme)
     applyAccentColor(accentColor)
-  }, [theme, accentColor])
-
-  const applyTheme = (selectedTheme: string) => {
-    const root = document.documentElement
-    
-    if (selectedTheme === "dark") {
-      root.classList.add("dark")
-    } else if (selectedTheme === "light") {
-      root.classList.remove("dark")
-    } else {
-      // System theme
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-      if (systemPrefersDark) {
-        root.classList.add("dark")
-      } else {
-        root.classList.remove("dark")
-      }
-    }
-  }
+  }, [accentColor])
 
   const applyAccentColor = (color: string) => {
     const root = document.documentElement
@@ -55,7 +34,6 @@ export function AppearanceSettings() {
 
     if (data?.appearance_settings) {
       const settings = data.appearance_settings
-      setTheme(settings.theme || "system")
       setAccentColor(settings.accentColor || "#3b82f6")
       setDefaultView(settings.defaultView || "grid")
       setLabelsPerPage(settings.labelsPerPage || 24)
@@ -71,7 +49,6 @@ export function AppearanceSettings() {
       .from("profiles")
       .update({
         appearance_settings: {
-          theme,
           accentColor,
           defaultView,
           labelsPerPage
@@ -79,8 +56,6 @@ export function AppearanceSettings() {
       })
       .eq("id", user.id)
 
-    applyTheme(theme)
-    applyAccentColor(accentColor)
     setLoading(false)
   }
 
@@ -93,31 +68,6 @@ export function AppearanceSettings() {
 
       <div className="space-y-6">
         <div>
-          <label className="text-sm font-medium text-foreground block mb-3">Theme</label>
-          <p className="text-sm text-muted-foreground mb-3">Select your preferred color scheme</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { value: "light", label: "Light", icon: Sun },
-              { value: "dark", label: "Dark", icon: Moon },
-              { value: "system", label: "System", icon: Monitor }
-            ].map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setTheme(option.value)}
-                className={`p-4 rounded-lg border-2 transition-colors ${
-                  theme === option.value
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
-                }`}
-              >
-                <option.icon className="w-5 h-5 mx-auto mb-2" />
-                <div className="text-sm font-medium">{option.label}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
           <label className="text-sm font-medium text-foreground block mb-3">Accent Color</label>
           <p className="text-sm text-muted-foreground mb-3">Choose your accent color for buttons and highlights</p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
@@ -125,7 +75,7 @@ export function AppearanceSettings() {
               <button
                 key={color}
                 onClick={() => setAccentColor(color)}
-                className={`w-12 h-12 rounded-lg border-2 transition-all ${
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg border-2 transition-all ${
                   accentColor === color ? "border-foreground scale-110" : "border-transparent"
                 }`}
                 style={{ backgroundColor: color }}
@@ -146,7 +96,7 @@ export function AppearanceSettings() {
                   <button
                     key={view}
                     onClick={() => setDefaultView(view)}
-                    className={`px-4 py-2 rounded-lg border text-sm font-medium capitalize transition-colors ${
+                    className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg border text-sm font-medium capitalize transition-colors ${
                       defaultView === view
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border hover:border-primary/50"
@@ -165,7 +115,7 @@ export function AppearanceSettings() {
                   <button
                     key={count}
                     onClick={() => setLabelsPerPage(count)}
-                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg border text-sm font-medium transition-colors ${
                       labelsPerPage === count
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border hover:border-primary/50"
@@ -183,7 +133,7 @@ export function AppearanceSettings() {
           <button
             onClick={saveSettings}
             disabled={loading}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 w-full sm:w-auto"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 w-full sm:w-auto text-sm sm:text-base"
           >
             {loading ? "Saving..." : "Save Changes"}
           </button>

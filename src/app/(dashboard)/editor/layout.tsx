@@ -1,19 +1,21 @@
-import { DashboardSidebar } from '@/components/dashboard/sidebar'
+import React from 'react'
+import { redirect } from 'next/navigation'
+import { createUserClient } from '@/lib/supabase/server'
 
-export default function EditorLayout({
+export default async function EditorLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { session } = await createUserClient()
+
+  if (!session) {
+    redirect('/login')
+  }
+
   return (
-    <div className="flex flex-col lg:flex-row h-screen overflow-hidden">
-      <div className="lg:hidden">
-        <DashboardSidebar />
-      </div>
-      <div className="hidden lg:block">
-        <DashboardSidebar />
-      </div>
-      <div className="flex-1 overflow-hidden">{children}</div>
+    <div className="min-h-screen bg-background">
+      {children}
     </div>
   )
 }

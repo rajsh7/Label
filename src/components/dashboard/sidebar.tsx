@@ -120,8 +120,8 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className={`${shouldCollapse ? 'w-16' : 'w-64'} border-r border-border bg-sidebar flex flex-col transition-all duration-300`}>
-      <div className="h-16 flex items-center gap-2 px-3 border-b border-border">
+    <aside className={`${shouldCollapse ? 'w-16' : 'w-64'} border-r border-border/20 bg-background/80 backdrop-blur-md flex flex-col transition-all duration-300`}>
+      <div className="h-16 flex items-center gap-2 px-3 border-b border-border/20">
         <Link href="/" className="flex items-center gap-2 flex-1 min-w-0">
           <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
             <Tags className="w-4 h-4 text-accent-foreground" />
@@ -131,7 +131,7 @@ export function DashboardSidebar() {
       </div>
 
       {!isOnline && (
-        <div className="px-3 py-2 bg-destructive/10 border-b border-border">
+        <div className="px-3 py-2 bg-destructive/10 border-b border-border/20">
           <div className="flex items-center gap-2 text-xs text-destructive">
             <WifiOff className="w-3 h-3" />
             {!shouldCollapse && <span>Offline</span>}
@@ -162,7 +162,7 @@ export function DashboardSidebar() {
         })}
       </nav>
 
-      <div className="px-3 py-4 border-t border-border space-y-3">
+      <div className="px-3 py-4 border-t border-border/20 space-y-3">
         {bottomNavigation.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -198,17 +198,25 @@ export function DashboardSidebar() {
           ) : error ? (
             <div className="px-3 py-2 text-xs text-destructive">Failed to load</div>
           ) : (
-            <div className="flex items-center gap-3 px-3 py-2">
-              <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                <span className="text-xs font-medium text-muted-foreground">{getUserInitials()}</span>
-              </div>
+            <Link href="/dashboard/settings" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors">
+              {profile?.avatar_url ? (
+                <img 
+                  src={profile.avatar_url} 
+                  alt={profile?.full_name || 'User'}
+                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs font-medium text-muted-foreground">{getUserInitials()}</span>
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-sidebar-foreground truncate">
                   {profile?.full_name || profile?.email?.split('@')[0] || 'User'}
                 </p>
                 <p className="text-xs text-sidebar-foreground/60 truncate">{getPlanName()}</p>
               </div>
-            </div>
+            </Link>
           )}
         </div>
       )}
@@ -217,9 +225,20 @@ export function DashboardSidebar() {
           {loading ? (
             <div className="w-8 h-8 rounded-full bg-muted animate-pulse mx-auto" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center mx-auto" title={profile?.full_name || profile?.email?.split('@')[0] || 'User'}>
-              <span className="text-xs font-medium text-muted-foreground">{getUserInitials()}</span>
-            </div>
+            <Link href="/dashboard/settings" className="block">
+              {profile?.avatar_url ? (
+                <img 
+                  src={profile.avatar_url} 
+                  alt={profile?.full_name || 'User'}
+                  className="w-8 h-8 rounded-full object-cover mx-auto"
+                  title={profile?.full_name || profile?.email?.split('@')[0] || 'User'}
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center mx-auto" title={profile?.full_name || profile?.email?.split('@')[0] || 'User'}>
+                  <span className="text-xs font-medium text-muted-foreground">{getUserInitials()}</span>
+                </div>
+              )}
+            </Link>
           )}
         </div>
       )}

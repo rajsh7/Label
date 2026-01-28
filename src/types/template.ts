@@ -3,15 +3,13 @@
  * Based on database schema and label designs
  */
 
-import { EditorElement } from './editor'
-
 export interface Template {
   id: string
   user_id?: string // null for public templates
   name: string
   description?: string
   label_base_id: string
-  elements: EditorElement[]
+  elements: any[] // EditorElement[] - using any to avoid circular dependency
   thumbnail_url?: string
   is_public: boolean
   downloads: number
@@ -26,7 +24,7 @@ export interface CreateTemplateInput {
   name: string
   description?: string
   label_base_id: string
-  elements: EditorElement[]
+  elements: any[]
   thumbnail_url?: string
   is_public?: boolean
   category?: string
@@ -36,10 +34,9 @@ export interface CreateTemplateInput {
 export interface UpdateTemplateInput {
   name?: string
   description?: string
-  elements?: EditorElement[]
+  elements?: any[]
   thumbnail_url?: string
   is_public?: boolean
   category?: string
   tags?: string[]
 }
-

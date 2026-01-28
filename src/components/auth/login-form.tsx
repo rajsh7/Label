@@ -55,31 +55,25 @@ export function LoginForm() {
       }
 
       if (data.user) {
-        // Check if user is admin and redirect accordingly
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('id', data.user.id)
-          .single()
-        
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        
-        // If admin login type selected, check admin status
+        // Check if admin login is selected
         if (formData.loginType === 'admin') {
+          // For admin login, check if user has admin privileges
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('is_admin')
+            .eq('id', data.user.id)
+            .single()
+          
           if (profile?.is_admin) {
-            window.location.href = '/admin'
+            window.location.replace('/admin')
           } else {
             setError('Access denied. Admin privileges required.')
             setIsLoading(false)
             return
           }
         } else {
-          // Regular user login
-          if (profile?.is_admin) {
-            window.location.href = '/admin'
-          } else {
-            window.location.href = redirectTo
-          }
+          // Regular user login - go to dashboard
+          window.location.replace('/dashboard')
         }
       }
     } catch (err) {

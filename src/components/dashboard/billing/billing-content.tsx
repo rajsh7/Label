@@ -448,7 +448,7 @@ export function BillingContent() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <AlertCircle className="w-5 h-5 text-destructive" />
-              <CardTitle className="text-destructive">Danger zone</CardTitle>
+              <CardTitle className="text-destructive">Account Settings</CardTitle>
             </div>
             <CardDescription>Irreversible actions that affect your account and billing</CardDescription>
           </CardHeader>

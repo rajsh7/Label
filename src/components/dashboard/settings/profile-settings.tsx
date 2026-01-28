@@ -1,16 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Camera, Trash2 } from "lucide-react"
+import { Camera } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { supabase } from "@/lib/supabase/client"
-import { useRouter } from "next/navigation"
 
 export function ProfileSettings() {
-  const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(false)
@@ -61,23 +59,6 @@ export function ProfileSettings() {
     } else {
       console.error('Update error:', error)
       alert('Error updating profile: ' + error.message)
-    }
-    setLoading(false)
-  }
-
-  const handleDeleteAccount = async () => {
-    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return
-    
-    if (!user) return
-    setLoading(true)
-    
-    const { error } = await supabase.auth.admin.deleteUser(user.id)
-    
-    if (!error) {
-      await supabase.auth.signOut()
-      router.push('/')
-    } else {
-      alert('Error deleting account')
     }
     setLoading(false)
   }
@@ -226,31 +207,6 @@ export function ProfileSettings() {
               className="bg-accent text-accent-foreground hover:bg-accent/90 w-full sm:w-auto"
             >
               {loading ? 'Saving...' : 'Save changes'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-card border-destructive/50">
-        <CardHeader>
-          <CardTitle className="text-lg text-destructive">Danger Zone</CardTitle>
-          <CardDescription>Irreversible and destructive actions</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <p className="font-medium text-foreground">Delete account</p>
-              <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data</p>
-            </div>
-            <Button 
-              variant="destructive" 
-              size="sm"
-              onClick={handleDeleteAccount}
-              disabled={loading}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-full sm:w-auto"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete account
             </Button>
           </div>
         </CardContent>

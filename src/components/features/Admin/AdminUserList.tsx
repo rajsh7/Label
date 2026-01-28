@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search, User, Shield, Edit, Trash2 } from 'lucide-react'
-import { supabase } from '@/lib/supabase/client'
 
 export interface AdminUser {
   id: string
@@ -34,27 +33,13 @@ export const AdminUserList: React.FC = () => {
   const loadUsers = async () => {
     try {
       setLoading(true)
-      const { data: users, error } = await supabase
-        .from('profiles')
-        .select(`
-          id, 
-          email, 
-          full_name, 
-          company_name,
-          avatar_url,
-          subscription_tier, 
-          subscription_status, 
-          is_admin, 
-          created_at,
-          labels_used_this_month,
-          batches_used_this_month,
-          trial_ends_at
-        `)
-        .order('created_at', { ascending: false })
+      // Use admin API endpoint to bypass RLS
+      const response = await fetch('/api/admin/users')
+      if (!response.ok) throw new Error('Failed to fetch users')
       
-      if (error) throw error
+      const users = await response.json()
       
-      const formattedUsers = (users || []).map(user => ({
+      const formattedUsers = (users || []).map((user: any) => ({
         ...user,
         subscription_tier: user.subscription_tier || 'free',
         subscription_status: user.subscription_status || 'active',
@@ -91,6 +76,22 @@ export const AdminUserList: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Stats Card */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Total Users</h2>
+              <p className="text-2xl font-bold text-blue-600">{users.length}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-muted-foreground">Active accounts</p>
+              <p className="text-lg font-medium">{users.filter(u => u.subscription_status === 'active').length}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Filters */}
       <Card>
         <CardContent className="p-6">

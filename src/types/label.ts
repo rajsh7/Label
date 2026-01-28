@@ -45,4 +45,3 @@ export interface LabelDesign {
   updated_at: string
   deleted_at?: string
 }
-

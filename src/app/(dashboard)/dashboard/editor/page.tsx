@@ -1,11 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ALL_LABELS } from '@/lib/constants/labels'
 import { supabase } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+
+type Label = {
+  id: string
+  name: string
+  category: string
+  marketplace?: string
+  width_mm: number
+  height_mm: number
+  width_inch?: number
+  height_inch?: number
+  width_px_203dpi?: number
+  height_px_203dpi?: number
+  print_method: string
+}
 
 type Element = {
   id: number
@@ -30,43 +43,85 @@ type Element = {
 
 export default function EditorPage() {
   const [showLabelSelect, setShowLabelSelect] = useState(true)
-  const [selectedLabel, setSelectedLabel] = useState<any>(null)
+  const [selectedLabel, setSelectedLabel] = useState<Label | null>(null)
+  const [labels, setLabels] = useState<Label[]>([])
   const [elements, setElements] = useState<Element[]>([])
   const [name, setName] = useState('New Label')
   const [selected, setSelected] = useState<number | null>(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [saving, setSaving] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [categories, setCategories] = useState<{name: string, count: number, icon: string}[]>([])
+
+  useEffect(() => {
+    async function fetchLabels() {
+      const { data, error } = await supabase
+        .from('labels')
+        .select('*')
+        .order('name')
+      
+      if (data && !error) {
+        setLabels(data)
+        setSelectedLabel(data[0])
+        
+        // Group by category
+        const categoryGroups = data.reduce((acc: any, label) => {
+          if (!acc[label.category]) {
+            acc[label.category] = []
+          }
+          acc[label.category].push(label)
+          return acc
+        }, {})
+        
+        const categoryList = Object.keys(categoryGroups).map(cat => ({
+          name: cat,
+          count: categoryGroups[cat].length,
+          icon: getCategoryIcon(cat)
+        }))
+        
+        setCategories(categoryList)
+      }
+    }
+    fetchLabels()
+  }, [])
 
   const saveLabel = async () => {
     setSaving(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      console.log('Auth check:', { user: user?.email, authError })
+      
+      if (authError || !user) {
+        console.error('Authentication error:', authError)
         alert('Please login to save labels')
         setSaving(false)
         return
       }
 
+      console.log('Attempting to save label for user:', user.id)
+      
       const { error } = await supabase.from('label_designs').insert({
         user_id: user.id,
         name: name,
-        elements: JSON.stringify(elements)
+        label_base_id: selectedLabel?.id || null,
+        elements: JSON.stringify(elements),
+        width_px: selectedLabel?.width_px_203dpi || 400,
+        height_px: selectedLabel?.height_px_203dpi || 600
       })
 
       if (error) {
         console.error('Supabase error:', error)
-        if (error.message.includes('permission denied')) {
-          alert('Database permissions not configured. Please enable RLS policies in Supabase for label_designs table.')
-        } else {
-          alert(`Failed to save: ${error.message}`)
-        }
+        alert(`Failed to save: ${error.message}`)
         setSaving(false)
         return
       }
 
       alert('Label saved successfully!')
-      router.push('/dashboard/labels')
+      router.push('/dashboard/templates')
     } catch (error: any) {
       console.error('Error saving label:', error)
       alert(`Failed to save label: ${error?.message || 'Unknown error'}`)
@@ -81,15 +136,35 @@ export default function EditorPage() {
       walmart_fwa: '🏪',
       ebay: '🛒',
       shopify: '🛍️',
+      shopify_custom: '🛍️',
       etsy: '🎨',
       usps: '📮',
       fedex: '📦',
       ups: '📦',
       dhl: '✈️',
+      dymo_desktop: '🖨️',
+      barcode_sticker: '🏷️',
+      other_carriers: '🚚',
+      shipping: '📦',
       generic: '🏷️'
     }
     return icons[category] || '🏷️'
   }
+
+  const filteredLabels = selectedCategory 
+    ? labels.filter(label => 
+        label.category === selectedCategory && 
+        (searchQuery === '' || 
+         label.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+         label.marketplace?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+         label.category.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : labels.filter(label => 
+        searchQuery === '' || 
+        label.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        label.marketplace?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        label.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
 
   const selectLabel = (label: any) => {
     setSelectedLabel(label)
@@ -166,20 +241,28 @@ export default function EditorPage() {
     }
   }
 
-  const handleMouseDown = (e: React.MouseEvent, id: number) => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, id: number) => {
     const el = elements.find(el => el.id === id)
     if (!el) return
     setSelected(id)
-    setDragOffset({ x: e.clientX - el.x, y: e.clientY - el.y })
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    
+    setDragOffset({ x: clientX - el.x, y: clientY - el.y })
     setElements(elements.map(el => el.id === id ? {...el, isDragging: true} : el))
   }
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
     const dragging = elements.find(el => el.isDragging)
     if (!dragging) return
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    
     setElements(elements.map(el => 
       el.id === dragging.id 
-        ? {...el, x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y} 
+        ? {...el, x: clientX - dragOffset.x, y: clientY - dragOffset.y} 
         : el
     ))
   }
@@ -199,130 +282,187 @@ export default function EditorPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl font-bold">Select Label Type</h1>
-            <p className="text-sm text-muted-foreground">Choose from 255+ label formats</p>
+            <p className="text-sm text-muted-foreground">Choose from {labels.length}+ label formats</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {ALL_LABELS.slice(0, 50).map(label => (
-            <div 
-              key={label.id}
-              onClick={() => selectLabel(label)}
-              className="p-4 border rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-all"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">{getCategoryIcon(label.category)}</span>
-                <h3 className="font-semibold text-sm flex-1">{label.name}</h3>
-              </div>
-              <p className="text-xs text-muted-foreground">{label.width_inch}" x {label.height_inch}"</p>
-              <p className="text-xs text-muted-foreground capitalize">{label.category.replace('_', ' ')}</p>
-            </div>
-          ))}
+        
+        {/* Search Bar */}
+        <div className="w-full flex justify-center mb-8">
+          <div className="relative w-full max-w-md mx-auto">
+            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search labels..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
         </div>
+        
+        {!selectedCategory ? (
+          <>
+            <h2 className="text-lg font-semibold mb-4">Categories</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              {categories.map(category => (
+                <div 
+                  key={category.name}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className="p-6 border rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-all text-center"
+                >
+                  <div className="text-4xl mb-2">{category.icon}</div>
+                  <h3 className="font-semibold capitalize">{category.name.replace('_', ' ')}</h3>
+                  <p className="text-sm text-muted-foreground">{category.count} labels</p>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-6">
+              <Button variant="outline" onClick={() => setSelectedCategory(null)} className="w-full sm:w-auto">
+                ← Back to Categories
+              </Button>
+              <h2 className="text-lg font-semibold capitalize">
+                {selectedCategory.replace('_', ' ')} Labels ({filteredLabels.length})
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+              {filteredLabels.map(label => (
+                <div 
+                  key={label.id}
+                  onClick={() => selectLabel(label)}
+                  className="p-4 border rounded-lg cursor-pointer hover:bg-accent hover:border-primary transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">{getCategoryIcon(label.category)}</span>
+                    <h3 className="font-semibold text-sm flex-1">{label.name}</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{label.width_inch}" x {label.height_inch}"</p>
+                  <p className="text-xs text-muted-foreground">{label.marketplace}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{label.print_method}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     )
   }
 
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-background">
-      {/* Mobile: 2 cards per row layout */}
-      <div className="lg:hidden flex-1">
-        <div className="grid grid-cols-2 gap-4 p-4">
-          {/* Tools Card */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold mb-4 text-sm">Elements</h2>
-            <div className="space-y-2">
-              <Button onClick={() => addElement('text')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                📝 Text
-              </Button>
-              <Button onClick={() => addElement('barcode')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                🔲 Barcode
-              </Button>
-              <Button onClick={() => addElement('image')} className="w-full justify-start text-xs" variant="outline" size="sm">
-                🖼️ Image
-              </Button>
+      {/* Mobile: Stacked layout */}
+      <div className="lg:hidden flex flex-col h-screen bg-background">
+        {/* Mobile Header */}
+        <div className="border-b p-3 bg-background">
+          <div className="flex items-center gap-2 mb-3">
+            <Input 
+              value={name} 
+              onChange={e => setName(e.target.value)}
+              className="flex-1 text-sm"
+              placeholder="Label name"
+            />
+            <Button onClick={saveLabel} disabled={saving} size="sm" className="px-3">
+              {saving ? 'Saving...' : 'Save'}
+            </Button>
+          </div>
+          <div className="flex items-center justify-between">
+            <Button variant="outline" onClick={() => setShowLabelSelect(true)} size="sm" className="text-xs">
+              Change Label
+            </Button>
+            <div className="text-xs text-muted-foreground">
+              {selectedLabel?.name}
             </div>
           </div>
+        </div>
 
-          {/* Properties Card */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold mb-4 text-sm">Properties</h2>
-            {selectedEl ? (
-              <div className="space-y-2">
-                <div>
-                  <label className="text-xs font-medium">Content</label>
-                  <Input 
-                    value={selectedEl.content}
-                    onChange={e => {
-                      setElements(elements.map(el => 
-                        el.id === selected ? {...el, content: e.target.value} : el
-                      ))
-                    }}
-                    className="text-xs"
-                  />
-                </div>
-                <Button onClick={deleteElement} className="w-full bg-red-600 hover:bg-red-700 text-white text-xs" size="sm">
-                  Delete
-                </Button>
-              </div>
-            ) : (
-              <p className="text-xs text-muted-foreground">Select element</p>
-            )}
+        {/* Mobile Tools */}
+        <div className="border-b p-3 bg-muted/30">
+          <div className="grid grid-cols-3 gap-2">
+            <Button onClick={() => addElement('text')} size="sm" variant="outline" className="text-xs px-2">
+              📝 Text
+            </Button>
+            <Button onClick={() => addElement('barcode')} size="sm" variant="outline" className="text-xs px-2">
+              🔲 Code
+            </Button>
+            <Button onClick={() => addElement('qrcode')} size="sm" variant="outline" className="text-xs px-2">
+              📱 QR
+            </Button>
+            <Button onClick={() => addElement('image')} size="sm" variant="outline" className="text-xs px-2">
+              🖼️ Image
+            </Button>
+            <Button onClick={() => addElement('shape')} size="sm" variant="outline" className="text-xs px-2">
+              ⬜ Shape
+            </Button>
+            <Button onClick={() => addElement('line')} size="sm" variant="outline" className="text-xs px-2">
+              ➖ Line
+            </Button>
           </div>
         </div>
 
         {/* Mobile Canvas */}
-        <div className="p-4">
-          <div className="border-b pb-4 mb-4">
-            <Input 
-              value={name} 
-              onChange={e => setName(e.target.value)}
-              className="mb-2"
-            />
-            <div className="flex gap-2">
-              <Button onClick={saveLabel} disabled={saving} size="sm">
-                {saving ? 'Saving...' : 'Save'}
-              </Button>
-              <Button variant="outline" onClick={() => setShowLabelSelect(true)} size="sm">Change</Button>
-            </div>
-          </div>
-          
+        <div className="flex-1 overflow-auto">
           <div 
-            className="flex items-center justify-center bg-gray-100 p-4"
+            className="min-h-full flex items-center justify-center bg-gray-50 p-4"
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchMove={handleMouseMove}
+            onTouchEnd={handleMouseUp}
           >
             <div 
-              className="bg-white relative border-2 shadow-xl"
+              className="bg-white relative border-2 shadow-lg"
               style={{
-                width: selectedLabel?.width_px_203dpi ? `${Math.min(selectedLabel.width_px_203dpi / 3, 300)}px` : '300px',
-                height: selectedLabel?.height_px_203dpi ? `${Math.min(selectedLabel.height_px_203dpi / 3, 400)}px` : '400px'
+                width: selectedLabel?.width_px_203dpi ? `${Math.min(selectedLabel.width_px_203dpi * 0.8, window.innerWidth - 40)}px` : `${Math.min(400, window.innerWidth - 40)}px`,
+                height: selectedLabel?.height_px_203dpi ? `${selectedLabel.height_px_203dpi * 0.8}px` : '500px',
+                minHeight: '300px'
               }}
             >
               {elements.map(el => (
                 <div 
                   key={el.id}
                   onMouseDown={(e) => handleMouseDown(e, el.id)}
+                  onTouchStart={(e) => handleMouseDown(e, el.id)}
                   style={{
                     position: 'absolute',
                     left: el.x,
                     top: el.y,
-                    border: selected === el.id ? '2px solid blue' : '1px solid transparent',
-                    padding: '4px',
+                    border: selected === el.id ? '2px solid #3b82f6' : '1px solid transparent',
+                    padding: '2px',
                     cursor: 'move',
                     userSelect: 'none',
                     fontSize: (el.fontSize || 16) * 0.8,
                     fontFamily: el.fontFamily || 'Arial',
-                    color: el.color || '#000000'
+                    color: el.color || '#000000',
+                    WebkitTextStroke: el.strokeWidth ? `${el.strokeWidth}px ${el.strokeColor}` : 'none',
+                    width: el.width ? el.width * 0.8 : 'auto',
+                    height: el.height ? el.height * 0.8 : 'auto',
+                    transform: `rotate(${el.rotation || 0}deg)`,
+                    opacity: el.opacity || 1,
+                    fontWeight: el.bold ? 'bold' : 'normal',
+                    fontStyle: el.italic ? 'italic' : 'normal',
+                    textDecoration: el.underline ? 'underline' : 'none',
+                    touchAction: 'none'
                   }}
                 >
                   {el.type === 'barcode' ? (
-                    <div className="bg-black text-white px-2 py-1 font-mono text-xs">
+                    <div className="bg-black text-white px-1 py-0.5 font-mono text-xs">
                       |||||| {el.content}
                     </div>
+                  ) : el.type === 'qrcode' ? (
+                    <div className="border-2 border-black p-1 text-xs text-center">
+                      QR<br/>{el.content}
+                    </div>
                   ) : el.type === 'image' ? (
-                    <img src={el.content} alt="" style={{width: '60px', height: '60px', objectFit: 'contain'}} />
+                    <img src={el.content} alt="" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                  ) : el.type === 'shape' ? (
+                    <div style={{width: '100%', height: '100%', backgroundColor: el.color, border: `${el.strokeWidth}px solid ${el.strokeColor}`}} />
+                  ) : el.type === 'line' ? (
+                    <div style={{width: '100%', height: el.strokeWidth || 2, backgroundColor: el.color}} />
                   ) : (
                     <span className="text-sm">{el.content}</span>
                   )}
@@ -331,6 +471,62 @@ export default function EditorPage() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Properties Panel */}
+        {selectedEl && (
+          <div className="border-t p-3 bg-background max-h-48 overflow-y-auto">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-medium text-sm">Edit Element</h3>
+              <Button onClick={deleteElement} size="sm" variant="destructive" className="text-xs px-2">
+                Delete
+              </Button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-medium block mb-1">Content</label>
+                <Input 
+                  value={selectedEl.content}
+                  onChange={e => {
+                    setElements(elements.map(el => 
+                      el.id === selected ? {...el, content: e.target.value} : el
+                    ))
+                  }}
+                  className="text-sm"
+                />
+              </div>
+              {selectedEl.type === 'text' && (
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-medium block mb-1">Size</label>
+                    <Input 
+                      type="number"
+                      value={selectedEl.fontSize || 16}
+                      onChange={e => {
+                        setElements(elements.map(el => 
+                          el.id === selected ? {...el, fontSize: parseInt(e.target.value) || 16} : el
+                        ))
+                      }}
+                      className="text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium block mb-1">Color</label>
+                    <Input 
+                      type="color"
+                      value={selectedEl.color || '#000000'}
+                      onChange={e => {
+                        setElements(elements.map(el => 
+                          el.id === selected ? {...el, color: e.target.value} : el
+                        ))
+                      }}
+                      className="h-8"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Desktop: Original 3-column layout */}
@@ -389,6 +585,8 @@ export default function EditorPage() {
             className="flex-1 flex items-center justify-center bg-gray-100 p-8"
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchMove={handleMouseMove}
+            onTouchEnd={handleMouseUp}
           >
             <div 
               className="bg-white relative border-2 shadow-xl"
@@ -401,6 +599,7 @@ export default function EditorPage() {
                 <div 
                   key={el.id}
                   onMouseDown={(e) => handleMouseDown(e, el.id)}
+                  onTouchStart={(e) => handleMouseDown(e, el.id)}
                   style={{
                     position: 'absolute',
                     left: el.x,

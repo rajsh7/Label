@@ -215,26 +215,32 @@ export const AdminDashboard: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold">
-              Usage Statistics
+              Label Usage Analytics
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Total Labels</span>
-                <span className="text-2xl font-bold">
+                <span className="text-muted-foreground">Total Labels Created</span>
+                <span className="text-2xl font-bold text-blue-600">
                   {stats.total_labels.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Batch Jobs</span>
-                <span className="text-xl">
+                <span className="text-muted-foreground">Batch Jobs Processed</span>
+                <span className="text-xl text-green-600">
                   {stats.total_batches.toLocaleString()}
                 </span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Avg Labels per User</span>
+                <span className="text-xl text-purple-600">
+                  {stats.total_users > 0 ? Math.round(stats.total_labels / stats.total_users) : 0}
+                </span>
+              </div>
               <div className="flex items-center justify-between pt-4 border-t">
-                <span className="text-muted-foreground">Total Revenue</span>
-                <span className="text-xl font-bold">
+                <span className="text-muted-foreground">Platform Revenue</span>
+                <span className="text-xl font-bold text-green-600">
                   ${stats.total_revenue.toLocaleString()}
                 </span>
               </div>

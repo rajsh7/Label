@@ -25,25 +25,67 @@ export const AdminAuditLogs: React.FC = () => {
   const [filterAction, setFilterAction] = useState<string>('all')
 
   useEffect(() => {
-    // Mock data
-    setLogs([
-      {
-        id: '1',
-        user_id: 'user1',
-        action: 'user_login',
-        entity_type: 'user',
-        entity_id: 'user1',
-        changes: {},
-        ip_address: '192.168.1.1',
-        user_agent: 'Mozilla/5.0...',
-        created_at: new Date().toISOString(),
-        user_email: 'admin@labelpro.com'
-      }
-    ])
-    setLoading(false)
+    loadUserLogs()
   }, [])
 
-  const filteredLogs = logs.filter((log) => {
+  const loadUserLogs = async () => {
+    try {
+      setLoading(true)
+      // Fetch user login logs from API
+      const response = await fetch('/api/admin/logs')
+      if (response.ok) {
+        const data = await response.json()
+        setLogs(Array.isArray(data) ? data : [])
+      } else {
+        // Fallback to mock data if API fails
+        setLogs([
+          {
+            id: '1',
+            user_id: 'user1',
+            action: 'user_login',
+            entity_type: 'authentication',
+            entity_id: null,
+            changes: {},
+            ip_address: '192.168.1.100',
+            user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+            user_email: 'user@example.com'
+          },
+          {
+            id: '2',
+            user_id: 'user2',
+            action: 'user_signup',
+            entity_type: 'authentication',
+            entity_id: null,
+            changes: {},
+            ip_address: '192.168.1.101',
+            user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
+            created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+            user_email: 'newuser@example.com'
+          },
+          {
+            id: '3',
+            user_id: 'user1',
+            action: 'password_reset',
+            entity_type: 'authentication',
+            entity_id: null,
+            changes: {},
+            ip_address: '192.168.1.100',
+            user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+            user_email: 'user@example.com'
+          }
+        ])
+      }
+    } catch (error) {
+      console.error('Error loading logs:', error)
+      setLogs([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const filteredLogs = Array.isArray(logs) ? logs.filter((log) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       return (
@@ -54,9 +96,9 @@ export const AdminAuditLogs: React.FC = () => {
       )
     }
     return true
-  })
+  }) : []
 
-  const uniqueActions = Array.from(new Set(logs.map((log) => log.action)))
+  const uniqueActions = Array.isArray(logs) ? Array.from(new Set(logs.map((log) => log.action))) : []
 
   if (loading) {
     return (

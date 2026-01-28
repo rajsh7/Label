@@ -1,11 +1,25 @@
--- LabelPro Database Schema
+-- LabelPro Database Schema - Complete Reset
 -- Run this in Supabase SQL Editor
+
+-- Drop all existing tables in correct order (reverse dependency order)
+DROP TABLE IF EXISTS public.audit_logs CASCADE;
+DROP TABLE IF EXISTS public.usage_tracking CASCADE;
+DROP TABLE IF EXISTS public.team_members CASCADE;
+DROP TABLE IF EXISTS public.api_keys CASCADE;
+DROP TABLE IF EXISTS public.print_history CASCADE;
+DROP TABLE IF EXISTS public.printers CASCADE;
+DROP TABLE IF EXISTS public.batches CASCADE;
+DROP TABLE IF EXISTS public.templates CASCADE;
+DROP TABLE IF EXISTS public.label_designs CASCADE;
+DROP TABLE IF EXISTS public.labels CASCADE;
+DROP TABLE IF EXISTS public.profiles CASCADE;
+DROP TABLE IF EXISTS public.referrals CASCADE;
 
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Users table (managed by Supabase Auth, but add custom fields to profiles)
-CREATE TABLE IF NOT EXISTS public.profiles (
+CREATE TABLE public.profiles (
   id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
   full_name TEXT,
@@ -29,7 +43,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 );
 
 -- Label base formats table (255 predefined label types)
-CREATE TABLE IF NOT EXISTS public.labels (
+CREATE TABLE public.labels (
   id VARCHAR(50) PRIMARY KEY,
   name TEXT NOT NULL,
   category VARCHAR(50) NOT NULL,
@@ -54,7 +68,7 @@ CREATE TABLE IF NOT EXISTS public.labels (
 );
 
 -- User label designs table
-CREATE TABLE IF NOT EXISTS public.label_designs (
+CREATE TABLE public.label_designs (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   label_base_id VARCHAR(50) REFERENCES public.labels(id) ON DELETE CASCADE NOT NULL,
@@ -72,9 +86,9 @@ CREATE TABLE IF NOT EXISTS public.label_designs (
 );
 
 -- Templates table (public and private templates)
-CREATE TABLE IF NOT EXISTS public.templates (
+CREATE TABLE public.templates (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL, -- null for system templates
+  user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
   description TEXT,
   label_base_id VARCHAR(50) REFERENCES public.labels(id) ON DELETE CASCADE NOT NULL,
@@ -90,7 +104,7 @@ CREATE TABLE IF NOT EXISTS public.templates (
 );
 
 -- Batch processing table
-CREATE TABLE IF NOT EXISTS public.batches (
+CREATE TABLE public.batches (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   template_id UUID REFERENCES public.templates(id) ON DELETE SET NULL,
@@ -99,8 +113,8 @@ CREATE TABLE IF NOT EXISTS public.batches (
   total_labels INTEGER NOT NULL,
   processed_labels INTEGER DEFAULT 0,
   failed_labels INTEGER DEFAULT 0,
-  data_source JSONB, -- CSV/Excel data
-  column_mapping JSONB, -- field mappings
+  data_source JSONB,
+  column_mapping JSONB,
   output_format VARCHAR(20) DEFAULT 'pdf' CHECK (output_format IN ('pdf', 'png', 'jpg')),
   output_url TEXT,
   error_message TEXT,
@@ -112,7 +126,7 @@ CREATE TABLE IF NOT EXISTS public.batches (
 );
 
 -- Printers table
-CREATE TABLE IF NOT EXISTS public.printers (
+CREATE TABLE public.printers (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   name TEXT NOT NULL,
@@ -129,7 +143,7 @@ CREATE TABLE IF NOT EXISTS public.printers (
 );
 
 -- Print history table
-CREATE TABLE IF NOT EXISTS public.print_history (
+CREATE TABLE public.print_history (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   printer_id UUID REFERENCES public.printers(id) ON DELETE SET NULL,
@@ -142,7 +156,7 @@ CREATE TABLE IF NOT EXISTS public.print_history (
 );
 
 -- API keys table
-CREATE TABLE IF NOT EXISTS public.api_keys (
+CREATE TABLE public.api_keys (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   name TEXT NOT NULL,
@@ -158,8 +172,8 @@ CREATE TABLE IF NOT EXISTS public.api_keys (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Team members table (for enterprise)
-CREATE TABLE IF NOT EXISTS public.team_members (
+-- Team members table
+CREATE TABLE public.team_members (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   team_owner_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   member_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -172,7 +186,7 @@ CREATE TABLE IF NOT EXISTS public.team_members (
 );
 
 -- Usage tracking table
-CREATE TABLE IF NOT EXISTS public.usage_tracking (
+CREATE TABLE public.usage_tracking (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   action VARCHAR(50) NOT NULL,
@@ -183,7 +197,7 @@ CREATE TABLE IF NOT EXISTS public.usage_tracking (
 );
 
 -- Audit logs table
-CREATE TABLE IF NOT EXISTS public.audit_logs (
+CREATE TABLE public.audit_logs (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   action VARCHAR(100) NOT NULL,
@@ -197,7 +211,7 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
 );
 
 -- Referrals table
-CREATE TABLE IF NOT EXISTS public.referrals (
+CREATE TABLE public.referrals (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   referrer_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   referee_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
@@ -210,25 +224,16 @@ CREATE TABLE IF NOT EXISTS public.referrals (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_profiles_email ON public.profiles(email);
-CREATE INDEX IF NOT EXISTS idx_profiles_subscription ON public.profiles(subscription_tier, subscription_status);
-CREATE INDEX IF NOT EXISTS idx_labels_category ON public.labels(category);
-CREATE INDEX IF NOT EXISTS idx_labels_marketplace ON public.labels(marketplace);
-CREATE INDEX IF NOT EXISTS idx_label_designs_user ON public.label_designs(user_id);
-CREATE INDEX IF NOT EXISTS idx_label_designs_label_base ON public.label_designs(label_base_id);
-CREATE INDEX IF NOT EXISTS idx_templates_public ON public.templates(is_public) WHERE is_public = true;
-CREATE INDEX IF NOT EXISTS idx_templates_category ON public.templates(category);
-CREATE INDEX IF NOT EXISTS idx_batches_user ON public.batches(user_id);
-CREATE INDEX IF NOT EXISTS idx_batches_status ON public.batches(status);
-CREATE INDEX IF NOT EXISTS idx_printers_user ON public.printers(user_id);
-CREATE INDEX IF NOT EXISTS idx_print_history_user ON public.print_history(user_id);
-CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON public.api_keys(key_hash);
-CREATE INDEX IF NOT EXISTS idx_usage_tracking_user ON public.usage_tracking(user_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON public.audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_referrals_code ON public.referrals(referral_code);
+-- Create indexes
+CREATE INDEX idx_profiles_email ON public.profiles(email);
+CREATE INDEX idx_labels_category ON public.labels(category);
+CREATE INDEX idx_labels_marketplace ON public.labels(marketplace);
+CREATE INDEX idx_label_designs_user ON public.label_designs(user_id);
+CREATE INDEX idx_templates_public ON public.templates(is_public) WHERE is_public = true;
+CREATE INDEX idx_batches_user ON public.batches(user_id);
+CREATE INDEX idx_printers_user ON public.printers(user_id);
 
--- Enable Row Level Security
+-- Enable RLS
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.label_designs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.templates ENABLE ROW LEVEL SECURITY;
@@ -242,39 +247,27 @@ ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.referrals ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies
--- Profiles: Users can only see and edit their own profile
 CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
--- Labels: Public read access (no RLS needed as it's reference data)
-ALTER TABLE public.labels DISABLE ROW LEVEL SECURITY;
-
--- Label designs: Users can only access their own designs
 CREATE POLICY "Users can view own designs" ON public.label_designs FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can create own designs" ON public.label_designs FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "Users can update own designs" ON public.label_designs FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can delete own designs" ON public.label_designs FOR DELETE USING (auth.uid() = user_id);
 
--- Templates: Users can see public templates and their own private templates
 CREATE POLICY "Users can view public templates" ON public.templates FOR SELECT USING (is_public = true OR auth.uid() = user_id);
 CREATE POLICY "Users can create templates" ON public.templates FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "Users can update own templates" ON public.templates FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can delete own templates" ON public.templates FOR DELETE USING (auth.uid() = user_id);
 
--- Batches: Users can only access their own batches
-CREATE POLICY "Users can view own batches" ON public.batches FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can create own batches" ON public.batches FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own batches" ON public.batches FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own batches" ON public.batches FOR DELETE USING (auth.uid() = user_id);
-
--- Similar policies for other tables...
+CREATE POLICY "Users can manage own batches" ON public.batches FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage own printers" ON public.printers FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Users can view own print history" ON public.print_history FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage own API keys" ON public.api_keys FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Users can view own usage" ON public.usage_tracking FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can view own referrals" ON public.referrals FOR SELECT USING (auth.uid() = referrer_id OR auth.uid() = referee_id);
 
--- Functions and triggers for updated_at
+-- Functions and triggers
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -283,7 +276,6 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Add triggers for updated_at
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_labels_updated_at BEFORE UPDATE ON public.labels FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_label_designs_updated_at BEFORE UPDATE ON public.label_designs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

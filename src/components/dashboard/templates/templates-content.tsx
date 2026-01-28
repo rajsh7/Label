@@ -41,12 +41,22 @@ const categoryColors: Record<string, string> = {
   "Custom": "bg-orange-500/10 text-orange-500",
 }
 
-export function TemplatesContent() {
+interface TemplatesContentProps {
+  searchQuery?: string
+}
+
+export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [localSearchQuery, setLocalSearchQuery] = useState("")
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+
+  // Use header search query if provided, otherwise use local search
+  const activeSearchQuery = searchQuery || localSearchQuery
+  
+  // Debug logging
+  console.log('Templates:', templates.length, 'Search:', activeSearchQuery)
 
   useEffect(() => {
     loadTemplates()
@@ -60,33 +70,56 @@ export function TemplatesContent() {
         return
       }
 
-      const { data, error } = await supabase
-        .from('label_designs')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('updated_at', { ascending: false })
+      // Load both user templates and predefined labels
+      const [userTemplates, predefinedLabels] = await Promise.all([
+        supabase
+          .from('label_designs')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false }),
+        supabase
+          .from('labels')
+          .select('*')
+          .order('name')
+      ])
 
-      if (error) {
-        console.error('Database error:', error)
-        setTemplates([])
-        return
+      const templates = []
+      
+      // Add user templates
+      if (userTemplates.data) {
+        const userTemplateList = userTemplates.data.map(design => ({
+          id: design.id,
+          name: design.name,
+          description: design.name,
+          elements: JSON.parse(design.elements || '[]'),
+          label_format: 'Custom',
+          category: 'Custom',
+          is_favorite: false,
+          usage_count: 0,
+          created_at: design.created_at,
+          updated_at: design.updated_at || design.created_at
+        }))
+        templates.push(...userTemplateList)
       }
       
-      // Transform label_designs to template format
-      const transformedTemplates = (data || []).map(design => ({
-        id: design.id,
-        name: design.name,
-        description: design.name,
-        elements: JSON.parse(design.elements || '[]'),
-        label_format: 'Custom',
-        category: 'Custom',
-        is_favorite: false,
-        usage_count: 0,
-        created_at: design.created_at,
-        updated_at: design.updated_at || design.created_at
-      }))
+      // Add predefined labels as templates
+      if (predefinedLabels.data) {
+        const labelTemplates = predefinedLabels.data.map(label => ({
+          id: `label_${label.id}`,
+          name: label.name,
+          description: `${label.marketplace || ''} ${label.category}`.trim(),
+          elements: [],
+          label_format: label.print_method,
+          category: label.category,
+          is_favorite: false,
+          usage_count: 0,
+          created_at: label.created_at,
+          updated_at: label.updated_at || label.created_at
+        }))
+        templates.push(...labelTemplates)
+      }
       
-      setTemplates(transformedTemplates)
+      setTemplates(templates)
     } catch (error) {
       console.error('Error loading templates:', error)
       setTemplates([])
@@ -95,9 +128,13 @@ export function TemplatesContent() {
     }
   }
 
-  const filteredTemplates = templates.filter((template) =>
-    template.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredTemplates = templates.filter((template) => {
+    const searchTerm = activeSearchQuery.toLowerCase()
+    return searchTerm === '' || 
+           template.name.toLowerCase().includes(searchTerm) ||
+           template.description.toLowerCase().includes(searchTerm) ||
+           template.category.toLowerCase().includes(searchTerm)
+  })
 
   const toggleFavorite = async (id: string) => {
     // Since we're using label_designs table, just update local state
@@ -181,8 +218,8 @@ export function TemplatesContent() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search templates..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={localSearchQuery}
+                onChange={(e) => setLocalSearchQuery(e.target.value)}
                 className="pl-9 bg-muted border-border"
               />
             </div>

@@ -69,11 +69,11 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
   }
 
   return (
-    <div className={`max-w-6xl mx-auto p-6 ${className}`}>
+    <div className={`max-w-6xl mx-auto p-4 md:p-6 ${className}`}>
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-foreground">
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">
             Batch Label Processing
           </h1>
           <span className="text-sm text-muted-foreground">
@@ -82,12 +82,12 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
         </div>
 
         {/* Step Indicators */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between overflow-x-auto pb-2">
           {steps.map((step, index) => (
             <React.Fragment key={step.number}>
-              <div className="flex flex-col items-center flex-1">
+              <div className="flex flex-col items-center flex-1 min-w-0">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${
+                  className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-semibold transition-colors text-xs md:text-sm ${
                     currentStep > step.number || (step.number === 4 && jobState.step4Completed)
                       ? 'bg-green-500 text-white'
                       : currentStep === step.number
@@ -96,23 +96,23 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
                   }`}
                 >
                   {currentStep > step.number || (step.number === 4 && jobState.step4Completed) ? (
-                    <CheckCircle2 size={20} />
+                    <CheckCircle2 size={16} className="md:w-5 md:h-5" />
                   ) : (
                     step.number
                   )}
                 </div>
-                <div className="mt-2 text-center">
-                  <p className="text-sm font-medium text-foreground">
+                <div className="mt-2 text-center px-1">
+                  <p className="text-xs md:text-sm font-medium text-foreground truncate">
                     {step.title}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground hidden sm:block">
                     {step.description}
                   </p>
                 </div>
               </div>
               {index < steps.length - 1 && (
                 <div
-                  className={`h-1 flex-1 mx-2 transition-colors ${
+                  className={`h-1 flex-1 mx-1 md:mx-2 transition-colors ${
                     currentStep > step.number
                       ? 'bg-green-500'
                       : 'bg-border'
@@ -125,7 +125,7 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
       </div>
 
       {/* Step Content */}
-      <div className="bg-card rounded-lg shadow-md border border-border p-8 mb-6 min-h-[400px]">
+      <div className="bg-card rounded-lg shadow-md border border-border p-4 md:p-8 mb-4 md:mb-6 min-h-[300px] md:min-h-[400px]">
         {currentStep === 1 && (
           <Step1TemplateSelection
             selectedTemplateId={jobState.templateId}
@@ -158,11 +158,12 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <Button
           variant="outline"
           onClick={handleBack}
           disabled={currentStep === 1}
+          className="w-full sm:w-auto"
         >
           Back
         </Button>
@@ -171,6 +172,7 @@ export const BatchProcessor: React.FC<BatchProcessorProps> = ({ className }) => 
             variant="primary"
             onClick={handleNext}
             disabled={!canProceed()}
+            className="w-full sm:w-auto"
           >
             Next
           </Button>

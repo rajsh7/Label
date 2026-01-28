@@ -22,9 +22,9 @@ export default async function AdminLogsPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Audit Logs</h1>
+        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">User Login Logs</h1>
         <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-          View system activity and audit trail
+          View user authentication and login activity
         </p>
       </div>
 
