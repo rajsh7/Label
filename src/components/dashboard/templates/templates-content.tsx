@@ -70,24 +70,18 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         return
       }
 
-      // Load both user templates and predefined labels
-      const [userTemplates, predefinedLabels] = await Promise.all([
-        supabase
-          .from('label_designs')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('updated_at', { ascending: false }),
-        supabase
-          .from('labels')
-          .select('*')
-          .order('name')
-      ])
+      // Load user templates first
+      const { data: userTemplatesData, error: userError } = await supabase
+        .from('label_designs')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
 
       const templates = []
       
       // Add user templates
-      if (userTemplates.data) {
-        const userTemplateList = userTemplates.data.map(design => ({
+      if (userTemplatesData && !userError) {
+        const userTemplateList = userTemplatesData.map(design => ({
           id: design.id,
           name: design.name,
           description: design.name,
@@ -102,21 +96,31 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         templates.push(...userTemplateList)
       }
       
-      // Add predefined labels as templates
-      if (predefinedLabels.data) {
-        const labelTemplates = predefinedLabels.data.map(label => ({
-          id: `label_${label.id}`,
-          name: label.name,
-          description: `${label.marketplace || ''} ${label.category}`.trim(),
-          elements: [],
-          label_format: label.print_method,
-          category: label.category,
-          is_favorite: false,
-          usage_count: 0,
-          created_at: label.created_at,
-          updated_at: label.updated_at || label.created_at
-        }))
-        templates.push(...labelTemplates)
+      // Try to load predefined labels, but don't fail if it errors
+      try {
+        const { data: labelsData } = await supabase
+          .from('labels')
+          .select('*')
+          .limit(50) // Limit to avoid too many results
+          .order('name')
+        
+        if (labelsData) {
+          const labelTemplates = labelsData.map(label => ({
+            id: `label_${label.id}`,
+            name: label.name,
+            description: `${label.marketplace || ''} ${label.category}`.trim(),
+            elements: [],
+            label_format: label.print_method,
+            category: label.category,
+            is_favorite: false,
+            usage_count: 0,
+            created_at: label.created_at,
+            updated_at: label.updated_at || label.created_at
+          }))
+          templates.push(...labelTemplates)
+        }
+      } catch (labelError) {
+        console.log('Could not load predefined labels:', labelError)
       }
       
       setTemplates(templates)
