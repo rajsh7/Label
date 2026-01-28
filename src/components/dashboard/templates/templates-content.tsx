@@ -70,60 +70,34 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         return
       }
 
-      // Load user templates first
-      const { data: userTemplatesData, error: userError } = await supabase
+      // Only load user templates to avoid any database issues
+      const { data, error } = await supabase
         .from('label_designs')
         .select('*')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false })
 
-      const templates = []
-      
-      // Add user templates
-      if (userTemplatesData && !userError) {
-        const userTemplateList = userTemplatesData.map(design => ({
-          id: design.id,
-          name: design.name,
-          description: design.name,
-          elements: JSON.parse(design.elements || '[]'),
-          label_format: 'Custom',
-          category: 'Custom',
-          is_favorite: false,
-          usage_count: 0,
-          created_at: design.created_at,
-          updated_at: design.updated_at || design.created_at
-        }))
-        templates.push(...userTemplateList)
+      if (error) {
+        console.error('Database error:', error)
+        setTemplates([])
+        return
       }
       
-      // Try to load predefined labels, but don't fail if it errors
-      try {
-        const { data: labelsData } = await supabase
-          .from('labels')
-          .select('*')
-          .limit(50) // Limit to avoid too many results
-          .order('name')
-        
-        if (labelsData) {
-          const labelTemplates = labelsData.map(label => ({
-            id: `label_${label.id}`,
-            name: label.name,
-            description: `${label.marketplace || ''} ${label.category}`.trim(),
-            elements: [],
-            label_format: label.print_method,
-            category: label.category,
-            is_favorite: false,
-            usage_count: 0,
-            created_at: label.created_at,
-            updated_at: label.updated_at || label.created_at
-          }))
-          templates.push(...labelTemplates)
-        }
-      } catch (labelError) {
-        console.log('Could not load predefined labels:', labelError)
-      }
+      // Transform label_designs to template format
+      const transformedTemplates = (data || []).map(design => ({
+        id: design.id,
+        name: design.name,
+        description: design.name,
+        elements: JSON.parse(design.elements || '[]'),
+        label_format: 'Custom',
+        category: 'Custom',
+        is_favorite: false,
+        usage_count: 0,
+        created_at: design.created_at,
+        updated_at: design.updated_at || design.created_at
+      }))
       
-      setTemplates(templates)
+      setTemplates(transformedTemplates)
     } catch (error) {
       console.error('Error loading templates:', error)
       setTemplates([])

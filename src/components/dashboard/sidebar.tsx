@@ -65,16 +65,57 @@ export function DashboardSidebar() {
         setError(null)
         
         const { data: { user }, error: userError } = await supabase.auth.getUser()
-        if (userError) throw userError
+        if (userError) {
+          console.error('Auth error:', userError)
+          setError('Authentication failed')
+          return
+        }
         
         if (user) {
-          const { data: profileData, error: profileError } = await supabase
+          // Try to get profile, create if doesn't exist
+          let { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', user.id)
             .single()
           
-          if (profileError) throw profileError
+          if (profileError && profileError.code === 'PGRST116') {
+            // Profile doesn't exist, create it
+            const { data: newProfile, error: createError } = await supabase
+              .from('profiles')
+              .insert({
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0],
+                subscription_tier: 'free',
+                subscription_status: 'active'
+              })
+              .select()
+              .single()
+            
+            if (createError) {
+              console.error('Profile creation error:', createError)
+              // Use basic user data as fallback
+              profileData = {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0],
+                subscription_tier: 'free'
+              }
+            } else {
+              profileData = newProfile
+            }
+          } else if (profileError) {
+            console.error('Profile fetch error:', profileError)
+            // Use basic user data as fallback
+            profileData = {
+              id: user.id,
+              email: user.email,
+              full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0],
+              subscription_tier: 'free'
+            }
+          }
+          
           setProfile({ ...profileData, email: user.email })
         }
       } catch (err) {
