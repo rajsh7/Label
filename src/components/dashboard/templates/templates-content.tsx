@@ -70,9 +70,9 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         return
       }
 
-      // Only load user templates to avoid any database issues
+      // Load from templates table
       const { data, error } = await supabase
-        .from('label_designs')
+        .from('templates')
         .select('*')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false })
@@ -83,18 +83,18 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         return
       }
       
-      // Transform label_designs to template format
-      const transformedTemplates = (data || []).map(design => ({
-        id: design.id,
-        name: design.name,
-        description: design.name,
-        elements: JSON.parse(design.elements || '[]'),
+      // Transform templates to expected format
+      const transformedTemplates = (data || []).map(template => ({
+        id: template.id,
+        name: template.name,
+        description: template.description || template.name,
+        elements: template.elements || [],
         label_format: 'Custom',
-        category: 'Custom',
+        category: template.category || 'Custom',
         is_favorite: false,
-        usage_count: 0,
-        created_at: design.created_at,
-        updated_at: design.updated_at || design.created_at
+        usage_count: template.downloads || 0,
+        created_at: template.created_at,
+        updated_at: template.updated_at || template.created_at
       }))
       
       setTemplates(transformedTemplates)
@@ -126,7 +126,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
 
     try {
       const { error } = await supabase
-        .from('label_designs')
+        .from('templates')
         .delete()
         .eq('id', id)
 
@@ -143,11 +143,15 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
       if (!user) return
 
       const { error } = await supabase
-        .from('label_designs')
+        .from('templates')
         .insert({
           user_id: user.id,
           name: `${template.name} (Copy)`,
-          elements: JSON.stringify(template.elements)
+          elements: template.elements,
+          label_base_id: 'custom',
+          category: template.category,
+          is_public: false,
+          downloads: 0
         })
 
       if (error) throw error
@@ -158,7 +162,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   }
 
   const useTemplate = (template: Template) => {
-    // Navigate to editor with template
+    // Navigate to editor with template ID to edit directly
     router.push(`/dashboard/editor?template=${template.id}`)
   }
 
@@ -343,7 +347,7 @@ function TemplateCard({
           </div>
           <div className="flex items-center gap-1 pt-2">
             <Button size="sm" onClick={() => onUse(template)} className="flex-1">
-              Use Template
+              Edit Template
             </Button>
             <Button size="sm" variant="outline" onClick={() => onDuplicate(template)}>
               <Copy className="w-3 h-3" />

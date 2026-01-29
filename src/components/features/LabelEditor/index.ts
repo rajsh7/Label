@@ -1,0 +1,5 @@
+export { Canvas } from './Canvas'
+export { LabelEditor } from './LabelEditor'
+export { ToolPanel } from './ToolPanel'
+export { PropertiesPanel } from './PropertiesPanel'
+export { LayersPanel } from './LayersPanel'

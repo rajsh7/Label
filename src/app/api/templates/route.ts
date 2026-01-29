@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createUserClient } from '@/lib/supabase/server'
+import { CreateTemplateInput } from '@/types/template'
 
 /**
  * GET /api/templates
@@ -57,6 +58,55 @@ export async function GET(request: NextRequest) {
     console.error('Get templates error:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch templates' },
+      { status: 500 }
+    )
+  }
+}
+
+/**
+ * POST /api/templates
+ * Create a new template
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const { supabase, session } = await createUserClient()
+    
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
+    const body: CreateTemplateInput = await request.json()
+    
+    const { data, error } = await supabase
+      .from('templates')
+      .insert({
+        ...body,
+        user_id: session.user.id,
+        is_public: body.is_public || false,
+        downloads: 0
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Create template error:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to create template' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      data
+    })
+  } catch (error) {
+    console.error('Create template error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to create template' },
       { status: 500 }
     )
   }

@@ -161,8 +161,8 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className={`${shouldCollapse ? 'w-16' : 'w-64'} border-r border-border/20 bg-background/80 backdrop-blur-md flex flex-col transition-all duration-300`}>
-      <div className="h-16 flex items-center gap-2 px-3 border-b border-border/20">
+    <aside className={`${shouldCollapse ? 'w-16' : 'w-52'} border-r border-border/20 bg-background/80 backdrop-blur-md flex flex-col transition-all duration-300`}>
+      <div className="h-16 flex items-center gap-2 px-3">
         <Link href="/" className="flex items-center gap-2 flex-1 min-w-0">
           <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
             <Tags className="w-4 h-4 text-accent-foreground" />
@@ -172,7 +172,7 @@ export function DashboardSidebar() {
       </div>
 
       {!isOnline && (
-        <div className="px-3 py-2 bg-destructive/10 border-b border-border/20">
+        <div className="px-3 py-2 bg-destructive/10">
           <div className="flex items-center gap-2 text-xs text-destructive">
             <WifiOff className="w-3 h-3" />
             {!shouldCollapse && <span>Offline</span>}

@@ -13,7 +13,15 @@ export function LabelsContent() {
 
   useEffect(() => {
     async function fetchLabels() {
-      const { data } = await supabase.from('label_designs').select('*')
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      
+      const { data } = await supabase
+        .from('templates')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+      
       setLabels(data || [])
     }
     fetchLabels()

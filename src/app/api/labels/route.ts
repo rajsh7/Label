@@ -1,40 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createUserClient } from '@/lib/supabase/server'
-import { ALL_LABELS } from '@/lib/constants/labels'
-import { saveDesign } from '@/server/actions/designs'
 
 /**
  * GET /api/labels
- * Fetch all available label types
+ * Fetch user's saved label designs for printing
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const searchParams = request.nextUrl.searchParams
-    const category = searchParams.get('category')
-    const search = searchParams.get('search')
-
-    const allLabels = ALL_LABELS
-
-    // Filter by category if provided
-    let filteredLabels = allLabels
-    if (category) {
-      filteredLabels = filteredLabels.filter((label) => label.category === category)
+    const { supabase, session } = await createUserClient()
+    
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      )
     }
 
-    // Filter by search term if provided
-    if (search) {
-      const searchLower = search.toLowerCase()
-      filteredLabels = filteredLabels.filter(
-        (label) =>
-          label.name.toLowerCase().includes(searchLower) ||
-          label.category.toLowerCase().includes(searchLower)
+    const { data, error } = await supabase
+      .from('label_designs')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Get labels error:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch labels' },
+        { status: 500 }
       )
     }
 
     return NextResponse.json({
       success: true,
-      data: filteredLabels,
-      count: filteredLabels.length,
+      data: data || []
     })
   } catch (error) {
     console.error('Get labels error:', error)
@@ -47,50 +45,50 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/labels
- * Create a new label design
+ * Create a new label design for printing
  */
 export async function POST(request: NextRequest) {
   try {
-    const { session } = await createUserClient()
-
+    const { supabase, session } = await createUserClient()
+    
     if (!session?.user) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const body = await request.json()
-    const { name, description, labelBaseId, elements, thumbnail, isTemplate } = body
-
-    if (!name || !labelBaseId || !elements) {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields: name, labelBaseId, elements' },
-        { status: 400 }
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
       )
     }
 
-    const result = await saveDesign({
-      name,
-      description,
-      labelBaseId,
-      elements,
-      thumbnail,
-      isTemplate: isTemplate || false,
-    })
+    const body = await request.json()
+    
+    const { data, error } = await supabase
+      .from('label_designs')
+      .insert({
+        user_id: session.user.id,
+        name: body.name,
+        elements: JSON.stringify(body.elements),
+        label_format: body.label_format,
+        width: body.width,
+        height: body.height
+      })
+      .select()
+      .single()
 
-    if (!result.success) {
+    if (error) {
+      console.error('Create label error:', error)
       return NextResponse.json(
-        { success: false, error: result.error || 'Failed to save design' },
-        { status: 400 }
+        { success: false, error: 'Failed to create label' },
+        { status: 500 }
       )
     }
 
     return NextResponse.json({
       success: true,
-      data: result.data,
+      data
     })
   } catch (error) {
-    console.error('Create label design error:', error)
+    console.error('Create label error:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to create label design' },
+      { success: false, error: 'Failed to create label' },
       { status: 500 }
     )
   }

@@ -19,11 +19,44 @@ export default async function DashboardPage() {
     .single()
 
   const { data: designs } = await supabase
-    .from('label_designs')
+    .from('templates')
     .select('*')
     .eq('user_id', session.user.id)
     .order('created_at', { ascending: false })
     .limit(5)
+
+  // Count templates created this month
+  const startOfMonth = new Date()
+  startOfMonth.setDate(1)
+  startOfMonth.setHours(0, 0, 0, 0)
+  
+  const { count: templatesThisMonth } = await supabase
+    .from('templates')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', session.user.id)
+    .gte('created_at', startOfMonth.toISOString())
+
+  // Calculate storage used (estimate based on templates data)
+  const { data: allTemplates } = await supabase
+    .from('templates')
+    .select('elements')
+    .eq('user_id', session.user.id)
+
+  let storageUsedKB = 0
+  if (allTemplates) {
+    storageUsedKB = allTemplates.reduce((total, template) => {
+      const elementsSize = JSON.stringify(template.elements || []).length
+      return total + elementsSize
+    }, 0) / 1024 // Convert bytes to KB
+  }
+  const storageUsedMB = Math.round(storageUsedKB / 1024 * 100) / 100 // Convert to MB with 2 decimals
+
+  // Update profile with current calculations
+  const updatedProfile = {
+    ...profile,
+    labels_generated_this_month: templatesThisMonth || 0,
+    storage_used_mb: storageUsedMB
+  }
 
   return (
     <div className="flex-1 flex flex-col">
@@ -86,7 +119,7 @@ export default async function DashboardPage() {
               </a>
             </div>
 
-            <UsageStats profile={profile} />
+            <UsageStats profile={updatedProfile} />
             <RecentLabels designs={designs || []} />
           </div>
           <footer className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border">

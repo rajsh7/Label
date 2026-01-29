@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useEditorStore } from '@/lib/store/editorStore'
 import { cn } from '@/lib/utils/cn'
+import { v4 as uuidv4 } from 'uuid'
 import {
   renderTextElement,
   renderImageElement,
@@ -40,6 +41,7 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
     selectElement,
     deselectElement,
     updateElement,
+    addElement,
   } = useEditorStore()
 
   const displayWidth = (canvas.width_px * canvas.zoom_level) / 100
@@ -108,53 +110,7 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
         ctx.setLineDash([])
       }
     }
-  }, [selectedLabel, selectedElementId, elements, canvas])
-
-  // Global mouse events for dragging outside canvas
-  useEffect(() => {
-    if (!dragState.isDragging) return
-
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!dragState.isDragging || !dragState.elementId || !canvasRef.current) return
-      
-      const rect = canvasRef.current.getBoundingClientRect()
-      const scaleX = canvasRef.current.width / rect.width
-      const scaleY = canvasRef.current.height / rect.height
-      
-      const x = (e.clientX - rect.left) * scaleX
-      const y = (e.clientY - rect.top) * scaleY
-      
-      const deltaX = x - dragState.startX
-      const deltaY = y - dragState.startY
-      
-      const element = elements.find(el => el.id === dragState.elementId)
-      if (!element) return
-      
-      const newX = Math.max(0, Math.min(canvas.width_px - element.width, dragState.elementStartX + deltaX))
-      const newY = Math.max(0, Math.min(canvas.height_px - element.height, dragState.elementStartY + deltaY))
-      
-      updateElement(dragState.elementId, { x: newX, y: newY })
-    }
-
-    const handleGlobalMouseUp = () => {
-      setDragState({
-        isDragging: false,
-        elementId: null,
-        startX: 0,
-        startY: 0,
-        elementStartX: 0,
-        elementStartY: 0
-      })
-    }
-
-    document.addEventListener('mousemove', handleGlobalMouseMove)
-    document.addEventListener('mouseup', handleGlobalMouseUp)
-
-    return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove)
-      document.removeEventListener('mouseup', handleGlobalMouseUp)
-    }
-  }, [dragState.isDragging, dragState.elementId, dragState.startX, dragState.startY, dragState.elementStartX, dragState.elementStartY, elements, canvas.width_px, canvas.height_px, updateElement])
+  }, [elements, selectedElementId, canvas, selectedLabel])
 
   const getMousePos = (e: React.MouseEvent) => {
     const canvas = canvasRef.current
@@ -202,16 +158,12 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!dragState.isDragging || !dragState.elementId) return
     
-    e.preventDefault()
     const { x, y } = getMousePos(e)
     const deltaX = x - dragState.startX
     const deltaY = y - dragState.startY
     
-    const element = elements.find(el => el.id === dragState.elementId)
-    if (!element) return
-    
-    const newX = Math.max(0, Math.min(canvas.width_px - element.width, dragState.elementStartX + deltaX))
-    const newY = Math.max(0, Math.min(canvas.height_px - element.height, dragState.elementStartY + deltaY))
+    const newX = Math.max(0, Math.min(canvas.width_px - 50, dragState.elementStartX + deltaX))
+    const newY = Math.max(0, Math.min(canvas.height_px - 50, dragState.elementStartY + deltaY))
     
     updateElement(dragState.elementId, { x: newX, y: newY })
   }
@@ -225,6 +177,36 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
       elementStartX: 0,
       elementStartY: 0
     })
+  }
+
+  // Handle text placement
+  const handleAddText = (e: React.MouseEvent) => {
+    if (dragState.isDragging) return
+    
+    const { x, y } = getMousePos(e)
+    const element = findElementAt(x, y)
+    
+    if (!element) {
+      addElement({
+        id: uuidv4(),
+        type: 'text',
+        x: x - 50,
+        y: y - 10,
+        width: 100,
+        height: 20,
+        rotation: 0,
+        z_index: 1,
+        visible: true,
+        properties: {
+          text: 'Text',
+          font: 'Arial',
+          fontSize: 14,
+          fontWeight: 400,
+          color: '#000000',
+          align: 'left',
+        },
+      })
+    }
   }
 
   if (!selectedLabel) {
@@ -249,17 +231,17 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onDragStart={(e) => e.preventDefault()}
+          onDoubleClick={handleAddText}
           className={dragState.isDragging ? 'cursor-move' : 'cursor-default'}
           style={{
             width: '100%',
             height: '100%',
             display: 'block',
-            userSelect: 'none',
           }}
         />
       </div>
     </div>
   )
 }
+
+export default Canvas

@@ -4,6 +4,7 @@ import { createUserClient } from '@/lib/supabase/server'
 import { DashboardSidebar } from '@/components/dashboard/sidebar'
 import { MobileDashboard } from '@/components/dashboard/mobile-dashboard'
 import { NotificationProvider } from '@/lib/notifications/context'
+import { ToastProvider } from '@/components/ui/Toast'
 
 export default async function DashboardLayout({
   children,
@@ -20,18 +21,20 @@ export default async function DashboardLayout({
 
   return (
     <NotificationProvider>
-      {/* Desktop Layout */}
-      <div className="hidden md:flex min-h-screen bg-[var(--color-bg-secondary)]">
-        <DashboardSidebar />
-        <main className="flex-1 overflow-auto">{children}</main>
-        {modals}
-      </div>
-      
-      {/* Mobile Layout */}
-      <div className="md:hidden">
-        <MobileDashboard>{children}</MobileDashboard>
-        {modals}
-      </div>
+      <ToastProvider>
+        {/* Desktop Layout */}
+        <div className="hidden md:flex min-h-screen bg-[var(--color-bg-secondary)]">
+          <DashboardSidebar />
+          <main className="flex-1 overflow-auto">{children}</main>
+          {modals}
+        </div>
+        
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          <MobileDashboard>{children}</MobileDashboard>
+          {modals}
+        </div>
+      </ToastProvider>
     </NotificationProvider>
   )
 }

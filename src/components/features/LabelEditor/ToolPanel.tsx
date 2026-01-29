@@ -17,6 +17,7 @@ export interface ToolPanelProps {
 export const ToolPanel: React.FC<ToolPanelProps> = ({ className }) => {
   const { addElement, canvas } = useEditorStore()
   const [placementMode, setPlacementMode] = React.useState<'text' | 'image' | 'barcode' | 'shape' | null>(null)
+  const [showShapeMenu, setShowShapeMenu] = React.useState(false)
 
   // Pass placement mode to Canvas component via a custom event or store
   React.useEffect(() => {
@@ -185,31 +186,58 @@ export const ToolPanel: React.FC<ToolPanelProps> = ({ className }) => {
           Barcode
         </Button>
 
-        <div className="flex items-center gap-1 border-l border-[var(--color-border-primary)] pl-2 ml-2">
+        <div className="relative">
           <Button
             variant="outline"
             size="sm"
-            onClick={() => handleAddShape('rectangle')}
-            title="Add Rectangle"
+            onClick={() => setShowShapeMenu(!showShapeMenu)}
+            title="Add Shape"
+            className="relative"
           >
-            <Square size={18} />
+            <Square size={18} className="mr-2" />
+            Shape
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleAddShape('circle')}
-            title="Add Circle"
-          >
-            <Circle size={18} />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleAddShape('line')}
-            title="Add Line"
-          >
-            <Minus size={18} />
-          </Button>
+          
+          {showShapeMenu && (
+            <>
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setShowShapeMenu(false)}
+              />
+              <div className="absolute top-full left-0 mt-1 bg-white border border-[var(--color-border-primary)] rounded-md shadow-lg py-1 z-50 min-w-[120px]">
+                <button
+                  onClick={() => {
+                    handleAddShape('rectangle')
+                    setShowShapeMenu(false)
+                  }}
+                  className="w-full px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-gray-50)] flex items-center"
+                >
+                  <Square size={16} className="mr-2" />
+                  Rectangle
+                </button>
+                <button
+                  onClick={() => {
+                    handleAddShape('circle')
+                    setShowShapeMenu(false)
+                  }}
+                  className="w-full px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-gray-50)] flex items-center"
+                >
+                  <Circle size={16} className="mr-2" />
+                  Circle
+                </button>
+                <button
+                  onClick={() => {
+                    handleAddShape('line')
+                    setShowShapeMenu(false)
+                  }}
+                  className="w-full px-3 py-2 text-left text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-gray-50)] flex items-center"
+                >
+                  <Minus size={16} className="mr-2" />
+                  Line
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
