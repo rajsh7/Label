@@ -23,15 +23,15 @@ export function SettingsContent() {
   const [activeTab, setActiveTab] = useState("profile")
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-foreground">Settings</h1>
-        <p className="text-muted-foreground mt-1">Manage your account settings and preferences</p>
+    <div className="p-3 lg:p-6 max-w-5xl mx-auto">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Settings</h1>
+        <p className="text-sm lg:text-base text-muted-foreground mt-1">Manage your account settings and preferences</p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <nav className="lg:w-48 flex-shrink-0">
-          <div className="lg:space-y-3 grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-0">
+          <div className="lg:space-y-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2 lg:gap-0">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id
               return (
@@ -39,14 +39,14 @@ export function SettingsContent() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "w-full flex items-center gap-3 px-3 py-3 lg:py-4 rounded-lg text-sm font-medium transition-colors text-left",
+                    "w-full flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 lg:py-3 lg:py-4 rounded-lg text-xs lg:text-sm font-medium transition-colors text-left",
                     isActive
                       ? "bg-accent text-accent-foreground"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted",
                   )}
                 >
                   <tab.icon className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm">{tab.label}</span>
+                  <span className="text-xs lg:text-sm truncate">{tab.label}</span>
                 </button>
               )
             })}

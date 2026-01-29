@@ -46,21 +46,21 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-24 px-4 sm:px-6 lg:px-8 bg-foreground text-background">
+    <section id="pricing" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-foreground text-background">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-sm text-accent font-medium mb-4">Pricing</p>
-          <h2 className="text-4xl sm:text-5xl font-bold text-balance">Simple, transparent pricing</h2>
-          <p className="mt-6 text-lg opacity-70 max-w-2xl mx-auto">
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-sm text-accent font-medium mb-3 md:mb-4">Pricing</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-balance">Simple, transparent pricing</h2>
+          <p className="mt-4 md:mt-6 text-base md:text-lg opacity-70 max-w-2xl mx-auto">
             Choose the plan that fits your business. Upgrade or downgrade anytime.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`animate-on-scroll relative p-8 rounded-2xl border ${
+              className={`animate-on-scroll relative p-6 md:p-8 rounded-2xl border ${
                 plan.popular ? "bg-background text-foreground border-accent" : "bg-foreground/5 border-background/10"
               }`}
             >
@@ -69,26 +69,26 @@ export function PricingSection() {
                   Most popular
                 </div>
               )}
-              <div className="mb-6">
-                <h3 className={`text-xl font-semibold ${plan.popular ? "text-foreground" : "text-background"}`}>
+              <div className="mb-4 md:mb-6">
+                <h3 className={`text-lg md:text-xl font-semibold ${plan.popular ? "text-foreground" : "text-background"}`}>
                   {plan.name}
                 </h3>
                 <p className={`text-sm mt-1 ${plan.popular ? "text-muted-foreground" : "opacity-70"}`}>
                   {plan.description}
                 </p>
               </div>
-              <div className="mb-6">
-                <span className={`text-4xl font-bold ${plan.popular ? "text-foreground" : "text-background"}`}>
+              <div className="mb-4 md:mb-6">
+                <span className={`text-3xl md:text-4xl font-bold ${plan.popular ? "text-foreground" : "text-background"}`}>
                   {plan.price}
                 </span>
                 <span className={`text-sm ${plan.popular ? "text-muted-foreground" : "opacity-70"}`}>
                   /{plan.period}
                 </span>
               </div>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3">
-                    <Check className={`w-5 h-5 shrink-0 ${plan.popular ? "text-accent" : "text-accent"}`} />
+                    <Check className={`w-4 h-4 md:w-5 md:h-5 shrink-0 ${plan.popular ? "text-accent" : "text-accent"}`} />
                     <span className={`text-sm ${plan.popular ? "text-foreground" : "text-background"}`}>{feature}</span>
                   </li>
                 ))}

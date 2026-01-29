@@ -47,9 +47,9 @@ export function LabelsContent() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Labels</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="p-3 lg:p-6">
+      <h1 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6">My Labels</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
         {labels.map(label => {
           const logo = getLabelLogo(label.name)
           return (
@@ -60,19 +60,19 @@ export function LabelsContent() {
             >
               <div className="aspect-[4/3] bg-muted relative flex items-center justify-center">
                 {logo ? (
-                  <Image src={logo} alt={label.name} width={120} height={60} className="object-contain" />
+                  <Image src={logo} alt={label.name} width={100} height={50} className="object-contain lg:w-[120px] lg:h-[60px]" />
                 ) : (
-                  <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Package className="w-8 h-8 text-primary" />
+                  <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Package className="w-6 h-6 lg:w-8 lg:h-8 text-primary" />
                   </div>
                 )}
-                <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-muted-foreground" />
+                <div className="absolute top-2 right-2 w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center">
+                  <FileText className="w-3 h-3 lg:w-4 lg:h-4 text-muted-foreground" />
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-foreground mb-1 line-clamp-2">{label.name}</h3>
-                <p className="text-sm text-muted-foreground">{new Date(label.created_at).toLocaleDateString()}</p>
+              <div className="p-3 lg:p-4">
+                <h3 className="font-semibold text-foreground mb-1 line-clamp-2 text-sm lg:text-base">{label.name}</h3>
+                <p className="text-xs lg:text-sm text-muted-foreground">{new Date(label.created_at).toLocaleDateString()}</p>
               </div>
             </div>
           )
@@ -81,19 +81,19 @@ export function LabelsContent() {
 
       {/* Print Dialog */}
       {showPrintDialog && selectedLabel && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPrintDialog(false)}>
-          <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4 border border-border" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowPrintDialog(false)}>
+          <div className="bg-card rounded-lg p-4 lg:p-6 max-w-md w-full border border-border" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-foreground">Print Label</h2>
+              <h2 className="text-lg lg:text-xl font-semibold text-foreground">Print Label</h2>
               <button onClick={() => setShowPrintDialog(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="mb-6">
-              <p className="text-muted-foreground mb-2">You are about to print:</p>
-              <p className="font-semibold text-foreground">{selectedLabel.name}</p>
+              <p className="text-muted-foreground mb-2 text-sm lg:text-base">You are about to print:</p>
+              <p className="font-semibold text-foreground text-sm lg:text-base">{selectedLabel.name}</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button onClick={handlePrint} className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90">
                 <Printer className="w-4 h-4 mr-2" />
                 Print

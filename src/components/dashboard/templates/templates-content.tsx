@@ -178,14 +178,14 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6 p-4 lg:p-0">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Templates</h1>
-          <p className="text-sm text-muted-foreground mt-1">Create and manage reusable label templates</p>
+          <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Templates</h1>
+          <p className="text-xs lg:text-sm text-muted-foreground mt-1">Create and manage reusable label templates</p>
         </div>
         <Button 
-          className="bg-accent hover:bg-accent/90 text-accent-foreground"
+          className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto"
           onClick={() => router.push('/dashboard/editor')}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -194,18 +194,18 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
       </div>
 
       <Card className="bg-card border-border">
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="relative flex-1 max-w-md">
+        <CardContent className="p-3 lg:p-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative flex-1 max-w-full lg:max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search templates..."
                 value={localSearchQuery}
                 onChange={(e) => setLocalSearchQuery(e.target.value)}
-                className="pl-9 bg-muted border-border"
+                className="pl-9 bg-muted border-border text-sm"
               />
             </div>
-            <div className="flex items-center border border-border rounded-lg overflow-hidden">
+            <div className="flex items-center border border-border rounded-lg overflow-hidden self-end lg:self-auto">
               <button
                 onClick={() => setViewMode("grid")}
                 className={cn(
@@ -235,11 +235,11 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
 
       {templates.length === 0 ? (
         <Card className="bg-card border-border">
-          <CardContent className="p-8 text-center">
-            <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">No templates yet</h3>
-            <p className="text-muted-foreground mb-4">Create your first template to get started</p>
-            <Button onClick={() => router.push('/dashboard/editor')}>
+          <CardContent className="p-6 lg:p-8 text-center">
+            <FileText className="w-10 h-10 lg:w-12 lg:h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-base lg:text-lg font-medium text-foreground mb-2">No templates yet</h3>
+            <p className="text-sm text-muted-foreground mb-4">Create your first template to get started</p>
+            <Button onClick={() => router.push('/dashboard/editor')} className="w-full sm:w-auto">
               <Plus className="w-4 h-4 mr-2" />
               Create Template
             </Button>
@@ -251,9 +251,9 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                <h2 className="text-lg font-medium text-foreground">Favorites</h2>
+                <h2 className="text-base lg:text-lg font-medium text-foreground">Favorites</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
                 {favoriteTemplates.map((template) => (
                   <TemplateCard
                     key={template.id}
@@ -269,10 +269,10 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
           )}
 
           <div className="space-y-4">
-            <h2 className="text-lg font-medium text-foreground">
+            <h2 className="text-base lg:text-lg font-medium text-foreground">
               {favoriteTemplates.length > 0 ? "All Templates" : "Templates"}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
               {otherTemplates.map((template) => (
                 <TemplateCard
                   key={template.id}
@@ -306,53 +306,53 @@ function TemplateCard({
 }) {
   return (
     <Card className="bg-card border-border hover:border-accent/50 transition-colors group">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-accent" />
+      <CardContent className="p-3 lg:p-4">
+        <div className="flex items-start justify-between mb-2 lg:mb-3">
+          <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+            <FileText className="w-4 h-4 lg:w-5 lg:h-5 text-accent" />
           </div>
           <div className="flex items-center gap-1">
             <button
               onClick={() => onToggleFavorite(template.id)}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
+              className="p-1 lg:p-1.5 rounded-md hover:bg-muted transition-colors"
             >
               {template.is_favorite ? (
-                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                <Star className="w-3 h-3 lg:w-4 lg:h-4 text-yellow-500 fill-yellow-500" />
               ) : (
-                <StarOff className="w-4 h-4 text-muted-foreground" />
+                <StarOff className="w-3 h-3 lg:w-4 lg:h-4 text-muted-foreground" />
               )}
             </button>
           </div>
         </div>
-        <div className="space-y-2">
-          <h3 className="text-sm font-medium text-foreground truncate">{template.name}</h3>
+        <div className="space-y-1 lg:space-y-2">
+          <h3 className="text-xs lg:text-sm font-medium text-foreground truncate">{template.name}</h3>
           <p className="text-xs text-muted-foreground line-clamp-2">{template.description}</p>
         </div>
-        <div className="mt-4 pt-4 border-t border-border space-y-2">
+        <div className="mt-3 lg:mt-4 pt-3 lg:pt-4 border-t border-border space-y-2">
           <div className="flex items-center justify-between">
             <Badge className={cn("text-xs", categoryColors[template.category] || categoryColors.Custom)}>
               {template.category}
             </Badge>
-            <span className="text-xs text-muted-foreground">{template.label_format}</span>
+            <span className="text-xs text-muted-foreground hidden sm:inline">{template.label_format}</span>
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <FileText className="w-3 h-3" />
-              {template.usage_count} uses
+              {template.usage_count}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 hidden sm:flex">
               <Clock className="w-3 h-3" />
               {new Date(template.updated_at).toLocaleDateString()}
             </span>
           </div>
           <div className="flex items-center gap-1 pt-2">
-            <Button size="sm" onClick={() => onUse(template)} className="flex-1">
-              Edit Template
+            <Button size="sm" onClick={() => onUse(template)} className="flex-1 text-xs">
+              Edit
             </Button>
-            <Button size="sm" variant="outline" onClick={() => onDuplicate(template)}>
+            <Button size="sm" variant="outline" onClick={() => onDuplicate(template)} className="px-2">
               <Copy className="w-3 h-3" />
             </Button>
-            <Button size="sm" variant="outline" onClick={() => onDelete(template.id)}>
+            <Button size="sm" variant="outline" onClick={() => onDelete(template.id)} className="px-2">
               <Trash2 className="w-3 h-3" />
             </Button>
           </div>

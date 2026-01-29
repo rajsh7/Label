@@ -2,7 +2,7 @@ import { TemplatesContent } from "@/components/dashboard/templates/templates-con
 
 export default function TemplatesPage() {
   return (
-    <main className="flex-1 overflow-auto p-6">
+    <main className="flex-1 overflow-auto p-3 lg:p-6">
       <TemplatesContent />
     </main>
   )

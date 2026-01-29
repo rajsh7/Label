@@ -29,17 +29,17 @@ export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
   }
 
   return (
-    <header className="h-16 bg-background flex items-center justify-between px-6">
+    <header className="h-14 lg:h-16 bg-background flex items-center justify-between px-3 lg:px-6">
       {showSearch ? (
         <div className="flex-1 flex justify-center">
-          <div className="relative w-full max-w-md">
+          <div className="relative w-full max-w-xs lg:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm lg:text-base"
             />
           </div>
         </div>
@@ -47,16 +47,16 @@ export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
         <div className="flex-1" />
       )}
 
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" className="relative text-foreground" asChild>
+      <div className="flex items-center gap-2 lg:gap-3">
+        <Button variant="ghost" size="sm" className="relative text-foreground p-2" asChild>
           <a href="/dashboard/notifications">
             <Bell className="w-4 h-4" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full" />
           </a>
         </Button>
-        <Button variant="ghost" size="sm" onClick={handleLogout} className="text-foreground gap-2">
+        <Button variant="ghost" size="sm" onClick={handleLogout} className="text-foreground gap-1 lg:gap-2 px-2 lg:px-3">
           <LogOut className="w-4 h-4" />
-          Logout
+          <span className="hidden sm:inline">Logout</span>
         </Button>
       </div>
     </header>

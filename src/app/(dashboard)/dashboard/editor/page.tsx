@@ -491,22 +491,24 @@ export default function LabelEditor() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-50">
       <div className="flex-1 flex flex-col">
-        <div className="bg-white p-3 flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={() => {
-            setShowLabelSelect(true)
-            setShowBrandSelect(true)
-            setSelectedBrand(null)
-          }}>
-            Change Label
-          </Button>
-          <div className="text-sm text-gray-600">
-            {selectedLabel?.name} ({selectedLabel?.width_inch}" × {selectedLabel?.height_inch}")
+        <div className="bg-white p-2 lg:p-3 flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-4">
+          <div className="flex items-center gap-2 w-full lg:w-auto">
+            <Button variant="outline" size="sm" onClick={() => {
+              setShowLabelSelect(true)
+              setShowBrandSelect(true)
+              setSelectedBrand(null)
+            }}>
+              Change Label
+            </Button>
+            <div className="text-xs lg:text-sm text-gray-600 truncate">
+              {selectedLabel?.name} ({selectedLabel?.width_inch}" × {selectedLabel?.height_inch}")
+            </div>
           </div>
           
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-sm">Zoom:</span>
+          <div className="flex items-center gap-2 w-full lg:w-auto lg:ml-auto">
+            <span className="text-xs lg:text-sm">Zoom:</span>
             <input
               type="range"
               min="25"
@@ -514,24 +516,25 @@ export default function LabelEditor() {
               step="25"
               value={labelSettings.zoom}
               onChange={(e) => setLabelSettings({ ...labelSettings, zoom: Number(e.target.value) })}
-              className="w-24"
+              className="w-16 lg:w-24"
             />
-            <span className="text-sm w-12">{labelSettings.zoom}%</span>
+            <span className="text-xs lg:text-sm w-8 lg:w-12">{labelSettings.zoom}%</span>
+            
+            <div className="border-l h-4 lg:h-6 mx-1 lg:mx-2" />
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={saveDesign}
+              disabled={isSaving}
+              className="text-xs lg:text-sm"
+            >
+              {isSaving ? 'Saving...' : 'Save'}
+            </Button>
           </div>
-          
-          <div className="border-l h-6 mx-2" />
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={saveDesign}
-            disabled={isSaving}
-          >
-            {isSaving ? 'Saving...' : 'Save Design'}
-          </Button>
         </div>
 
-        <div className="flex-1 overflow-auto p-8 bg-white flex">
+        <div className="flex-1 overflow-auto p-2 lg:p-8 bg-white flex flex-col lg:flex-row">
           <input
             ref={fileInputRef}
             type="file"
@@ -540,7 +543,63 @@ export default function LabelEditor() {
             className="hidden"
           />
           
-          <div className="w-52 mr-4">
+          {/* Mobile Layers Panel - Collapsible */}
+          <div className="lg:hidden mb-4">
+            <details className="bg-gradient-to-b from-gray-50 to-gray-100 border-2 border-gray-200 rounded-2xl shadow-lg">
+              <summary className="p-3 cursor-pointer font-bold text-gray-800">Layers ({elements.length})</summary>
+              <div className="p-3 pt-0 space-y-2 max-h-48 overflow-y-auto">
+                {elements.length === 0 ? (
+                  <div className="text-center text-gray-500 py-4">
+                    <div className="text-2xl mb-1">📄</div>
+                    <div className="text-xs">No layers yet</div>
+                  </div>
+                ) : (
+                  elements
+                    .sort((a, b) => b.zIndex - a.zIndex)
+                    .map(el => (
+                      <div
+                        key={el.id}
+                        onClick={() => setSelected(el.id)}
+                        className={`p-2 rounded-lg cursor-pointer text-xs transition-all duration-200 ${
+                          selected === el.id 
+                            ? 'bg-blue-100 border-2 border-blue-400 shadow-md' 
+                            : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm">
+                              {el.type === 'text' ? '📝' : el.type === 'image' ? '🖼️' : el.type === 'barcode' ? '🔲' : el.type === 'qrcode' ? '📱' : '⬜'}
+                            </span>
+                            <div>
+                              <div className="font-medium capitalize">{el.type}</div>
+                              <div className="text-xs text-gray-500">{el.content.substring(0, 8)}...</div>
+                            </div>
+                          </div>
+                          <div className="flex gap-1">
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); moveLayer(el.id, 'up'); }}
+                              className="w-5 h-5 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xs transition-colors"
+                            >
+                              ↑
+                            </button>
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); moveLayer(el.id, 'down'); }}
+                              className="w-5 h-5 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xs transition-colors"
+                            >
+                              ↓
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                )}
+              </div>
+            </details>
+          </div>
+          
+          {/* Desktop Layers Panel */}
+          <div className="hidden lg:block w-52 mr-4">
             <div className="bg-gradient-to-b from-gray-50 to-gray-100 border-2 border-gray-200 rounded-2xl p-4 shadow-lg h-fit mb-6">
               <h3 className="font-bold text-lg mb-4 text-gray-800">Layers</h3>
               <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -647,8 +706,64 @@ export default function LabelEditor() {
             </div>
           </div>
           
+          {/* Mobile Elements Toolbar */}
+          <div className="lg:hidden mb-4">
+            <details className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg">
+              <summary className="p-3 cursor-pointer text-sm font-semibold text-gray-700">Add Elements</summary>
+              <div className="p-3 pt-0">
+                <div className="grid grid-cols-3 gap-2">
+                  <button 
+                    onClick={() => addElement('text')} 
+                    className="bg-white border-2 border-blue-200 hover:border-blue-400 rounded-xl p-2 transition-all duration-200"
+                  >
+                    <div className="text-lg mb-1">📝</div>
+                    <div className="text-xs font-medium text-gray-700">Text</div>
+                  </button>
+                  <button 
+                    onClick={() => fileInputRef.current?.click()} 
+                    className="bg-white border-2 border-green-200 hover:border-green-400 rounded-xl p-2 transition-all duration-200"
+                  >
+                    <div className="text-lg mb-1">🖼️</div>
+                    <div className="text-xs font-medium text-gray-700">Image</div>
+                  </button>
+                  <button 
+                    onClick={() => addElement('barcode')} 
+                    className="bg-white border-2 border-orange-200 hover:border-orange-400 rounded-xl p-2 transition-all duration-200"
+                  >
+                    <div className="text-lg mb-1">🔲</div>
+                    <div className="text-xs font-medium text-gray-700">Barcode</div>
+                  </button>
+                  <button 
+                    onClick={() => addElement('qrcode')} 
+                    className="bg-white border-2 border-purple-200 hover:border-purple-400 rounded-xl p-2 transition-all duration-200"
+                  >
+                    <div className="text-lg mb-1">📱</div>
+                    <div className="text-xs font-medium text-gray-700">QR Code</div>
+                  </button>
+                  <div className="relative">
+                    <button 
+                      onClick={() => setShowShapeMenu(!showShapeMenu)} 
+                      className="bg-white border-2 border-pink-200 hover:border-pink-400 rounded-xl p-2 transition-all duration-200 w-full"
+                    >
+                      <div className="text-lg mb-1">⬜</div>
+                      <div className="text-xs font-medium text-gray-700">Shape</div>
+                    </button>
+                    {showShapeMenu && (
+                      <div className="absolute top-full left-0 mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg z-10 min-w-[100px]" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={(e) => { e.stopPropagation(); addElement('shape', 'rectangle'); }} className="w-full px-2 py-1 text-left hover:bg-gray-50 text-xs rounded-t-lg">Rectangle</button>
+                        <button onClick={(e) => { e.stopPropagation(); addElement('shape', 'circle'); }} className="w-full px-2 py-1 text-left hover:bg-gray-50 text-xs">Circle</button>
+                        <button onClick={(e) => { e.stopPropagation(); addElement('shape', 'triangle'); }} className="w-full px-2 py-1 text-left hover:bg-gray-50 text-xs">Triangle</button>
+                        <button onClick={(e) => { e.stopPropagation(); addElement('shape', 'ellipse'); }} className="w-full px-2 py-1 text-left hover:bg-gray-50 text-xs rounded-b-lg">Ellipse</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+          
           <div className="flex-1 flex flex-col">
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 flex items-center justify-center overflow-auto">
               <div className="inline-block">
                 <div
                   ref={canvasRef}
@@ -792,7 +907,80 @@ export default function LabelEditor() {
         </div>
       </div>
 
-      <div className="w-80 bg-white border-l p-4 overflow-y-auto">
+      {/* Mobile Properties Panel */}
+      <div className="lg:hidden">
+        {selectedElement && (
+          <details className="bg-white border-t-2 border-gray-200 shadow-lg">
+            <summary className="p-3 cursor-pointer font-bold text-lg">Properties</summary>
+            <div className="p-3 pt-0 space-y-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold">Element Properties</h3>
+                <Button size="sm" variant="destructive" onClick={() => deleteElement(selectedElement.id)}>
+                  Delete
+                </Button>
+              </div>
+              
+              <div>
+                <label className="text-xs font-medium">Content</label>
+                <Input
+                  value={selectedElement.content}
+                  onChange={(e) => updateElement(selectedElement.id, { content: e.target.value })}
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs font-medium">X</label>
+                  <Input
+                    type="number"
+                    value={Math.round(selectedElement.x)}
+                    onChange={(e) => updateElement(selectedElement.id, { x: Number(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium">Y</label>
+                  <Input
+                    type="number"
+                    value={Math.round(selectedElement.y)}
+                    onChange={(e) => updateElement(selectedElement.id, { y: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs font-medium">Width</label>
+                  <Input
+                    type="number"
+                    value={Math.round(selectedElement.width)}
+                    onChange={(e) => updateElement(selectedElement.id, { width: Number(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium">Height</label>
+                  <Input
+                    type="number"
+                    value={Math.round(selectedElement.height)}
+                    onChange={(e) => updateElement(selectedElement.id, { height: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-xs font-medium">Color</label>
+                <Input
+                  type="color"
+                  value={selectedElement.color}
+                  onChange={(e) => updateElement(selectedElement.id, { color: e.target.value })}
+                />
+              </div>
+            </div>
+          </details>
+        )}
+      </div>
+      
+      {/* Desktop Properties Panel */}
+      <div className="hidden lg:block w-80 bg-white border-l p-4 overflow-y-auto">
         <h2 className="font-bold text-lg mb-4">Properties</h2>
 
         <Card className="p-4 mb-4">

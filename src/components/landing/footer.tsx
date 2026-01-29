@@ -9,21 +9,21 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-border">
+    <footer className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-t border-border">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 mb-8 md:mb-12">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="text-xl font-bold text-foreground">
+            <Link href="/" className="text-lg md:text-xl font-bold text-foreground">
               LabelPro
             </Link>
-            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
+            <p className="mt-3 md:mt-4 text-sm text-muted-foreground max-w-xs">
               The complete platform for e-commerce label management.
             </p>
           </div>
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="font-semibold text-foreground mb-4">{category}</h4>
-              <ul className="space-y-3">
+              <h4 className="font-semibold text-foreground mb-3 md:mb-4 text-sm md:text-base">{category}</h4>
+              <ul className="space-y-2 md:space-y-3">
                 {links.map((link) => {
                   let linkUrl = `/${link.toLowerCase().replace(' ', '-')}`
                   if (link === 'Labels') linkUrl = '/label-formats'
@@ -40,9 +40,9 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} LabelPro. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+        <div className="pt-6 md:pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground text-center md:text-left">© {new Date().getFullYear()} LabelPro. All rights reserved.</p>
+          <div className="flex items-center gap-4 md:gap-6">
             <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Twitter
             </Link>
