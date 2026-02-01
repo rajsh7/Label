@@ -51,6 +51,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
+import { DashboardHero } from "@/components/dashboard/hero"
 
 const availablePrinters = [
   { id: 1, name: "HP LaserJet Pro", type: "Network", ip: "192.168.1.45" },
@@ -130,174 +131,175 @@ export function PrintersContent() {
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">Printers</h1>
-          <p className="text-muted-foreground mt-1">Manage your connected printers and print queue</p>
-        </div>
-        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              Add Printer
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <DialogTitle>Add a printer</DialogTitle>
-              <DialogDescription>Connect a new printer to your LabelPro account</DialogDescription>
-            </DialogHeader>
-            <div className="py-4 space-y-4">
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1 gap-2 h-auto py-4 bg-transparent"
-                  onClick={handleScan}
-                  disabled={isScanning}
-                >
-                  {isScanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
-                  {isScanning ? "Scanning..." : "Scan for printers"}
+    <div className="min-h-screen bg-gray-50/50 pb-20">
+      <DashboardHero 
+        title="Printer Management" 
+        description="Manage your connected printers, view print queues, and configure default settings."
+        searchPlaceholder="Search printers..."
+        showPills={false}
+        showBottomPills={false}
+        showSearch={false}
+      />
+      
+      <div className="max-w-[1920px] mx-auto px-6 -mt-8 relative z-10">
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center justify-end">
+             <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+              <DialogTrigger asChild>
+                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 shadow-sm">
+                  <Plus className="w-4 h-4" />
+                  Add Printer
                 </Button>
-              </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>Add a printer</DialogTitle>
+                  <DialogDescription>Connect a new printer to your LabelPro account</DialogDescription>
+                </DialogHeader>
+                <div className="py-4 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="outline"
+                      className="flex-1 gap-2 h-auto py-4 bg-transparent border-dashed"
+                      onClick={handleScan}
+                      disabled={isScanning}
+                    >
+                      {isScanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                      {isScanning ? "Scanning..." : "Scan for printers"}
+                    </Button>
+                  </div>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Available printers</span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                {availablePrinters.map((printer) => (
-                  <button
-                    key={printer.id}
-                    className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-accent/50 hover:bg-muted/50 transition-all text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                        <Printer className="w-5 h-5 text-muted-foreground" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">{printer.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {printer.type === "USB" ? (
-                            <span className="flex items-center gap-1">
-                              <Usb className="w-3 h-3" /> USB Connection
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1">
-                              <Wifi className="w-3 h-3" /> {printer.ip}
-                            </span>
-                          )}
-                        </p>
-                      </div>
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-gray-200" />
                     </div>
-                    <Plus className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                ))}
-              </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-white px-2 text-gray-500">Available printers</span>
+                    </div>
+                  </div>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or add manually</span>
-                </div>
-              </div>
+                  <div className="space-y-2">
+                    {availablePrinters.map((printer) => (
+                      <button
+                        key={printer.id}
+                        className="w-full flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-blue-500/50 hover:bg-blue-50/50 transition-all text-left group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                            <Printer className="w-5 h-5 text-gray-500 group-hover:text-blue-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-900">{printer.name}</p>
+                            <p className="text-sm text-gray-500">
+                              {printer.type === "USB" ? (
+                                <span className="flex items-center gap-1">
+                                  <Usb className="w-3 h-3" /> USB Connection
+                                </span>
+                              ) : (
+                                <span className="flex items-center gap-1">
+                                  <Wifi className="w-3 h-3" /> {printer.ip}
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                        <Plus className="w-4 h-4 text-gray-400 group-hover:text-blue-600" />
+                      </button>
+                    ))}
+                  </div>
 
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <Label>Printer name</Label>
-                  <Input placeholder="My Label Printer" />
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-gray-200" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-white px-2 text-gray-500">Or add manually</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="space-y-2">
+                      <Label>Printer name</Label>
+                      <Input placeholder="My Label Printer" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>IP Address (optional)</Label>
+                      <Input placeholder="192.168.1.100" />
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label>IP Address (optional)</Label>
-                  <Input placeholder="192.168.1.100" />
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setShowAddDialog(false)}>
+                    Cancel
+                  </Button>
+                  <Button>Add Printer</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <Printer className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{printers.length}</p>
+                  <p className="text-sm text-gray-500">Connected</p>
                 </div>
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-                Cancel
-              </Button>
-              <Button>Add Printer</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <Tabs defaultValue="printers" className="space-y-6">
-        <TabsList className="bg-muted/50">
-          <TabsTrigger value="printers">Printers</TabsTrigger>
-          <TabsTrigger value="queue">Print Queue</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="printers" className="space-y-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <Printer className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-foreground">{printers.length}</p>
-                    <p className="text-sm text-muted-foreground">Connected</p>
-                  </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                  <Power className="w-5 h-5 text-green-600" />
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
-                    <Power className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-foreground">
-                      {printers.filter((p) => p.status === "online").length}
-                    </p>
-                    <p className="text-sm text-muted-foreground">Online</p>
-                  </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {printers.filter((p) => p.status === "online").length}
+                  </p>
+                  <p className="text-sm text-gray-500">Online</p>
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-foreground">
-                      {printers.reduce((acc, p) => acc + (p.total_printed || 0), 0).toLocaleString()}
-                    </p>
-                    <p className="text-sm text-muted-foreground">Total Printed</p>
-                  </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-indigo-600" />
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                    <AlertCircle className="w-5 h-5 text-yellow-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-foreground">
-                      {printQueue.filter((p) => p.status === "queued" || p.status === "printing").length}
-                    </p>
-                    <p className="text-sm text-muted-foreground">In Queue</p>
-                  </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {printers.reduce((acc, p) => acc + (p.total_printed || 0), 0).toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-500">Total Printed</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center">
+                  <AlertCircle className="w-5 h-5 text-yellow-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {printQueue.filter((p) => p.status === "queued" || p.status === "printing").length}
+                  </p>
+                  <p className="text-sm text-gray-500">In Queue</p>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <Tabs defaultValue="printers" className="space-y-6">
+            <TabsList className="bg-white border border-gray-200 p-1 rounded-lg">
+              <TabsTrigger value="printers" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Printers</TabsTrigger>
+              <TabsTrigger value="queue" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Print Queue</TabsTrigger>
+              <TabsTrigger value="settings" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Settings</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="printers" className="space-y-6">
+
 
           <div className="space-y-4">
             {printers.map((printer) => (
@@ -696,6 +698,8 @@ export function PrintersContent() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </div>
+      </div>
     </div>
   )
 }

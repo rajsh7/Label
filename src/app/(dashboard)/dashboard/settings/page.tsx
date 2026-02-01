@@ -1,13 +1,9 @@
-import { DashboardHeader } from "@/components/dashboard/header"
 import { SettingsContent } from "@/components/dashboard/settings-content"
 
 export default function SettingsPage() {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <DashboardHeader />
-      <main className="flex-1 overflow-auto">
-        <SettingsContent />
-      </main>
+    <div className="min-h-screen bg-gray-50/50 pb-20">
+      <SettingsContent />
     </div>
   )
 }

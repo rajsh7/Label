@@ -1,13 +1,15 @@
 # LabelPro - Professional Label Resizing SaaS
 
-LabelPro is an enterprise-grade label resizing platform for e-commerce sellers, supporting 255+ label types across all major carriers and marketplaces.
+LabelPro is an enterprise-grade label resizing platform for e-commerce sellers, supporting 290+ label types across all major carriers and marketplaces.
 
 ## 🏷️ Extracted Labels & Templates
 
-This project now includes **255+ label formats** extracted from the source project, covering:
+This project now includes **290+ label formats** extracted and enhanced from industry-standard sources, covering:
 
 ### Label Categories
-- **Amazon FBA** (25 labels) - FNSKU labels in various sizes
+
+- **Amazon FBA** (40 labels) - FNSKU labels in all common sizes (2x1", 2.625x1", 3.5x1", 4x6", etc.)
+- **Avery Templates** (20 labels) - Popular Avery label formats (5160, 5161, 5163, 5164, etc.)
 - **Walmart FWA** (20 labels) - Walmart fulfillment labels
 - **eBay** (18 labels) - eBay shipping and product labels
 - **Shopify/Custom** (30 labels) - Custom e-commerce labels
@@ -19,11 +21,13 @@ This project now includes **255+ label formats** extracted from the source proje
 - **Other Carriers** (55+ labels) - OnTrac, LaserShip, Canada Post, etc.
 
 ### Print Methods Supported
+
 - **Thermal Printing** (203 DPI & 300 DPI)
 - **Inkjet Printing** (300 DPI)
 - **Desktop Printing** (Letter size)
 
 ### Printer Compatibility
+
 - Zebra (LP2844, GX430T, ZP450)
 - DYMO (LabelWriter 450, 4XL)
 - Rollo (X1038, X1040)
@@ -33,6 +37,7 @@ This project now includes **255+ label formats** extracted from the source proje
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Supabase account
@@ -40,37 +45,44 @@ This project now includes **255+ label formats** extracted from the source proje
 ### Installation
 
 1. **Clone and install dependencies:**
+
    ```bash
    npm install
    ```
 
 2. **Set up environment variables:**
+
    ```bash
    cp .env.example .env.local
    ```
+
    Fill in your Supabase credentials in `.env.local`
 
 3. **Set up the database:**
+
    ```bash
    # Run the database schema
    # Copy the contents of scripts/database-schema.sql and run in Supabase SQL Editor
    ```
 
 4. **Seed the labels database:**
+
    ```bash
    # Seed all 255+ label formats
    npm run seed:labels
-   
+
    # Or seed basic labels only
    npm run seed:labels:basic
    ```
 
 5. **Generate TypeScript types:**
+
    ```bash
    npm run generate-types
    ```
 
 6. **Start the development server:**
+
    ```bash
    npm run dev
    ```
@@ -102,26 +114,31 @@ labelpro/
 ### Accessing Labels in Code
 
 ```typescript
-import { ALL_LABELS, getLabelsByCategory, searchLabels } from '@/lib/constants/labels'
+import {
+  ALL_LABELS,
+  getLabelsByCategory,
+  searchLabels,
+} from "@/lib/constants/labels";
 
 // Get all labels
-const allLabels = ALL_LABELS
+const allLabels = ALL_LABELS;
 
 // Get labels by category
-const amazonLabels = getLabelsByCategory('amazon_fba')
-const shippingLabels = getLabelsByCategory('shipping')
+const amazonLabels = getLabelsByCategory("amazon_fba");
+const shippingLabels = getLabelsByCategory("shipping");
 
 // Search labels
-const thermalLabels = searchLabels('thermal')
-const fourBySixLabels = searchLabels('4x6')
+const thermalLabels = searchLabels("thermal");
+const fourBySixLabels = searchLabels("4x6");
 
 // Get specific label
-const amazonLabel = getLabelById('amazon_fba_001')
+const amazonLabel = getLabelById("amazon_fba_001");
 ```
 
 ### Label Properties
 
 Each label includes:
+
 - **Dimensions**: mm, inches, pixels (203 & 300 DPI)
 - **Print method**: thermal, inkjet, desktop
 - **Marketplace**: Amazon, eBay, Shopify, etc.
@@ -132,6 +149,7 @@ Each label includes:
 ### Database Schema
 
 Labels are stored in the `labels` table with the following structure:
+
 - `id` - Unique identifier (e.g., 'amazon_fba_001')
 - `name` - Human-readable name
 - `category` - Label category

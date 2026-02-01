@@ -48,66 +48,72 @@ export function useLabels(initialFilters?: LabelFilters): UseLabelsReturn {
   }, [filters.search])
 
   // Filter labels based on current filters
-  const filteredLabels = useMemo(() => {
-    setLoading(true)
-    try {
-      let results = ALL_LABELS
+  useEffect(() => {
+    const filterLabels = async () => {
+      setLoading(true)
+      try {
+        let results = ALL_LABELS
 
-      // Apply search
-      if (debouncedSearch) {
-        results = searchLabels(debouncedSearch)
+        // Apply search
+        if (debouncedSearch) {
+          results = searchLabels(debouncedSearch)
+        }
+
+        // Apply category filter
+        if (filters.categories && filters.categories.length > 0) {
+          const categoryResults: Label[] = []
+          filters.categories.forEach((category) => {
+            categoryResults.push(...getLabelsByCategory(category))
+          })
+          results = results.filter((label) => categoryResults.includes(label))
+        }
+
+        // Apply marketplace filter
+        if (filters.marketplaces && filters.marketplaces.length > 0) {
+          const marketplaceResults: Label[] = []
+          filters.marketplaces.forEach((marketplace) => {
+            marketplaceResults.push(...getLabelsByMarketplace(marketplace))
+          })
+          results = results.filter((label) => marketplaceResults.includes(label))
+        }
+
+        // Apply print method filter
+        if (filters.printMethods && filters.printMethods.length > 0) {
+          const printMethodResults: Label[] = []
+          filters.printMethods.forEach((method) => {
+            printMethodResults.push(...getLabelsByPrintMethod(method))
+          })
+          results = results.filter((label) => printMethodResults.includes(label))
+        }
+
+        // Apply DPI filter
+        if (filters.dpi && filters.dpi !== 'all') {
+          results = results.filter((label) => {
+            if (filters.dpi === '203') {
+              return label.width_px_203dpi && label.height_px_203dpi
+            } else if (filters.dpi === '300') {
+              return label.width_px_300dpi && label.height_px_300dpi
+            }
+            return true
+          })
+        }
+
+        // Remove duplicates
+        results = Array.from(new Map(results.map((label) => [label.id, label])).values())
+        
+        setFilteredLabelsState(results)
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Failed to filter labels'))
+      } finally {
+        setLoading(false)
       }
-
-      // Apply category filter
-      if (filters.categories && filters.categories.length > 0) {
-        const categoryResults: Label[] = []
-        filters.categories.forEach((category) => {
-          categoryResults.push(...getLabelsByCategory(category))
-        })
-        results = results.filter((label) => categoryResults.includes(label))
-      }
-
-      // Apply marketplace filter
-      if (filters.marketplaces && filters.marketplaces.length > 0) {
-        const marketplaceResults: Label[] = []
-        filters.marketplaces.forEach((marketplace) => {
-          marketplaceResults.push(...getLabelsByMarketplace(marketplace))
-        })
-        results = results.filter((label) => marketplaceResults.includes(label))
-      }
-
-      // Apply print method filter
-      if (filters.printMethods && filters.printMethods.length > 0) {
-        const printMethodResults: Label[] = []
-        filters.printMethods.forEach((method) => {
-          printMethodResults.push(...getLabelsByPrintMethod(method))
-        })
-        results = results.filter((label) => printMethodResults.includes(label))
-      }
-
-      // Apply DPI filter (if specified, filter by availability of that DPI)
-      if (filters.dpi && filters.dpi !== 'all') {
-        results = results.filter((label) => {
-          if (filters.dpi === '203') {
-            return label.width_px_203dpi && label.height_px_203dpi
-          } else if (filters.dpi === '300') {
-            return label.width_px_300dpi && label.height_px_300dpi
-          }
-          return true
-        })
-      }
-
-      // Remove duplicates
-      results = Array.from(new Map(results.map((label) => [label.id, label])).values())
-
-      setLoading(false)
-      return results
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to filter labels'))
-      setLoading(false)
-      return []
     }
-  }, [debouncedSearch, filters.categories, filters.marketplaces, filters.printMethods, filters.dpi])
+
+    filterLabels()
+  }, [debouncedSearch, filters])
+
+  // Need to change how filteredLabels is declared since it's now state
+  const [filteredLabels, setFilteredLabelsState] = useState<Label[]>(ALL_LABELS)
 
   // Get paginated results
   const paginatedLabels = useMemo(() => {

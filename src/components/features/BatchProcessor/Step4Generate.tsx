@@ -218,16 +218,18 @@ export const Step4Generate: React.FC<Step4GenerateProps> = ({
 
       {/* Generate Buttons */}
       {!downloadUrl && (
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-col sm:flex-row gap-3 justify-end">
           {hasSchedulingAccess && (
             <Button
               variant="outline"
               size="lg"
               onClick={() => setScheduleModalOpen(true)}
               disabled={generating}
+              className="w-full sm:w-auto"
             >
               <Clock size={18} className="mr-2" />
-              Schedule for Later
+              <span className="hidden sm:inline">Schedule for Later</span>
+              <span className="sm:hidden">Schedule</span>
             </Button>
           )}
           <Button
@@ -236,6 +238,7 @@ export const Step4Generate: React.FC<Step4GenerateProps> = ({
             onClick={handleGenerate}
             loading={generating}
             disabled={generating}
+            className="w-full sm:w-auto"
           >
             {generating ? 'Generating...' : 'Generate Labels'}
           </Button>

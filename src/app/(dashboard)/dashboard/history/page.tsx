@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createUserClient } from '@/lib/supabase/server'
 import { BatchHistoryList } from '@/components/features/BatchProcessor/BatchHistoryList'
+import { DashboardHero } from '@/components/dashboard/hero'
 
 export default async function HistoryPage() {
   const { supabase, session } = await createUserClient()
@@ -17,18 +18,19 @@ export default async function HistoryPage() {
     .limit(50)
 
   return (
-    <main className="flex-1 overflow-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">
-            Batch History
-          </h1>
-          <p className="text-[var(--color-text-secondary)]">
-            View and re-download your previous batch jobs
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50/50 pb-20">
+      <DashboardHero 
+        title="Batch History" 
+        description="View your past batch jobs, status, and download links. Keep track of all your bulk generation tasks."
+        searchPlaceholder="Search history..."
+        showPills={false}
+        showBottomPills={false}
+        showSearch={false}
+      />
+      
+      <div className="max-w-[1920px] mx-auto px-6 -mt-8 relative z-10">
         <BatchHistoryList initialBatches={batchJobs || []} />
       </div>
-    </main>
+    </div>
   )
 }

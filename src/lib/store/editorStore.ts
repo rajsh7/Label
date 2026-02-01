@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 import { v4 as uuidv4 } from 'uuid'
-import { EditorState, EditorActions, EditorElement } from '@/types/editor'
+import { EditorState, EditorActions, EditorElement, BackgroundConfig, DecorativeShape } from '@/types/editor'
 
 const MAX_HISTORY_DEPTH = 20
 
@@ -11,6 +11,10 @@ interface EditorStore extends EditorState, EditorActions {
   copyElement: (id: string) => void
   pasteElement: () => void
   duplicateElement: (id: string) => void
+  setCanvasSize: (width: number, height: number) => void
+  setBackground: (background: Partial<BackgroundConfig>) => void
+  addDecorativeShape: (shape: Omit<DecorativeShape, 'id'>) => void
+  removeDecorativeShape: (id: string) => void
 }
 
 const initialState: EditorState = {
@@ -18,10 +22,13 @@ const initialState: EditorState = {
   elements: [],
   selectedElementId: null,
   canvas: {
-    width_px: 812,
-    height_px: 1218,
+    width_px: 100,
+    height_px: 100,
     dpi: 203,
     zoom_level: 100,
+    background: {
+      type: 'none',
+    },
   },
   history: {
     undo_stack: [],
@@ -186,6 +193,16 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     }))
   },
 
+  setCanvasSize: (width: number, height: number) => {
+    set((state) => ({
+      canvas: {
+        ...state.canvas,
+        width_px: width,
+        height_px: height,
+      },
+    }))
+  },
+
   setCanvasDPI: (dpi) => {
     set((state) => {
       if (!state.selectedLabel) return state
@@ -264,6 +281,83 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
       currentDesignId: id,
       is_saved: true,
     })
+  },
+
+  loadTemplate: (template: any, label: any) => {
+    // Load a template into the editor
+    const dpi = get().canvas.dpi
+    const width_px = dpi === 203 ? label?.width_px_203dpi : label?.width_px_300dpi
+    const height_px = dpi === 203 ? label?.height_px_203dpi : label?.height_px_300dpi
+
+    set({
+      selectedLabel: label,
+      elements: template.elements || [],
+      selectedElementId: null,
+      canvas: {
+        width_px: width_px || 100, // Changed default to 100 as requested
+        height_px: height_px || 100, // Changed default to 100 as requested
+        dpi: dpi,
+        zoom_level: 100,
+        background: template.background || { type: 'none' },
+      },
+      history: {
+        undo_stack: [],
+        redo_stack: [],
+      },
+      is_saved: true,
+      currentDesignId: null,
+      last_saved_at: null,
+      last_draft_at: null,
+    })
+  },
+
+  setBackground: (background: Partial<BackgroundConfig>) => {
+    set((state) => ({
+      canvas: {
+        ...state.canvas,
+        background: {
+          ...state.canvas.background,
+          ...background,
+        },
+      },
+      is_saved: false,
+    }))
+  },
+
+  addDecorativeShape: (shape: Omit<DecorativeShape, 'id'>) => {
+    const newShape: DecorativeShape = {
+      ...shape,
+      id: uuidv4(),
+    }
+    
+    set((state) => ({
+      canvas: {
+        ...state.canvas,
+        background: {
+          ...state.canvas.background,
+          decorativeShapes: [
+            ...(state.canvas.background.decorativeShapes || []),
+            newShape,
+          ],
+        },
+      },
+      is_saved: false,
+    }))
+  },
+
+  removeDecorativeShape: (id: string) => {
+    set((state) => ({
+      canvas: {
+        ...state.canvas,
+        background: {
+          ...state.canvas.background,
+          decorativeShapes: (state.canvas.background.decorativeShapes || []).filter(
+            (shape) => shape.id !== id
+          ),
+        },
+      },
+      is_saved: false,
+    }))
   },
 
   resetEditor: () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Header } from '@/components/layout/Header'
+import { Header } from '@/components/landing/header'
 import { Footer } from '@/components/layout/Footer'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { format } from 'date-fns'

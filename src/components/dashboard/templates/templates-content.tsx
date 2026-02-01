@@ -2,20 +2,20 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import {
-  Search,
-  Plus,
   Star,
-  StarOff,
-  Grid3X3,
-  List,
+  Edit,
+  Search,
+  Sparkles,
+  Utensils,
+  Printer,
+  Wine,
+  AlertTriangle,
+  Package,
+  Book,
   FileText,
-  Clock,
-  Trash2,
-  Copy
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { supabase } from "@/lib/supabase/client"
@@ -32,59 +32,146 @@ interface Template {
   usage_count: number
   created_at: string
   updated_at: string
+  image_url?: string
 }
 
-const categoryColors: Record<string, string> = {
-  "E-commerce": "bg-purple-500/10 text-purple-500",
-  "Shipping": "bg-blue-500/10 text-blue-500",
-  "Product": "bg-green-500/10 text-green-500",
-  "Custom": "bg-orange-500/10 text-orange-500",
-}
+const templateCategories = [
+  {
+    id: "popular",
+    name: "Popular Templates",
+    icon: Sparkles,
+    color: "bg-gradient-to-br from-purple-500 to-pink-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "amazon",
+    name: "Amazon FBA",
+    icon: Package,
+    color: "bg-gradient-to-br from-orange-500 to-yellow-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "walmart",
+    name: "Walmart WFS",
+    icon: Package,
+    color: "bg-gradient-to-br from-blue-600 to-blue-700",
+    templates: [] as Template[]
+  },
+  {
+    id: "ebay",
+    name: "eBay Managed",
+    icon: Package,
+    color: "bg-gradient-to-br from-yellow-500 to-orange-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "shopify",
+    name: "Shopify Store",
+    icon: Package,
+    color: "bg-gradient-to-br from-green-600 to-emerald-600",
+    templates: [] as Template[]
+  },
+  {
+    id: "etsy",
+    name: "Etsy Handmade",
+    icon: Wine,
+    color: "bg-gradient-to-br from-pink-500 to-rose-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "food",
+    name: "Food Labels",
+    icon: Utensils,
+    color: "bg-gradient-to-br from-green-500 to-emerald-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "bottle",
+    name: "Bottle Labels",
+    icon: Wine,
+    color: "bg-gradient-to-br from-blue-500 to-cyan-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "warning",
+    name: "Warning Labels",
+    icon: AlertTriangle,
+    color: "bg-gradient-to-br from-red-500 to-orange-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "packaging",
+    name: "Packaging Labels",
+    icon: Package,
+    color: "bg-gradient-to-br from-indigo-500 to-purple-500",
+    templates: [] as Template[]
+  },
+  {
+    id: "book",
+    name: "Book Labels",
+    icon: Book,
+    color: "bg-gradient-to-br from-amber-500 to-orange-500",
+    templates: [] as Template[]
+  }
+]
+
+const quickActions = [
+  { name: "Edit Online", action: "edit", color: "bg-blue-50 text-blue-600 border-blue-200" },
+  { name: "Word", action: "word", color: "bg-blue-50 text-blue-600 border-blue-200", icon: "📄" },
+  { name: "Google Docs", action: "docs", color: "bg-green-50 text-green-600 border-green-200", icon: "📝" },
+  { name: "PDF", action: "pdf", color: "bg-red-50 text-red-600 border-red-200", icon: "📄" },
+]
 
 interface TemplatesContentProps {
   searchQuery?: string
 }
 
 export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [localSearchQuery, setLocalSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState(searchQuery)
   const [templates, setTemplates] = useState<Template[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // Use header search query if provided, otherwise use local search
-  const activeSearchQuery = searchQuery || localSearchQuery
-  
-  // Debug logging
-  console.log('Templates:', templates.length, 'Search:', activeSearchQuery)
-
   useEffect(() => {
-    loadTemplates()
+    loadAllTemplates()
   }, [])
 
-  const loadTemplates = async () => {
+  const loadAllTemplates = async () => {
+    setLoading(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        setTemplates([])
-        return
-      }
-
-      // Load from templates table
-      const { data, error } = await supabase
+      const { data: publicData, error: publicError } = await supabase
         .from('templates')
         .select('*')
-        .eq('user_id', user.id)
-        .order('updated_at', { ascending: false })
+        .eq('is_public', true)
+        .order('downloads', { ascending: false })
+        .limit(500)
 
-      if (error) {
-        console.error('Database error:', error)
-        setTemplates([])
+      if (publicError) {
+        console.error('Error fetching templates:', publicError)
         return
       }
+
+      let allTemplates = publicData || []
+
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: userData } = await supabase
+          .from('templates')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false })
+          
+        if (userData) {
+          const userTemplateIds = new Set(userData.map(t => t.id))
+          allTemplates = [
+            ...userData, 
+            ...allTemplates.filter(t => !userTemplateIds.has(t.id) && t.user_id !== user.id)
+          ]
+        }
+      }
       
-      // Transform templates to expected format
-      const transformedTemplates = (data || []).map(template => ({
+      const transformedTemplates = allTemplates.map(template => ({
         id: template.id,
         name: template.name,
         description: template.description || template.name,
@@ -94,270 +181,440 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         is_favorite: false,
         usage_count: template.downloads || 0,
         created_at: template.created_at,
-        updated_at: template.updated_at || template.created_at
+        updated_at: template.updated_at || template.created_at,
+        image_url: template.image_url || template.preview_url
       }))
       
       setTemplates(transformedTemplates)
+      updateCategoryCounts(transformedTemplates)
     } catch (error) {
       console.error('Error loading templates:', error)
-      setTemplates([])
     } finally {
       setLoading(false)
     }
   }
 
-  const filteredTemplates = templates.filter((template) => {
-    const searchTerm = activeSearchQuery.toLowerCase()
-    return searchTerm === '' || 
-           template.name.toLowerCase().includes(searchTerm) ||
-           template.description.toLowerCase().includes(searchTerm) ||
-           template.category.toLowerCase().includes(searchTerm)
-  })
-
-  const toggleFavorite = async (id: string) => {
-    // Since we're using label_designs table, just update local state
-    setTemplates(prev => prev.map(t => 
-      t.id === id ? { ...t, is_favorite: !t.is_favorite } : t
-    ))
+  const updateCategoryCounts = (allTemplates: Template[]) => {
+    templateCategories.forEach(category => {
+      const categoryTemplates = allTemplates.filter(template => {
+        const templateCategory = template.category?.toLowerCase() || ''
+        const templateName = template.name?.toLowerCase() || ''
+        
+        switch (category.id) {
+          case 'popular':
+            return template.usage_count > 50 || templateName.includes('amazon') || templateName.includes('shipping') || templateName.includes('avery')
+          case 'amazon':
+            return templateName.includes('amazon') || templateName.includes('fba') || templateName.includes('fnsku') || templateCategory.includes('amazon')
+          case 'walmart':
+            return templateName.includes('walmart') || templateName.includes('wfs') || templateCategory.includes('walmart')
+          case 'ebay':
+            return templateName.includes('ebay') || templateCategory.includes('ebay')
+          case 'shopify':
+            return templateName.includes('shopify') || templateCategory.includes('shopify')
+          case 'etsy':
+            return templateName.includes('etsy') || templateCategory.includes('etsy')
+          case 'food':
+            return templateCategory.includes('food') || templateName.includes('nutrition') || templateName.includes('ingredient') || templateName.includes('expiry') || templateName.includes('organic') || templateName.includes('allergen') || templateCategory.includes('compliance')
+          case 'bottle':
+            return templateCategory.includes('bottle') || templateCategory.includes('beverage') || templateName.includes('wine') || templateName.includes('bottle') || templateName.includes('label') || templateCategory.includes('product')
+          case 'warning':
+            return templateCategory.includes('warning') || templateCategory.includes('safety') || templateName.includes('warning') || templateName.includes('caution') || templateName.includes('fragile') || templateCategory.includes('compliance')
+          case 'packaging':
+            return templateCategory.includes('packaging') || templateCategory.includes('product') || templateName.includes('barcode') || templateName.includes('product') || templateName.includes('qr') || templateCategory.includes('box')
+          case 'book':
+            return templateCategory.includes('book') || templateCategory.includes('education') || templateName.includes('library') || templateName.includes('book') || templateName.includes('spine')
+          default:
+            return false
+        }
+      })
+      category.templates = categoryTemplates.slice(0, 50) // Show 50 templates per category
+    })
   }
 
-  const deleteTemplate = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this template?')) return
-
+  const loadTemplatesForCategory = async (categoryId: string) => {
+    setLoading(true)
     try {
-      const { error } = await supabase
-        .from('templates')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
-      setTemplates(prev => prev.filter(t => t.id !== id))
+      const category = templateCategories.find(cat => cat.id === categoryId)
+      if (category && category.templates) {
+        setTemplates(category.templates)
+      }
     } catch (error) {
-      console.error('Error deleting template:', error)
+      console.error('Error loading templates:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
-  const duplicateTemplate = async (template: Template) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategory(categoryId)
+    loadTemplatesForCategory(categoryId)
+  }
 
-      const { error } = await supabase
-        .from('templates')
-        .insert({
-          user_id: user.id,
-          name: `${template.name} (Copy)`,
-          elements: template.elements,
-          label_base_id: 'custom',
-          category: template.category,
-          is_public: false,
-          downloads: 0
-        })
-
-      if (error) throw error
-      loadTemplates()
-    } catch (error) {
-      console.error('Error duplicating template:', error)
+  const handleQuickAction = (action: string, _template?: Template) => {
+    switch (action) {
+      case 'edit':
+        router.push('/dashboard/advanced-editor')
+        break
+      case 'word':
+        window.open('https://www.office.com/', '_blank')
+        break
+      case 'docs':
+        window.open('https://docs.google.com/', '_blank')
+        break
+      case 'pdf':
+        router.push('/dashboard/advanced-editor')
+        break
     }
   }
 
-  const useTemplate = (template: Template) => {
-    // Navigate to editor with template ID to edit directly
-    router.push(`/dashboard/editor?template=${template.id}`)
-  }
+  const filteredCategories = templateCategories.filter(category =>
+    searchTerm === '' || category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
-  const favoriteTemplates = filteredTemplates.filter((t) => t.is_favorite)
-  const otherTemplates = filteredTemplates.filter((t) => !t.is_favorite)
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading templates...</div>
-      </div>
-    )
-  }
+  const filteredTemplates = templates.filter(template =>
+    searchTerm === '' || 
+    template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    template.description.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
-    <div className="space-y-4 lg:space-y-6 p-4 lg:p-0">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Templates</h1>
-          <p className="text-xs lg:text-sm text-muted-foreground mt-1">Create and manage reusable label templates</p>
-        </div>
-        <Button 
-          className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto"
-          onClick={() => router.push('/dashboard/editor')}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Template
-        </Button>
-      </div>
-
-      <Card className="bg-card border-border">
-        <CardContent className="p-3 lg:p-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="relative flex-1 max-w-full lg:max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search templates..."
-                value={localSearchQuery}
-                onChange={(e) => setLocalSearchQuery(e.target.value)}
-                className="pl-9 bg-muted border-border text-sm"
-              />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="text-center space-y-6">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Label Templates
+              </h1>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Editable free label templates you can customize online. Enjoy professional-quality, printable designs for free. Start creating today!
+              </p>
             </div>
-            <div className="flex items-center border border-border rounded-lg overflow-hidden self-end lg:self-auto">
+
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search templates..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-12 pr-4 py-4 text-lg border-gray-200 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                />
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {quickActions.map((action) => (
+                <button
+                  key={action.name}
+                  onClick={() => handleQuickAction(action.action)}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-full border font-medium transition-all hover:shadow-md",
+                    action.color
+                  )}
+                >
+                  {action.icon && <span>{action.icon}</span>}
+                  {action.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Category Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               <button
-                onClick={() => setViewMode("grid")}
-                className={cn(
-                  "p-2 transition-colors",
-                  viewMode === "grid"
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                )}
+                onClick={() => router.push('/dashboard/advanced-editor')}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-blue-100 text-sm"
               >
-                <Grid3X3 className="w-4 h-4" />
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Generate Free Label</span>
+                <span className="sm:hidden">Generate</span>
               </button>
               <button
-                onClick={() => setViewMode("list")}
-                className={cn(
-                  "p-2 transition-colors",
-                  viewMode === "list"
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                )}
+                onClick={() => {
+                  setSelectedCategory('food')
+                  loadTemplatesForCategory('food')
+                }}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-green-50 text-green-600 border border-green-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-green-100 text-sm"
               >
-                <List className="w-4 h-4" />
+                <Utensils className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Food Label</span>
+                <span className="sm:hidden">Food</span>
+              </button>
+              <button
+                onClick={() => router.push('/dashboard/templates')}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gray-50 text-gray-600 border border-gray-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-gray-100 text-sm"
+              >
+                <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Printable Label</span>
+                <span className="sm:hidden">Print</span>
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedCategory('bottle')
+                  loadTemplatesForCategory('bottle')
+                }}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-blue-100 text-sm"
+              >
+                <Wine className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Bottle Label</span>
+                <span className="sm:hidden">Bottle</span>
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedCategory('warning')
+                  loadTemplatesForCategory('warning')
+                }}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-red-100 text-sm"
+              >
+                <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Warning Label</span>
+                <span className="sm:hidden">Warning</span>
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedCategory('packaging')
+                  loadTemplatesForCategory('packaging')
+                }}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-purple-50 text-purple-600 border border-purple-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-purple-100 text-sm"
+              >
+                <Package className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Packaging Label</span>
+                <span className="sm:hidden">Package</span>
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedCategory('book')
+                  loadTemplatesForCategory('book')
+                }}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-orange-50 text-orange-600 border border-orange-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-orange-100 text-sm"
+              >
+                <Book className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Book Label</span>
+                <span className="sm:hidden">Book</span>
               </button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {templates.length === 0 ? (
-        <Card className="bg-card border-border">
-          <CardContent className="p-6 lg:p-8 text-center">
-            <FileText className="w-10 h-10 lg:w-12 lg:h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-base lg:text-lg font-medium text-foreground mb-2">No templates yet</h3>
-            <p className="text-sm text-muted-foreground mb-4">Create your first template to get started</p>
-            <Button onClick={() => router.push('/dashboard/editor')} className="w-full sm:w-auto">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Template
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <>
-          {favoriteTemplates.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                <h2 className="text-base lg:text-lg font-medium text-foreground">Favorites</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
-                {favoriteTemplates.map((template) => (
-                  <TemplateCard
-                    key={template.id}
-                    template={template}
-                    onToggleFavorite={toggleFavorite}
-                    onDelete={deleteTemplate}
-                    onDuplicate={duplicateTemplate}
-                    onUse={useTemplate}
-                  />
-                ))}
-              </div>
+      {/* Main Content */}
+      <div className="px-6 py-12">
+        {!selectedCategory ? (
+          /* Category Grid */
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Choose a Template Category</h2>
+              <p className="text-gray-600">Select from our professionally designed label categories</p>
             </div>
-          )}
 
-          <div className="space-y-4">
-            <h2 className="text-base lg:text-lg font-medium text-foreground">
-              {favoriteTemplates.length > 0 ? "All Templates" : "Templates"}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
-              {otherTemplates.map((template) => (
-                <TemplateCard
-                  key={template.id}
-                  template={template}
-                  onToggleFavorite={toggleFavorite}
-                  onDelete={deleteTemplate}
-                  onDuplicate={duplicateTemplate}
-                  onUse={useTemplate}
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCategories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className="group cursor-pointer bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200"
+                >
+                  <div className="space-y-4">
+                    <div className={cn(
+                      "w-16 h-16 rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform",
+                      category.color
+                    )}>
+                      <category.icon className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        {category.name}
+                      </h3>
+                      <p className="text-gray-600 mt-2">
+                        {category.templates.length} templates available
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {category.templates.slice(0, 2).map((template) => (
+                        <Badge key={template.id} variant="secondary" className="text-xs">
+                          {template.name}
+                        </Badge>
+                      ))}
+                      {category.templates.length > 2 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{category.templates.length - 2} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </>
-      )}
+        ) : (
+          /* Templates List */
+          <div className="space-y-8">
+            {/* Back Button & Category Header */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+              <Button
+                variant="outline"
+                onClick={() => setSelectedCategory(null)}
+                className="flex items-center gap-2 w-full sm:w-auto"
+              >
+                ← Back to Categories
+              </Button>
+              <div className="w-full sm:w-auto">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  {templateCategories.find(cat => cat.id === selectedCategory)?.name}
+                </h2>
+                <p className="text-sm sm:text-base text-gray-600">
+                  {filteredTemplates.length} templates found
+                </p>
+              </div>
+            </div>
+
+            {/* Templates Grid */}
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-gray-500 animate-pulse">Loading templates...</div>
+              </div>
+            ) : filteredTemplates.length === 0 ? (
+              <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No templates found</h3>
+                <p className="text-gray-500 mb-6">Try adjusting your search or browse other categories.</p>
+                <Button onClick={() => setSelectedCategory(null)}>
+                  Browse Categories
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredTemplates.map((template) => (
+                  <TemplateCard
+                    key={template.id}
+                    template={template}
+                    onEdit={() => router.push(`/dashboard/advanced-editor?template=${template.id}`)}
+                    onQuickAction={handleQuickAction}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
 
 function TemplateCard({ 
   template, 
-  onToggleFavorite, 
-  onDelete, 
-  onDuplicate, 
-  onUse 
+  onEdit,
+  onQuickAction
 }: {
   template: Template
-  onToggleFavorite: (id: string) => void
-  onDelete: (id: string) => void
-  onDuplicate: (template: Template) => void
-  onUse: (template: Template) => void
+  onEdit: () => void
+  onQuickAction: (action: string, template: Template) => void
 }) {
   return (
-    <Card className="bg-card border-border hover:border-accent/50 transition-colors group">
-      <CardContent className="p-3 lg:p-4">
-        <div className="flex items-start justify-between mb-2 lg:mb-3">
-          <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-            <FileText className="w-4 h-4 lg:w-5 lg:h-5 text-accent" />
-          </div>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => onToggleFavorite(template.id)}
-              className="p-1 lg:p-1.5 rounded-md hover:bg-muted transition-colors"
-            >
-              {template.is_favorite ? (
-                <Star className="w-3 h-3 lg:w-4 lg:h-4 text-yellow-500 fill-yellow-500" />
-              ) : (
-                <StarOff className="w-3 h-3 lg:w-4 lg:h-4 text-muted-foreground" />
+    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+      {/* Preview Area */}
+      <div className="aspect-[4/3] bg-white relative overflow-hidden border">
+        {template.image_url ? (
+          <img 
+            src={template.image_url} 
+            alt={template.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-white p-2 flex flex-col justify-center">
+            <div className="bg-gray-50 border-2 border-dashed border-gray-200 rounded p-3 h-full flex flex-col justify-center text-center">
+              {/* Template Name */}
+              <div className="text-xs font-bold text-gray-800 mb-2 truncate">
+                {template.name.replace(/ - .*$/, '')}
+              </div>
+              
+              {/* Barcode/QR Code */}
+              {(template.name.toLowerCase().includes('barcode') || template.name.toLowerCase().includes('qr')) && (
+                <div className="bg-black h-8 w-full mb-2 flex items-center justify-center">
+                  <div className="text-white text-[6px] font-mono">||||| |||| |||||</div>
+                </div>
               )}
-            </button>
+              
+              {/* Content Lines */}
+              <div className="space-y-1">
+                <div className="h-1.5 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                <div className="h-1 bg-gray-200 rounded w-1/2 mx-auto"></div>
+                {template.category === 'shipping_labels' && (
+                  <>
+                    <div className="h-1 bg-gray-200 rounded w-2/3 mx-auto"></div>
+                    <div className="h-1 bg-gray-200 rounded w-1/3 mx-auto"></div>
+                  </>
+                )}
+              </div>
+              
+              {/* Category Badge */}
+              <div className={`text-[6px] px-1 py-0.5 rounded mt-2 mx-auto w-fit ${
+                template.category === 'product_labels' ? 'bg-blue-100 text-blue-600' :
+                template.category === 'shipping_labels' ? 'bg-green-100 text-green-600' :
+                template.category === 'compliance_labels' ? 'bg-red-100 text-red-600' :
+                template.category === 'box_labels' ? 'bg-purple-100 text-purple-600' :
+                'bg-gray-100 text-gray-600'
+              }`}>
+                {template.category.replace('_', ' ').toUpperCase()}
+              </div>
+            </div>
           </div>
+        )}
+        
+        {/* Hover Actions */}
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <Button
+            onClick={onEdit}
+            className="bg-white text-gray-900 hover:bg-gray-100"
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Template
+          </Button>
         </div>
-        <div className="space-y-1 lg:space-y-2">
-          <h3 className="text-xs lg:text-sm font-medium text-foreground truncate">{template.name}</h3>
-          <p className="text-xs text-muted-foreground line-clamp-2">{template.description}</p>
-        </div>
-        <div className="mt-3 lg:mt-4 pt-3 lg:pt-4 border-t border-border space-y-2">
+      </div>
+
+      {/* Card Content */}
+      <div className="p-6 space-y-4">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Badge className={cn("text-xs", categoryColors[template.category] || categoryColors.Custom)}>
+            <Badge variant="secondary" className="text-xs">
               {template.category}
             </Badge>
-            <span className="text-xs text-muted-foreground hidden sm:inline">{template.label_format}</span>
+            <button className="text-gray-400 hover:text-yellow-500 transition-colors">
+              <Star className="w-4 h-4" />
+            </button>
           </div>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <FileText className="w-3 h-3" />
-              {template.usage_count}
-            </span>
-            <span className="flex items-center gap-1 hidden sm:flex">
-              <Clock className="w-3 h-3" />
-              {new Date(template.updated_at).toLocaleDateString()}
-            </span>
-          </div>
-          <div className="flex items-center gap-1 pt-2">
-            <Button size="sm" onClick={() => onUse(template)} className="flex-1 text-xs">
-              Edit
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => onDuplicate(template)} className="px-2">
-              <Copy className="w-3 h-3" />
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => onDelete(template.id)} className="px-2">
-              <Trash2 className="w-3 h-3" />
-            </Button>
-          </div>
+          <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+            {template.name}
+          </h3>
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {template.description}
+          </p>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Quick Actions */}
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            onClick={onEdit}
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            Use Template
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onQuickAction('pdf', template)}
+            className="px-3"
+          >
+            PDF
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }

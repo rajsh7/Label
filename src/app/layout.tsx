@@ -5,6 +5,38 @@ import { ThemeProvider } from "@/components/providers/theme-provider"
 
 import "@/styles/globals.css"
 
+// Apple font imports
+const appleFont = `
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('https://developer.apple.com/fonts/SF-Pro-Display-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('https://developer.apple.com/fonts/SF-Pro-Display-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('https://developer.apple.com/fonts/SF-Pro-Display-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: url('https://developer.apple.com/fonts/SF-Pro-Display-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+`
+
 export const metadata: Metadata = {
   title: "LabelPro - Professional Label Resizing for E-commerce",
   description:
@@ -31,6 +63,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: appleFont }} />
+      </head>
       <body className={`font-sans antialiased`}>
         <ThemeProvider>
           {children}

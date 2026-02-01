@@ -1,4 +1,4 @@
-import { Header } from '@/components/layout/Header'
+import { Header } from '@/components/landing/header'
 import { Footer } from '@/components/layout/Footer'
 import { FAQSection } from '@/components/sections/marketing/FAQSection'
 import type { Metadata } from 'next'

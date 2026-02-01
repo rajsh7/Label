@@ -16,7 +16,7 @@ import {
   Sparkles,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import {
@@ -31,6 +31,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 import { supabase } from "@/lib/supabase/client"
+import { DashboardHero } from "@/components/dashboard/hero"
 
 const plans = [
   {
@@ -152,331 +153,332 @@ export function BillingContent() {
   const currentPlanData = plans.find((p) => p.id === currentPlan)
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-foreground">Billing</h1>
-        <p className="text-muted-foreground mt-1">Manage your subscription, payment methods, and invoices</p>
-      </div>
+    <div className="min-h-screen bg-gray-50/50 pb-20">
+      <DashboardHero 
+        title="Billing & Subscription" 
+        description="Manage your subscription plan, payment methods, and view invoice history."
+        searchPlaceholder="Search invoices..."
+        showPills={false}
+        showBottomPills={false}
+        showSearch={false}
+      />
 
-      <div className="space-y-6">
-        <Card className="border-accent/50">
-          <CardHeader className="flex flex-row items-start justify-between">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                {currentPlanData && <currentPlanData.icon className="w-6 h-6 text-accent" />}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-xl">{currentPlanData?.name} Plan</CardTitle>
-                  <Badge className="bg-accent/10 text-accent hover:bg-accent/20">Active</Badge>
+      <div className="max-w-[1920px] mx-auto px-6 -mt-8 relative z-10">
+        <div className="grid gap-8 lg:grid-cols-[1fr_350px]">
+          {/* Main Content */}
+          <div className="space-y-8">
+            {/* Current Plan Card */}
+            <div className="bg-white rounded-xl border border-blue-100 shadow-sm overflow-hidden">
+              <div className="p-6 sm:p-8 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border-b border-blue-100">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center border border-blue-100">
+                      {currentPlanData && <currentPlanData.icon className="w-7 h-7 text-blue-600" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <h2 className="text-2xl font-bold text-gray-900">{currentPlanData?.name} Plan</h2>
+                        <Badge className="bg-blue-600 text-white hover:bg-blue-700 shadow-sm">Active</Badge>
+                      </div>
+                      <p className="text-gray-500 mt-1 text-lg">{currentPlanData?.description}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-4xl font-bold text-gray-900 tracking-tight">
+                      ${currentPlanData?.price}
+                      <span className="text-base font-medium text-gray-500 ml-1">/mo</span>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2 flex items-center justify-end gap-1.5">
+                      <Calendar className="w-4 h-4" />
+                      Renews Feb 1, 2026
+                    </p>
+                  </div>
                 </div>
-                <CardDescription className="mt-1">{currentPlanData?.description}</CardDescription>
               </div>
-            </div>
-            <div className="text-right">
-              <div className="text-3xl font-bold text-foreground">
-                ${currentPlanData?.price}
-                <span className="text-sm font-normal text-muted-foreground">/mo</span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                <Calendar className="w-3 h-3 inline mr-1" />
-                Renews Feb 1, 2026
-              </p>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Labels processed</span>
-                  <span className="font-medium text-foreground">{usage.labels.toLocaleString()} / Unlimited</span>
-                </div>
-                <Progress value={45} className="h-2" />
-                <p className="text-xs text-muted-foreground">No limit on Pro plan</p>
-              </div>
+              
+              <div className="p-6 sm:p-8">
+                <div className="grid sm:grid-cols-2 gap-8 sm:gap-12">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-gray-700">Labels processed</span>
+                      <span className="font-semibold text-gray-900">{usage.labels.toLocaleString()} / Unlimited</span>
+                    </div>
+                    <Progress value={45} className="h-2.5 bg-gray-100" />
+                    <p className="text-xs text-gray-500">No limit on Pro plan</p>
+                  </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Batch jobs this month</span>
-                  <span className="font-medium text-foreground">
-                    {usage.batches} / {currentPlanData?.limits.batches}
-                  </span>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-gray-700">Batch jobs this month</span>
+                      <span className="font-semibold text-gray-900">
+                        {usage.batches} / {currentPlanData?.limits.batches}
+                      </span>
+                    </div>
+                    <Progress 
+                      value={(usage.batches / (currentPlanData?.limits.batches || 1)) * 100} 
+                      className="h-2.5 bg-gray-100"
+                      />
+                    <p className="text-xs text-gray-500">
+                      {(currentPlanData?.limits.batches || 0) - usage.batches} batch jobs remaining
+                    </p>
+                  </div>
                 </div>
-                <Progress value={(usage.batches / (currentPlanData?.limits.batches || 1)) * 100} className="h-2" />
-                <p className="text-xs text-muted-foreground">
-                  {(currentPlanData?.limits.batches || 0) - usage.batches} batch jobs remaining
-                </p>
-              </div>
-            </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6 pt-6 border-t border-border">
-              <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
-                <DialogTrigger asChild>
-                  <Button className="gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Upgrade to Enterprise
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8 pt-8 border-t border-gray-100">
+                  <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="gap-2 bg-blue-600 hover:bg-blue-700 shadow-sm h-11 px-6">
+                        <Sparkles className="w-4 h-4" />
+                        Upgrade Plan
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-4xl">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold text-center">Choose the perfect plan</DialogTitle>
+                        <DialogDescription className="text-center text-lg">Scale your label printing as your business grows</DialogDescription>
+                      </DialogHeader>
+                      <div className="grid md:grid-cols-3 gap-6 py-6">
+                        {plans.map((plan) => (
+                          <button
+                            key={plan.id}
+                            onClick={() => setSelectedPlan(plan.id)}
+                            className={cn(
+                              "relative p-6 rounded-2xl border-2 text-left transition-all hover:shadow-lg",
+                              selectedPlan === plan.id
+                                ? "border-blue-600 bg-blue-50/30"
+                                : "border-transparent bg-gray-50 hover:bg-white hover:border-gray-200",
+                              plan.id === currentPlan && "opacity-75 cursor-default",
+                            )}
+                            disabled={plan.id === currentPlan}
+                          >
+                            {plan.popular && (
+                              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white border-0">
+                                Most Popular
+                              </Badge>
+                            )}
+                            <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-4">
+                              <plan.icon className="w-6 h-6 text-blue-600" />
+                            </div>
+                            <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
+                            <div className="mt-2 mb-4">
+                              <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
+                              <span className="text-sm font-medium text-gray-500">/{plan.period}</span>
+                            </div>
+                            <ul className="space-y-3">
+                              {plan.features.map((feature, i) => (
+                                <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
+                                  <Check className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            {plan.id === currentPlan && (
+                              <div className="mt-6 text-center">
+                                <Badge variant="secondary" className="w-full justify-center py-1.5">
+                                  Current Plan
+                                </Badge>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => setShowUpgradeDialog(false)}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          className="bg-blue-600 hover:bg-blue-700 min-w-[120px]"
+                          disabled={!selectedPlan || selectedPlan === currentPlan}
+                        >
+                          {selectedPlan === "free" ? "Downgrade" : "Upgrade"} Now
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  <Button variant="outline" className="border-gray-200 text-gray-600 hover:text-red-600 hover:bg-red-50 hover:border-red-100 h-11">
+                    Cancel subscription
                   </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Choose a plan</DialogTitle>
-                    <DialogDescription>Select the plan that best fits your business needs</DialogDescription>
-                  </DialogHeader>
-                  <div className="grid sm:grid-cols-3 gap-4 py-4">
-                    {plans.map((plan) => (
-                      <button
-                        key={plan.id}
-                        onClick={() => setSelectedPlan(plan.id)}
-                        className={cn(
-                          "relative p-4 rounded-xl border text-left transition-all",
-                          selectedPlan === plan.id
-                            ? "border-accent bg-accent/5"
-                            : "border-border hover:border-accent/50",
-                          plan.id === currentPlan && "opacity-50",
-                        )}
-                        disabled={plan.id === currentPlan}
+                </div>
+              </div>
+            </div>
+
+            {/* Invoice History */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Invoice History</h3>
+                  <p className="text-gray-500 text-sm">Download your past invoices</p>
+                </div>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Download className="w-4 h-4" />
+                  Download All
+                </Button>
+              </div>
+              <div className="p-2">
+                {invoices.length > 0 ? (
+                  <div className="space-y-1">
+                    {invoices.map((invoice) => (
+                      <div
+                        key={invoice.id}
+                        className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group"
                       >
-                        {plan.popular && (
-                          <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground text-xs">
-                            Popular
-                          </Badge>
-                        )}
-                        <plan.icon className="w-5 h-5 text-accent mb-2" />
-                        <h3 className="font-semibold text-foreground">{plan.name}</h3>
-                        <div className="mt-1">
-                          <span className="text-xl font-bold text-foreground">${plan.price}</span>
-                          <span className="text-xs text-muted-foreground">/{plan.period}</span>
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all">
+                            <FileText className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-900">{invoice.invoice_number || invoice.id}</p>
+                            <p className="text-sm text-gray-500">{new Date(invoice.created_at).toLocaleDateString()}</p>
+                          </div>
                         </div>
-                        <ul className="mt-3 space-y-1">
-                          {plan.features.slice(0, 3).map((feature, i) => (
-                            <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-                              <Check className="w-3 h-3 text-accent" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                        {plan.id === currentPlan && (
-                          <Badge variant="secondary" className="mt-3">
-                            Current plan
-                          </Badge>
-                        )}
-                      </button>
+                        <div className="flex items-center gap-4">
+                          <div className="text-right">
+                            <p className="font-medium text-gray-900">${invoice.amount?.toFixed(2) || '0.00'}</p>
+                            <Badge
+                              variant="secondary"
+                              className={cn(
+                                "text-xs capitalize",
+                                invoice.status === "paid" && "bg-green-50 text-green-700",
+                              )}
+                            >
+                              {invoice.status || 'pending'}
+                            </Badge>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                      </div>
                     ))}
                   </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowUpgradeDialog(false)}>
-                      Cancel
-                    </Button>
-                    <Button disabled={!selectedPlan || selectedPlan === currentPlan}>
-                      {selectedPlan === "free" ? "Downgrade" : "Upgrade"} plan
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <Button variant="outline">Cancel subscription</Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <CardTitle>Payment methods</CardTitle>
-              <CardDescription>Manage your payment methods for billing</CardDescription>
-            </div>
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent w-full sm:w-auto">
-              <Plus className="w-4 h-4" />
-              Add card
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {paymentMethods.length > 0 ? (
-              <div className="space-y-3">
-                {paymentMethods.map((method) => (
-                  <div
-                    key={method.id}
-                    className="flex items-center justify-between p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-8 rounded-md bg-muted flex items-center justify-center">
-                        {method.card_type === "visa" ? (
-                          <span className="text-xs font-bold text-blue-600">VISA</span>
-                        ) : method.card_type === "mastercard" ? (
-                          <span className="text-xs font-bold text-orange-600">MC</span>
-                        ) : (
-                          <span className="text-xs font-bold text-muted-foreground">CARD</span>
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">
-                          {method.card_type === "visa" ? "Visa" : method.card_type === "mastercard" ? "Mastercard" : "Card"} ending in {method.last4}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Expires {method.expiry_month}/{method.expiry_year}</p>
-                      </div>
-                      {method.is_default && (
-                        <Badge variant="secondary" className="text-xs">
-                          Default
-                        </Badge>
-                      )}
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <FileText className="w-6 h-6 text-gray-400" />
                     </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {!method.is_default && <DropdownMenuItem>Set as default</DropdownMenuItem>}
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Remove</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <p className="text-gray-900 font-medium">No invoices yet</p>
+                    <p className="text-sm text-gray-500 mt-1 max-w-xs mx-auto">
+                      Your invoices will appear here after your first payment
+                    </p>
                   </div>
-                ))}
+                )}
               </div>
-            ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
-                  <Plus className="w-8 h-8 text-muted-foreground" />
+              {invoices.length > 0 && (
+                <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+                  <Button variant="ghost" className="w-full text-gray-600 hover:text-gray-900">
+                    View all invoices
+                  </Button>
                 </div>
-                <p className="text-muted-foreground">No payment methods added</p>
-                <p className="text-sm text-muted-foreground mt-1">Add a card to manage your subscription</p>
-                <Button variant="outline" size="sm" className="gap-2 mt-4 w-full sm:w-auto">
-                  <Plus className="w-4 h-4" />
-                  Add your first card
+              )}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-8">
+            {/* Payment Methods */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+               <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-900">Payment Method</h3>
+                  <p className="text-gray-500 text-xs">Manage your cards</p>
+                </div>
+                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-gray-100 rounded-full">
+                  <Plus className="w-4 h-4 text-gray-600" />
                 </Button>
               </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <CardTitle>Billing information</CardTitle>
-              <CardDescription>Your billing address for invoices</CardDescription>
-            </div>
-            <Button variant="outline" size="sm" className="w-full sm:w-auto">
-              Edit
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Billing name</p>
-                <p className="font-medium text-foreground">{profile?.full_name || 'Not set'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Email</p>
-                <p className="font-medium text-foreground">{user?.email || 'Not set'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Address</p>
-                <p className="font-medium text-foreground">{profile?.company || 'Not set'}</p>
-                <p className="text-sm text-muted-foreground">{profile?.phone || 'Not set'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Tax ID</p>
-                <p className="font-medium text-foreground">Not set</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <CardTitle>Invoice history</CardTitle>
-              <CardDescription>Download your past invoices for accounting</CardDescription>
-            </div>
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent w-full sm:w-auto">
-              <Download className="w-4 h-4" />
-              Download all
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {invoices.length > 0 ? (
-              <>
-                <div className="space-y-2">
-                  {invoices.map((invoice) => (
-                    <div
-                      key={invoice.id}
-                      className="flex items-center justify-between p-4 rounded-xl border border-border hover:border-accent/30 hover:bg-muted/50 transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-foreground">{invoice.invoice_number || invoice.id}</p>
-                          <p className="text-sm text-muted-foreground">{new Date(invoice.created_at).toLocaleDateString()}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="font-medium text-foreground">${invoice.amount?.toFixed(2) || '0.00'}</p>
-                          <Badge
-                            variant="secondary"
-                            className={cn(
-                              "text-xs capitalize",
-                              invoice.status === "paid" && "bg-green-500/10 text-green-600",
+              <div className="p-4">
+                {paymentMethods.length > 0 ? (
+                  <div className="space-y-3">
+                    {paymentMethods.map((method) => (
+                      <div
+                        key={method.id}
+                        className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/30 transition-all group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-7 rounded bg-gray-100 flex items-center justify-center border border-gray-200 overflow-hidden relative">
+                             {/* Simple Card Icon Representation */}
+                            <div className="absolute top-1 left-0 w-full h-1 bg-gray-800 opacity-10"></div>
+                            {method.card_type === "visa" ? (
+                              <span className="text-[10px] font-bold text-blue-800 z-10">VISA</span>
+                            ) : (
+                              <span className="text-[10px] font-bold text-gray-600 z-10">CARD</span>
                             )}
-                          >
-                            {invoice.status || 'pending'}
-                          </Badge>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">
+                              •••• {method.last4}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Expires {method.expiry_month}/{method.expiry_year}
+                            </p>
+                          </div>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <MoreHorizontal className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>Edit card</DropdownMenuItem>
+                            <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
-                    </div>
-                  ))}
-                </div>
-                <Button variant="ghost" className="w-full mt-4 text-muted-foreground">
-                  View all invoices
-                </Button>
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                <p className="text-muted-foreground">No invoices yet</p>
-                <p className="text-sm text-muted-foreground mt-1">Your invoices will appear here after your first payment</p>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-sm text-gray-500 mb-4">No payment method added</p>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Add Card
+                    </Button>
+                  </div>
+                )}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
 
-        <Card className="border-destructive/30">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-destructive" />
-              <CardTitle className="text-destructive">Account Settings</CardTitle>
-            </div>
-            <CardDescription>Irreversible actions that affect your account and billing</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-4 rounded-xl border border-destructive/30 bg-destructive/5 gap-4">
-              <div>
-                <p className="font-medium text-foreground">Cancel subscription</p>
-                <p className="text-sm text-muted-foreground">
-                  Your plan will remain active until the end of the billing period
-                </p>
+            {/* Billing Information */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+               <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-gray-900">Billing Details</h3>
+                  <p className="text-gray-500 text-xs">For your invoices</p>
+                </div>
+                <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 h-8 px-2">
+                  Edit
+                </Button>
               </div>
-              <Button variant="destructive" size="sm" className="w-full sm:w-auto">
-                Cancel plan
-              </Button>
-            </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-4 rounded-xl border border-destructive/30 bg-destructive/5 gap-4">
-              <div>
-                <p className="font-medium text-foreground">Delete all billing data</p>
-                <p className="text-sm text-muted-foreground">
-                  This will remove all payment methods and billing history
-                </p>
+              <div className="p-6 space-y-4">
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Billing Name</p>
+                  <p className="text-sm font-medium text-gray-900">{profile?.full_name || user?.email?.split('@')[0] || 'Not set'}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Email Address</p>
+                  <p className="text-sm font-medium text-gray-900">{user?.email || 'Not set'}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Company Address</p>
+                  <p className="text-sm font-medium text-gray-900">{profile?.company || 'No address set'}</p>
+                </div>
               </div>
-              <Button variant="destructive" size="sm" className="w-full sm:w-auto">
-                Delete data
-              </Button>
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Danger Zone */}
+            <div className="bg-red-50/50 rounded-xl border border-red-100 overflow-hidden">
+               <div className="p-4 border-b border-red-100">
+                  <h3 className="font-bold text-red-900 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Danger Zone
+                  </h3>
+              </div>
+              <div className="p-4 space-y-4">
+                 <Button variant="ghost" className="w-full justify-start text-red-700 hover:text-red-800 hover:bg-red-100/50 h-auto py-2 px-2 text-sm">
+                   Delete billing history
+                 </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

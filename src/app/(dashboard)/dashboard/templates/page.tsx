@@ -4,8 +4,8 @@ import { TemplatesContent } from "@/components/dashboard/templates/templates-con
 
 export default function TemplatesPage() {
   return (
-    <main className="flex-1 overflow-auto p-6">
+    <div className="flex-1 flex flex-col min-h-screen">
       <TemplatesContent />
-    </main>
+    </div>
   )
 }

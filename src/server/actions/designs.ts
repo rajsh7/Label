@@ -10,6 +10,8 @@ interface SaveDesignParams {
   elements: EditorElement[]
   thumbnail?: string
   isTemplate?: boolean
+  width: number
+  height: number
 }
 
 interface LoadDesignResult {
@@ -40,6 +42,9 @@ export async function saveDesign(params: SaveDesignParams) {
         user_id: session.user.id,
         name: params.name,
         description: params.description || null,
+        label_base_id: params.labelBaseId,
+        width_px: params.width,
+        height_px: params.height,
         elements: params.elements as any,
         is_template: params.isTemplate || false,
       })

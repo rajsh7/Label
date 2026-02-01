@@ -15,9 +15,10 @@ const config: Config = {
         'gray-950': '#050505',
       },
       fontFamily: {
-        display: ['Manrope', 'sans-serif'],
-        base: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        mono: ['Monaco', 'Courier New', 'monospace'],
+        sans: ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'sans-serif'],
+        text: ['SF Pro Text', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'sans-serif'],
+        mono: ['SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', 'monospace'],
       },
       fontSize: {
         '8xl': '6rem',

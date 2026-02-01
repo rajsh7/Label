@@ -62,6 +62,35 @@ export interface ShapeElement extends BaseElement {
   }
 }
 
+export interface DecorativeShape {
+  id: string
+  type: 'circle' | 'wave' | 'triangle' | 'rectangle' | 'blob'
+  x: number
+  y: number
+  width: number
+  height: number
+  color: string
+  opacity: number
+  rotation: number
+}
+
+export interface BackgroundConfig {
+  type: 'none' | 'solid' | 'gradient' | 'pattern'
+  color?: string
+  gradient?: {
+    type: 'linear' | 'radial'
+    colors: Array<{ color: string; position: number }>
+    angle?: number
+  }
+  pattern?: {
+    type: 'dots' | 'stripes' | 'grid' | 'diagonal'
+    color: string
+    opacity: number
+    scale: number
+  }
+  decorativeShapes?: DecorativeShape[]
+}
+
 export type EditorElement = TextElement | ImageElement | BarcodeElement | ShapeElement
 
 export interface EditorState {
@@ -82,6 +111,7 @@ export interface EditorState {
     height_px: number
     dpi: 203 | 300
     zoom_level: number
+    background: BackgroundConfig
   }
   history: {
     undo_stack: EditorState[]

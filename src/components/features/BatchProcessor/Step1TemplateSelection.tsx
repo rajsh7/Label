@@ -29,30 +29,13 @@ export const Step1TemplateSelection: React.FC<Step1TemplateSelectionProps> = ({
     setLoading(true)
     setError(null)
     try {
-      // Load from both label_designs and templates
-      const [designsResult, templatesResult] = await Promise.all([
-        getUserDesigns(),
-        fetch('/api/templates').then(res => res.json())
-      ])
+      const designsResult = await getUserDesigns()
       
-      let allDesigns: any[] = []
-      
-      // Add label designs
       if (designsResult.success && designsResult.data) {
-        allDesigns = [...designsResult.data]
+        setDesigns(designsResult.data)
+      } else {
+        setDesigns([])
       }
-      
-      // Add templates
-      if (templatesResult.success && templatesResult.data) {
-        const templates = templatesResult.data.map((t: any) => ({
-          ...t,
-          elements: typeof t.elements === 'string' ? JSON.parse(t.elements) : t.elements,
-          is_template: true
-        }))
-        allDesigns = [...allDesigns, ...templates]
-      }
-      
-      setDesigns(allDesigns)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load designs')
     } finally {

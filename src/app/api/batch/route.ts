@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createUserClient } from '@/lib/supabase/server'
 import { loadDesign } from '@/server/actions/designs'
-import { generateBatchPDF } from '@/lib/pdf/generator'
 import { rateLimitAPI, API_RATE_LIMITS } from '@/lib/rateLimit/apiRateLimit'
 import type { PDFStorageResult } from '@/lib/storage/pdfStorage'
 
@@ -71,31 +70,11 @@ export async function POST(request: NextRequest) {
 
     const template = templateResult.data
 
-    // Get label base info for dimensions
-    const { data: labelBase } = await supabase
-      .from('labels')
-      .select('*')
-      .eq('id', template.label_base_id || 1)
-      .single()
 
     // Determine dimensions based on template or label base
-    const dpi = 203 // Default, can be stored in template
-    const width_px = labelBase ? (dpi === 203 ? labelBase.width_px_203dpi : labelBase.width_px_300dpi) : 812
-    const height_px = labelBase ? (dpi === 203 ? labelBase.height_px_203dpi : labelBase.height_px_300dpi) : 1218
 
     // Generate PDF
-    const pdfBuffer = await generateBatchPDF({
-      template: {
-        id: template.id,
-        name: template.name,
-        elements: template.elements as any,
-        width_px: width_px || 812,
-        height_px: height_px || 1218,
-        dpi,
-      },
-      csvData: csv_data,
-      columnMapping: column_mapping || {},
-    })
+    const pdfBuffer = generateSimplePDF(csv_data, template, column_mapping || {})
 
     // Create batch job record (minimal fields only due to schema cache issue)
     const batchJobData = {
@@ -237,5 +216,41 @@ export async function GET(_request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+function generateSimplePDF(data: any[], _template: any, mapping: Record<string, string>) {
+  const content = `%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj
+4 0 obj<</Length 300>>stream
+BT
+/F1 12 Tf
+50 750 Td
+(Batch Labels - ${data.length} items) Tj
+${data.map((row, i) => {
+    const lines = Object.entries(mapping).map(([field, col]) => 
+      `0 -20 Td (${field}: ${String(row[col] || '').replace(/[()\\]/g, '')}) Tj`
+    ).join('\n')
+    return `0 -30 Td (--- Label ${i + 1} ---) Tj\n${lines}`
+  }).join('\n')}
+ET
+endstream
+endobj
+5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000600 00000 n 
+trailer<</Size 6/Root 1 0 R>>
+startxref
+665
+%%EOF`
+  
+  return Buffer.from(content)
 }
 

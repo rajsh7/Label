@@ -9,6 +9,7 @@ import {
   renderBarcodeElement,
   renderShapeElement,
 } from './elements'
+import { renderBackground } from './elements/renderBackground'
 
 export interface CanvasProps {
   className?: string
@@ -56,30 +57,23 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
     canvasEl.width = canvas.width_px
     canvasEl.height = canvas.height_px
 
-    // Clear and draw background
-    ctx.fillStyle = '#FFFFFF'
-    ctx.fillRect(0, 0, canvas.width_px, canvas.height_px)
-
-    // Draw grid
-    ctx.strokeStyle = '#F3F4F6'
-    ctx.lineWidth = 1
-    for (let x = 0; x <= canvas.width_px; x += 8) {
-      ctx.beginPath()
-      ctx.moveTo(x, 0)
-      ctx.lineTo(x, canvas.height_px)
-      ctx.stroke()
-    }
-    for (let y = 0; y <= canvas.height_px; y += 8) {
-      ctx.beginPath()
-      ctx.moveTo(0, y)
-      ctx.lineTo(canvas.width_px, y)
-      ctx.stroke()
-    }
+    // Render background first
+    renderBackground(ctx, canvas.width_px, canvas.height_px, canvas.background)
 
     // Render elements
     elements.forEach((element) => {
       if (!element.visible) return
       ctx.save()
+      
+      // Apply rotation if present
+      if (element.rotation) {
+        const cx = element.x + element.width / 2
+        const cy = element.y + element.height / 2
+        ctx.translate(cx, cy)
+        ctx.rotate((element.rotation * Math.PI) / 180)
+        ctx.translate(-cx, -cy)
+      }
+
       switch (element.type) {
         case 'text':
           renderTextElement(ctx, element)
@@ -227,6 +221,70 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
     })
   }
 
+  // Touch event handlers for mobile
+  const getTouchPos = (e: React.TouchEvent) => {
+    const canvas = canvasRef.current
+    if (!canvas) return { x: 0, y: 0 }
+    
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    const touch = e.touches[0] || e.changedTouches[0]
+    
+    return {
+      x: (touch.clientX - rect.left) * scaleX,
+      y: (touch.clientY - rect.top) * scaleY
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault() // Prevent scrolling while touching canvas
+    const { x, y } = getTouchPos(e)
+    const element = findElementAt(x, y)
+    
+    if (element) {
+      selectElement(element.id)
+      setDragState({
+        isDragging: true,
+        elementId: element.id,
+        startX: x,
+        startY: y,
+        elementStartX: element.x,
+        elementStartY: element.y
+      })
+    } else {
+      deselectElement()
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!dragState.isDragging || !dragState.elementId) return
+    
+    e.preventDefault()
+    const { x, y } = getTouchPos(e)
+    const deltaX = x - dragState.startX
+    const deltaY = y - dragState.startY
+    
+    const element = elements.find(el => el.id === dragState.elementId)
+    if (!element) return
+    
+    const newX = Math.max(0, Math.min(canvas.width_px - element.width, dragState.elementStartX + deltaX))
+    const newY = Math.max(0, Math.min(canvas.height_px - element.height, dragState.elementStartY + deltaY))
+    
+    updateElement(dragState.elementId, { x: newX, y: newY })
+  }
+
+  const handleTouchEnd = () => {
+    setDragState({
+      isDragging: false,
+      elementId: null,
+      startX: 0,
+      startY: 0,
+      elementStartX: 0,
+      elementStartY: 0
+    })
+  }
+
   if (!selectedLabel) {
     return (
       <div className={cn('flex items-center justify-center h-full', className)}>
@@ -236,11 +294,13 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
   }
 
   return (
-    <div className={cn('flex items-center justify-center p-6 bg-gray-100', className)}>
+    <div className={cn('flex items-center justify-center p-2 sm:p-4 md:p-6 bg-gray-100 w-full h-full min-h-[400px]', className)}>
       <div
         style={{
           width: `${displayWidth}px`,
           height: `${displayHeight}px`,
+          maxWidth: '100%',
+          maxHeight: '100%',
         }}
         className="bg-white shadow-lg border"
       >
@@ -250,6 +310,10 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           onDragStart={(e) => e.preventDefault()}
           className={dragState.isDragging ? 'cursor-move' : 'cursor-default'}
           style={{
@@ -257,6 +321,7 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
             height: '100%',
             display: 'block',
             userSelect: 'none',
+            touchAction: 'none', // Prevent default touch behaviors
           }}
         />
       </div>
