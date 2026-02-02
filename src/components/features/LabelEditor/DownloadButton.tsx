@@ -24,8 +24,56 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
   const handleDownload = async () => {
     if (!designId) {
-      showToast('Please save your design before downloading', 'info')
-      return
+      // If no design ID, create a temporary design for download
+      try {
+        const response = await fetch('/api/labels/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            format: 'pdf',
+            temporary: true,
+            elements: [], // This should be passed from parent component
+            canvas: {} // This should be passed from parent component
+          }),
+        })
+        
+        const data = await response.json()
+        
+        if (!response.ok) {
+          if (data.upgradeRequired) {
+            setUpgradeModalOpen(true)
+            return
+          }
+          throw new Error(data.error || 'Failed to download label')
+        }
+        
+        // Handle download same as below
+        if (data.pdf_base64) {
+          const binaryString = atob(data.pdf_base64)
+          const bytes = new Uint8Array(binaryString.length)
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i)
+          }
+          const blob = new Blob([bytes], { type: 'application/pdf' })
+          const url = URL.createObjectURL(blob)
+          
+          const link = document.createElement('a')
+          link.href = url
+          link.download = `label_${new Date().toISOString().split('T')[0]}.pdf`
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          
+          setTimeout(() => URL.revokeObjectURL(url), 100)
+        }
+        
+        showToast('Label downloaded successfully!', 'success')
+        return
+      } catch (error) {
+        console.error('Download error:', error)
+        showToast('Please save your design before downloading', 'info')
+        return
+      }
     }
 
     setLoading(true)
@@ -91,7 +139,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
         variant="outline"
         onClick={handleDownload}
         loading={loading}
-        disabled={!designId}
+        disabled={loading}
         className={className}
       >
         <Download size={18} className="mr-2" />
