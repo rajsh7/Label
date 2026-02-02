@@ -99,6 +99,41 @@ export function LabelsContent() {
     label.name?.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const handlePrint = async (label: any, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    try {
+      // Generate PDF for the specific label
+      const response = await fetch('/api/labels/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ designId: label.id })
+      })
+      
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = URL.createObjectURL(blob)
+        
+        // Open PDF in new window and print
+        const printWindow = window.open(url, '_blank')
+        if (printWindow) {
+          printWindow.onload = () => {
+            setTimeout(() => {
+              printWindow.print()
+            }, 500)
+          }
+        }
+      } else {
+        // Fallback to browser print
+        window.print()
+      }
+    } catch (error) {
+      console.error('Print error:', error)
+      window.print()
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50/50 pb-20">
       {/* Reusable Hero Component */}
@@ -254,7 +289,7 @@ export function LabelsContent() {
                           <DropdownMenuItem>
                             <Copy className="w-4 h-4 mr-2" /> Duplicate
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => handlePrint(label, e)}>
                             <Printer className="w-4 h-4 mr-2" /> Print
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
@@ -297,7 +332,7 @@ export function LabelsContent() {
                     <Link href={`/dashboard/advanced-editor?template=${label.id}`}>
                       <Button variant="outline" size="sm">Edit</Button>
                     </Link>
-                    <Button variant="ghost" size="icon"><Printer className="w-4 h-4 text-gray-500" /></Button>
+                    <Button variant="ghost" size="icon" onClick={(e) => handlePrint(label, e)}><Printer className="w-4 h-4 text-gray-500" /></Button>
                     <Button variant="ghost" size="icon"><MoreHorizontal className="w-4 h-4 text-gray-500" /></Button>
                   </div>
                 </div>

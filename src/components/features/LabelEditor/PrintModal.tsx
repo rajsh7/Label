@@ -49,8 +49,6 @@ export const PrintModal: React.FC<PrintModalProps> = ({
         .from('printers')
         .select('*')
         .eq('user_id', user.id)
-        .is('deleted_at', null)
-        .eq('is_online', true)
         .order('is_default', { ascending: false })
 
       if (error) throw error
@@ -70,29 +68,48 @@ export const PrintModal: React.FC<PrintModalProps> = ({
   }
 
   const handlePrint = async () => {
-    if (!selectedPrinterId) {
+    if (!selectedPrinterId && printers.length > 0) {
       showToast('Please select a printer', 'error')
-      return
-    }
-
-    const printer = printers.find((p) => p.id === selectedPrinterId)
-    if (!printer) {
-      showToast('Selected printer not found', 'error')
       return
     }
 
     setLoading(true)
 
     try {
+      // If no printers configured, use browser print
+      if (printers.length === 0) {
+        if (pdfUrl) {
+          const printWindow = window.open(pdfUrl, '_blank')
+          if (printWindow) {
+            printWindow.onload = () => {
+              setTimeout(() => {
+                printWindow.print()
+              }, 500)
+            }
+          }
+        } else {
+          window.print()
+        }
+        showToast('Print dialog opened', 'success')
+        onClose()
+        return
+      }
+
+      const printer = printers.find((p) => p.id === selectedPrinterId)
+      if (!printer) {
+        showToast('Selected printer not found', 'error')
+        return
+      }
+
       const printerConfig: PrinterConfig = {
         id: printer.id,
         name: printer.name,
-        printer_type: printer.printer_type,
+        printer_type: printer.type,
         connection_type: printer.connection_type,
-        network_ip: printer.network_ip,
-        dpi: printer.dpi,
-        darkness_level: printer.darkness_level,
-        label_gap: printer.label_gap,
+        network_ip: printer.ip_address,
+        dpi: 203, // Default DPI
+        darkness_level: 10, // Default darkness
+        label_gap: 2, // Default gap
       }
 
       const result = await printLabels(
@@ -187,7 +204,7 @@ export const PrintModal: React.FC<PrintModalProps> = ({
             variant="primary"
             onClick={handlePrint}
             loading={loading}
-            disabled={!selectedPrinterId || printers.length === 0 || loadingPrinters}
+            disabled={loadingPrinters}
             className="flex-1"
           >
             <Printer size={18} className="mr-2" />

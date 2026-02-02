@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Bell, LogOut, ChevronDown, LayoutDashboard, Tags, Edit, Layers, FolderOpen, History, Printer, Mail, Tag, Barcode, AlertTriangle, CreditCard, Settings, HelpCircle } from "lucide-react"
+import { Bell, LogOut, ChevronDown, LayoutDashboard, Tags, Edit, Layers, FolderOpen, History, Printer, Mail, Tag, Barcode, AlertTriangle, CreditCard, Settings, HelpCircle, Download, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/lib/supabase/client"
 import { useState, useEffect } from "react"
@@ -45,6 +45,7 @@ export function DashboardHeader({ className }: DashboardHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
   const [notificationCount, setNotificationCount] = useState(0)
+  const [notifications, setNotifications] = useState<any[]>([])
 
   useEffect(() => {
     loadNotificationCount()
@@ -55,24 +56,16 @@ export function DashboardHeader({ className }: DashboardHeaderProps) {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      // Count recent activities (last 24 hours)
-      const yesterday = new Date()
-      yesterday.setDate(yesterday.getDate() - 1)
-
-      const { data: recentLabels } = await supabase
-        .from('label_designs')
-        .select('id')
-        .eq('user_id', user.id)
-        .gte('created_at', yesterday.toISOString())
-
-      const { data: recentBatches } = await supabase
-        .from('batch_jobs')
-        .select('id')
-        .eq('user_id', user.id)
-        .gte('created_at', yesterday.toISOString())
-
-      const totalCount = (recentLabels?.length || 0) + (recentBatches?.length || 0)
-      setNotificationCount(totalCount)
+      // Mock notifications for demo
+      const mockNotifications = [
+        { id: 1, type: 'save', message: 'Template "Amazon FBA Label" saved successfully', time: '2 minutes ago', icon: Save },
+        { id: 2, type: 'download', message: 'Label downloaded as PNG', time: '5 minutes ago', icon: Download },
+        { id: 3, type: 'print', message: 'Label sent to printer successfully', time: '10 minutes ago', icon: Printer },
+        { id: 4, type: 'warning', message: 'Only 5 templates remaining in your plan', time: '1 hour ago', icon: AlertTriangle },
+      ]
+      
+      setNotifications(mockNotifications)
+      setNotificationCount(mockNotifications.length)
     } catch (error) {
       console.error('Error loading notification count:', error)
     }
@@ -84,7 +77,7 @@ export function DashboardHeader({ className }: DashboardHeaderProps) {
   }
 
   return (
-    <header className={cn("h-16 bg-white/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50 flex items-center px-6 gap-6", className)}>
+    <header className={cn("h-16 bg-white/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 flex items-center px-6 gap-6", className)}>
       {/* Logo */}
       <Link href="/dashboard" className="flex items-center gap-2 font-bold text-xl text-blue-600 min-w-fit">
         <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
@@ -165,16 +158,66 @@ export function DashboardHeader({ className }: DashboardHeaderProps) {
 
       {/* Right Actions */}
       <div className="flex items-center gap-2 min-w-fit">
-        <Button variant="ghost" size="icon" className="text-slate-700 hover:text-blue-600 relative" asChild>
-          <Link href="/dashboard/history">
-            <Bell className="w-5 h-5" />
-            {notificationCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                {notificationCount > 9 ? '9+' : notificationCount}
-              </span>
-            )}
-          </Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="text-slate-700 hover:text-blue-600 relative">
+              <Bell className="w-5 h-5" />
+              {notificationCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                  {notificationCount > 9 ? '9+' : notificationCount}
+                </span>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80">
+            <div className="p-3 border-b">
+              <h3 className="font-semibold text-sm">Notifications</h3>
+            </div>
+            <div className="max-h-64 overflow-y-auto">
+              {notifications.length === 0 ? (
+                <div className="p-4 text-center text-gray-500 text-sm">
+                  No notifications
+                </div>
+              ) : (
+                notifications.map((notification) => {
+                  const Icon = notification.icon
+                  return (
+                    <div key={notification.id} className="p-3 hover:bg-gray-50 border-b last:border-b-0">
+                      <div className="flex items-start gap-3">
+                        <div className={cn(
+                          "p-1.5 rounded-full",
+                          notification.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
+                          notification.type === 'save' ? 'bg-green-100 text-green-600' :
+                          notification.type === 'download' ? 'bg-blue-100 text-blue-600' :
+                          'bg-gray-100 text-gray-600'
+                        )}>
+                          <Icon className="w-3 h-3" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-gray-900">{notification.message}</p>
+                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+            <div className="p-3 border-t">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="w-full text-xs" 
+                onClick={() => {
+                  setNotifications([])
+                  setNotificationCount(0)
+                }}
+              >
+                Mark all as read
+              </Button>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div className="h-6 w-px bg-white/20 mx-2" />
         <Button variant="ghost" size="sm" onClick={handleLogout} className="text-slate-700 hover:text-red-600 gap-2">
           <LogOut className="w-4 h-4" />
