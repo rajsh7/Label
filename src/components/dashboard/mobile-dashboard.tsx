@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils/cn"
 
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Editor", href: "/dashboard/advanced-editor", icon: Edit },
+  { name: "Editor", href: "/dashboard/editor", icon: Edit },
   { name: "Templates", href: "/dashboard/templates", icon: Tags },
   { name: "Batch Processing", href: "/dashboard/batch", icon: Layers },
   { name: "My Labels", href: "/dashboard/labels", icon: FolderOpen },

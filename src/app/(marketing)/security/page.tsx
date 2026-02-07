@@ -1,66 +1,51 @@
-import { Metadata } from 'next'
-import { Header } from '@/components/landing/header'
-import { Footer } from '@/components/landing/footer'
-
-export const metadata: Metadata = {
-  title: 'Security - LabelPro',
-  description: 'Learn about our security practices and how we protect your data.',
-}
+import { LegalSidebar } from "@/components/marketing/legal-sidebar"
 
 export default function SecurityPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-16">
-      <div className="bg-gradient-to-r from-primary/10 to-accent/10 py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Security</h1>
-          <p className="text-xl text-muted-foreground">
-            Your data security is our top priority
-          </p>
+    <div className="bg-white min-h-screen pt-32 pb-24">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div className="grid lg:grid-cols-12 gap-12">
+          <LegalSidebar />
+          
+          <div className="lg:col-span-8 lg:col-start-5">
+            <div className="mb-24">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-green-100 text-green-700 rounded-xl">
+                  <span className="material-symbols-outlined text-3xl">shield_lock</span>
+                </div>
+                <span className="text-green-600 font-bold uppercase tracking-wider text-sm">Enterprise Grade Security</span>
+              </div>
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-slate-900 mb-10">Security First.</h1>
+              <p className="text-xl text-slate-500 mb-12 leading-relaxed">
+                We treat your data with the same level of security as a banking institution. LabelPro is SOC2 Type II compliant and encrypts all data at rest and in transit.
+              </p>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                  <h4 className="font-bold text-slate-900 text-xl mb-3">Data Encryption</h4>
+                  <p className="text-slate-500">AES-256 encryption for all stored data, with TLS 1.3 for all data in transit.</p>
+                </div>
+                <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                  <h4 className="font-bold text-slate-900 text-xl mb-3">Access Control</h4>
+                  <p className="text-slate-500">Role-based access control (RBAC) and mandatory MFA for all administrative access.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="prose prose-lg prose-slate max-w-none text-slate-500 text-lg md:text-xl leading-relaxed">
+               <h3 className="text-3xl font-bold text-slate-900 mt-16 mb-6">Compliance & Certifications</h3>
+               <p className="mb-6">
+                 We regularly undergo third-party security audits and penetration testing to ensure the safety of your data.
+               </p>
+               <ul className="list-disc pl-6 space-y-3 mb-8 marker:text-green-500">
+                 <li>SOC 2 Type II Certified</li>
+                 <li>GDPR Compliant</li>
+                 <li>CCPA Compliant</li>
+                 <li>Regular Penetration Testing</li>
+               </ul>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-16 space-y-12">
-        <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Data Protection</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p>All data is encrypted in transit using TLS 1.3 and at rest using AES-256 encryption.</p>
-            <p>We use Supabase's enterprise-grade PostgreSQL database with Row-Level Security (RLS) policies.</p>
-            <p>Regular security audits and penetration testing ensure our systems remain secure.</p>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Authentication</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p>Multi-factor authentication (MFA) available for all accounts.</p>
-            <p>OAuth integration with Google and Amazon for secure sign-in.</p>
-            <p>Session management with automatic timeout and secure token handling.</p>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Compliance</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p>GDPR compliant with data portability and deletion rights.</p>
-            <p>SOC 2 Type II certified infrastructure through our cloud providers.</p>
-            <p>Regular compliance audits and security assessments.</p>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Report Security Issues</h2>
-          <div className="bg-card border border-border rounded-lg p-6">
-            <p className="text-muted-foreground mb-4">
-              If you discover a security vulnerability, please report it to us at:
-            </p>
-            <p className="font-mono text-foreground">security@labelpro.com</p>
-          </div>
-        </section>
-      </div>
-      </main>
-      <Footer />
     </div>
   )
 }

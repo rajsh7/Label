@@ -15,51 +15,63 @@ export interface BaseElement {
   rotation: number
   z_index: number
   visible: boolean
+  style?: Record<string, any>
+}
+
+export interface TextProperties {
+  text: string
+  font: string
+  fontSize: number
+  fontWeight: number
+  color: string
+  align: 'left' | 'center' | 'right' | 'justify'
+  lineHeight: number
+  [key: string]: any
 }
 
 export interface TextElement extends BaseElement {
   type: 'text'
-  properties: {
-    text: string
-    font: string
-    fontSize: number
-    fontWeight: number
-    color: string
-    align: 'left' | 'center' | 'right' | 'justify'
-    lineHeight?: number
-    letterSpacing?: number
-  }
+  properties: TextProperties
+}
+
+export interface ImageProperties {
+  image_url: string
+  alt_text?: string
+  opacity: number
+  aspectRatioLocked: boolean
+  [key: string]: any
 }
 
 export interface ImageElement extends BaseElement {
   type: 'image'
-  properties: {
-    image_url: string
-    alt_text?: string
-    opacity: number
-    aspectRatioLocked: boolean
-  }
+  properties: ImageProperties
+}
+
+export interface BarcodeProperties {
+  barcode_type: string
+  barcode_value: string
+  human_readable: boolean
+  human_readable_font_size: number
+  [key: string]: any
 }
 
 export interface BarcodeElement extends BaseElement {
   type: 'barcode'
-  properties: {
-    barcode_type: 'CODE128' | 'EAN13' | 'EAN8' | 'UPC-A' | 'UPC-E' | 'CODE39' | 'AZTEC' | 'QRCODE'
-    barcode_value: string
-    human_readable: boolean
-    human_readable_font_size?: number
-  }
+  properties: BarcodeProperties
+}
+
+export interface ShapeProperties {
+  shape_type: 'rectangle' | 'circle' | 'line'
+  fill_color: string
+  fill_opacity: number
+  border_color: string
+  border_width: number
+  [key: string]: any
 }
 
 export interface ShapeElement extends BaseElement {
   type: 'shape'
-  properties: {
-    shape_type: 'rectangle' | 'circle' | 'line'
-    fill_color: string
-    fill_opacity: number
-    border_color: string
-    border_width: number
-  }
+  properties: ShapeProperties
 }
 
 export interface DecorativeShape {
@@ -140,4 +152,3 @@ export interface EditorActions {
   loadDesign: (id: string) => Promise<void>
   resetEditor: () => void
 }
-

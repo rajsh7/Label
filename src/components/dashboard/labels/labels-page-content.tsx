@@ -1,6 +1,4 @@
-"use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -32,89 +30,16 @@ import {
   Tag,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import Barcode from 'react-barcode'
+import { toast } from 'sonner'
+import { createClient } from '@supabase/supabase-js'
 
-const labels = [
-  {
-    id: "LBL-001",
-    name: "Amazon FBA Shipment #1247",
-    format: "Amazon FBA 4x6",
-    status: "Completed",
-    date: "Jan 12, 2026",
-    count: 24,
-    size: "2.4 MB",
-    thumbnail: "/shipping-label.jpg",
-  },
-  {
-    id: "LBL-002",
-    name: "USPS Priority Batch",
-    format: "USPS 4x6",
-    status: "Completed",
-    date: "Jan 12, 2026",
-    count: 12,
-    size: "1.2 MB",
-    thumbnail: "/usps-label.jpg",
-  },
-  {
-    id: "LBL-003",
-    name: "FedEx Ground Labels",
-    format: "FedEx 4x6.75",
-    status: "Processing",
-    date: "Jan 11, 2026",
-    count: 8,
-    size: "0.8 MB",
-    thumbnail: "/fedex-label.jpg",
-  },
-  {
-    id: "LBL-004",
-    name: "Walmart WFS Orders",
-    format: "Walmart 4x6",
-    status: "Completed",
-    date: "Jan 10, 2026",
-    count: 36,
-    size: "3.6 MB",
-    thumbnail: "/walmart-label.jpg",
-  },
-  {
-    id: "LBL-005",
-    name: "eBay Shipping Labels",
-    format: "eBay Standard",
-    status: "Completed",
-    date: "Jan 9, 2026",
-    count: 15,
-    size: "1.5 MB",
-    thumbnail: "/ebay-label.jpg",
-  },
-  {
-    id: "LBL-006",
-    name: "Shopify Orders Batch",
-    format: "Shopify 4x6",
-    status: "Completed",
-    date: "Jan 8, 2026",
-    count: 42,
-    size: "4.2 MB",
-    thumbnail: "/shopify-label.jpg",
-  },
-  {
-    id: "LBL-007",
-    name: "UPS Worldwide Express",
-    format: "UPS 4x6",
-    status: "Failed",
-    date: "Jan 8, 2026",
-    count: 5,
-    size: "0.5 MB",
-    thumbnail: "/ups-label.jpg",
-  },
-  {
-    id: "LBL-008",
-    name: "DHL Express International",
-    format: "DHL 4x6",
-    status: "Completed",
-    date: "Jan 7, 2026",
-    count: 18,
-    size: "1.8 MB",
-    thumbnail: "/dhl-label.jpg",
-  },
-]
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const statusColors: Record<string, string> = {
   Completed: "bg-green-500/10 text-green-500 hover:bg-green-500/20",
@@ -128,6 +53,39 @@ export function LabelsContent() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [formatFilter, setFormatFilter] = useState("all")
+  const [labels, setLabels] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch labels from database
+  useEffect(() => {
+    async function fetchLabels() {
+      try {
+        const response = await fetch('/api/labels')
+        const result = await response.json()
+        
+        if (result.success && result.data) {
+          // Transform database records to match UI expectations
+          const transformedLabels = result.data.map((label: any) => ({
+            id: label.id,
+            name: label.name,
+            format: label.label_base_id || 'Custom',
+            status: 'Completed',
+            date: new Date(label.created_at).toLocaleDateString(),
+            count: 1,
+            size: '0.5 MB',
+            thumbnail: '/placeholder.svg',
+          }))
+          setLabels(transformedLabels)
+        }
+      } catch (error) {
+        console.error('Failed to fetch labels:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchLabels()
+  }, [])
 
   const filteredLabels = labels.filter((label) => {
     const matchesSearch =
@@ -150,13 +108,154 @@ export function LabelsContent() {
     setSelectedLabels((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]))
   }
 
+  const [printLabel, setPrintLabel] = useState<any>(null)
+
+  const handleDownload = async (label: any, action: 'download' | 'print' = 'download') => {
+    try {
+        const toastId = toast.loading("Preparing label...")
+
+        // Fetch full label details including elements
+        const { data: fullLabel, error } = await supabase
+            .from('label_designs')
+            .select('*')
+            .eq('id', label.id)
+            .single()
+            
+        if (error || !fullLabel) {
+            toast.error("Failed to load label data")
+            toast.dismiss(toastId)
+            return
+        }
+
+        // Set label for rendering in hidden container
+        setPrintLabel(fullLabel)
+        
+        // Wait for render (1.5s delay to ensure barcodes/images/fonts are fully loaded)
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        const element = document.getElementById('label-print-generator')
+        if (!element) {
+            toast.error("Generator element not found")
+            toast.dismiss(toastId)
+            return
+        }
+
+        // Capture with identical settings for consistency
+        const capturedCanvas = await html2canvas(element, {
+            scale: 3,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            imageTimeout: 0,
+            removeContainer: true,
+            width: fullLabel.width_px,
+            height: fullLabel.height_px,
+            scrollX: 0,
+            scrollY: 0,
+            x: 0,
+            y: 0,
+            onclone: (clonedDoc) => {
+                const clonedElement = clonedDoc.getElementById('label-print-generator')
+                if (clonedElement) {
+                    clonedElement.style.transform = 'none'
+                    clonedElement.style.transformOrigin = 'top left'
+                    clonedElement.style.borderRadius = '0'
+                    clonedElement.style.boxShadow = 'none'
+                    clonedElement.style.margin = '0'
+                    clonedElement.style.position = 'absolute'
+                    clonedElement.style.top = '0'
+                    clonedElement.style.left = '0'
+                }
+            }
+        })
+
+        if (action === 'print') {
+            const imgData = capturedCanvas.toDataURL('image/png', 1.0)
+            
+            // PDF Dimensions with precision matching Canvas
+            const dpi = fullLabel.dpi || 203
+            const widthMm = (fullLabel.width_px / dpi) * 25.4
+            const heightMm = (fullLabel.height_px / dpi) * 25.4
+            
+            const pdf = new jsPDF({
+                orientation: widthMm > heightMm ? 'l' : 'p',
+                unit: 'mm',
+                format: [widthMm, heightMm],
+                compress: true,
+                precision: 2
+            })
+
+            pdf.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm, undefined, 'FAST')
+            const blobUrl = pdf.output('bloburl')
+
+            const iframe = document.createElement('iframe')
+            iframe.style.display = 'none'
+            iframe.src = blobUrl.toString()
+            document.body.appendChild(iframe)
+            
+            iframe.onload = () => {
+                try {
+                    iframe.contentWindow?.print()
+                } catch (e) {
+                    console.error('Print failed', e)
+                }
+                // Cleanup after print
+                setTimeout(() => {
+                    document.body.removeChild(iframe)
+                    URL.revokeObjectURL(blobUrl.toString())
+                }, 1000)
+            }
+        } else {
+            // PNG Download
+            const imgData = capturedCanvas.toDataURL('image/png', 1.0)
+            const link = document.createElement('a')
+            link.href = imgData
+            link.download = `${fullLabel.name.replace(/[^a-z0-9]/gi, '_')}.png`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        }
+
+        toast.dismiss(toastId)
+        toast.success(action === 'print' ? "Opening print dialog..." : "Label downloaded as PNG!")
+        
+        // Cleanup
+        setPrintLabel(null)
+
+    } catch (error) {
+        console.error("PDF Error:", error)
+        toast.error("Failed to generate PDF")
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-64">
+          <p className="text-muted-foreground">Loading labels...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <style jsx global>{`
+        /* Force font family override for the generator */
+        .is-editor-page {
+          font-family: 'Arial', sans-serif !important;
+        }
+        .is-editor-page * {
+          font-family: inherit;
+        }
+      `}</style>
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">My Labels</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage and organize all your shipping labels</p>
-        </div>
+          <div>
+            <h1 className="text-2xl font-semibold text-foreground">My Labels</h1>
+            <p className="text-sm text-muted-foreground mt-1">Manage and organize all your shipping labels</p>
+          </div>
         <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
           <Upload className="w-4 h-4 mr-2" />
           Upload Labels
@@ -238,11 +337,27 @@ export function LabelsContent() {
           {selectedLabels.length > 0 && (
             <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
               <span className="text-sm text-muted-foreground">{selectedLabels.length} selected</span>
-              <Button variant="outline" size="sm" className="border-border bg-transparent">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-border bg-transparent"
+                onClick={() => {
+                    const labelToProcess = labels.find(l => l.id === selectedLabels[0])
+                    if (labelToProcess) handleDownload(labelToProcess, 'download')
+                }}
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" size="sm" className="border-border bg-transparent">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-border bg-transparent"
+                onClick={() => {
+                    const labelToProcess = labels.find(l => l.id === selectedLabels[0])
+                    if (labelToProcess) handleDownload(labelToProcess, 'print')
+                }}
+              >
                 <Printer className="w-4 h-4 mr-2" />
                 Print
               </Button>
@@ -352,11 +467,11 @@ export function LabelsContent() {
                               <Eye className="w-4 h-4 mr-2" />
                               View
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDownload(label, 'download')}>
                               <Download className="w-4 h-4 mr-2" />
                               Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDownload(label, 'print')}>
                               <Printer className="w-4 h-4 mr-2" />
                               Print
                             </DropdownMenuItem>
@@ -406,11 +521,11 @@ export function LabelsContent() {
                         <Eye className="w-4 h-4 mr-2" />
                         View
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDownload(label, 'download')}>
                         <Download className="w-4 h-4 mr-2" />
                         Download
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDownload(label, 'print')}>
                         <Printer className="w-4 h-4 mr-2" />
                         Print
                       </DropdownMenuItem>
@@ -481,6 +596,88 @@ export function LabelsContent() {
           </div>
         </div>
       )}
+
+      {/* Hidden Generator Container - Moved to end for isolation */}
+      <div style={{ position: 'absolute', top: -10000, left: -10000, visibility: 'visible' }}>
+        {printLabel && (
+            <div 
+                id="label-print-generator"
+                className="is-editor-page"
+                style={{
+                    width: printLabel.width_px,
+                    height: printLabel.height_px,
+                    position: 'relative',
+                    backgroundColor: 'white',
+                    overflow: 'hidden'
+                }}
+            >
+                {printLabel.elements?.map((el: any) => (
+                    <div key={el.id} style={{
+                        position: 'absolute',
+                        left: el.x,
+                        top: el.y,
+                        width: el.width || 'auto',
+                        height: el.height || 'auto',
+                        zIndex: el.z_index,
+                        ...el.style
+                    }}>
+                        {el.type === 'text' && (
+                            <div style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                whiteSpace: 'nowrap',
+                                outline: 'none'
+                            }}>
+                                {el.content}
+                            </div>
+                        )}
+                        {el.type === 'shape' && (
+                            <div style={{ 
+                                width: '100%', 
+                                height: '100%',
+                                backgroundColor: '#E2E8F0',
+                                border: '1px solid #000000',
+                                ...el.style 
+                            }}></div>
+                        )}
+                        {el.type === 'image' && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img 
+                                src={el.content} 
+                                alt="" 
+                                style={{ 
+                                    width: '100%', 
+                                    height: '100%', 
+                                    objectFit: 'contain',
+                                    ...el.style 
+                                }} 
+                            />
+                        )}
+                        {el.type === 'barcode' && (
+                            <div style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                background: 'white',
+                                ...el.style
+                            }}>
+                                <Barcode 
+                                    value={el.content}
+                                    width={el.width ? Math.max(1, el.width / (el.content.length * 10)) : 2}
+                                    height={el.height || 50}
+                                    displayValue={el.displayValue !== undefined ? el.displayValue : false}
+                                    margin={0}
+                                    background="transparent"
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        )}
+      </div>
     </div>
   )
 }

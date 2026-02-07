@@ -1,0 +1,2913 @@
+{
+  "amazon": [
+    {
+      "id": "amazon_fba_shipping_label_precise_4x6",
+      "name": "Amazon FBA Shipping Label (Precise) 4x6",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x6_thermal_300_dpi",
+      "name": "Amazon FBA 4x6 Thermal (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x6_inkjet",
+      "name": "Amazon FBA 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "amazon",
+      "type": "inkjet",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_25x4_thermal_203_dpi",
+      "name": "Amazon FBA 2.5x4 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_3x5_thermal_203_dpi",
+      "name": "Amazon FBA 3x5 Thermal (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_3x5_thermal_300_dpi",
+      "name": "Amazon FBA 3x5 Thermal (300 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_2x4_thermal_203_dpi",
+      "name": "Amazon FBA 2x4 Thermal (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_2x4_thermal_300_dpi",
+      "name": "Amazon FBA 2x4 Thermal (300 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_15x4_thermal_203_dpi",
+      "name": "Amazon FBA 1.5x4 Thermal (203 DPI)",
+      "dimensions": "38.1mm × 101.6mm (1.5\" × 4\")",
+      "size": "1.5\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x6_desktop",
+      "name": "Amazon FBA 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "amazon",
+      "type": "desktop",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_6x4_thermal_203_dpi",
+      "name": "Amazon FBA 6x4 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_6x4_thermal_300_dpi",
+      "name": "Amazon FBA 6x4 Thermal (300 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x3_thermal_203_dpi",
+      "name": "Amazon FBA 4x3 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x3_thermal_300_dpi",
+      "name": "Amazon FBA 4x3 Thermal (300 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_2625x1_thermal_203_dpi",
+      "name": "Amazon FBA 2.625x1 Thermal (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_325x2_thermal_203_dpi",
+      "name": "Amazon FBA 3.25x2 Thermal (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_5x3_thermal_203_dpi",
+      "name": "Amazon FBA 5x3 Thermal (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_5x3_thermal_300_dpi",
+      "name": "Amazon FBA 5x3 Thermal (300 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_6x3_thermal_203_dpi",
+      "name": "Amazon FBA 6x3 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_6x3_thermal_300_dpi",
+      "name": "Amazon FBA 6x3 Thermal (300 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x7_thermal_203_dpi",
+      "name": "Amazon FBA 4x7 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x7_thermal_300_dpi",
+      "name": "Amazon FBA 4x7 Thermal (300 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_25x5_thermal_203_dpi",
+      "name": "Amazon FBA 2.5x5 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_25x5_thermal_300_dpi",
+      "name": "Amazon FBA 2.5x5 Thermal (300 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "amazon",
+      "type": "thermal",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    },
+    {
+      "id": "amazon_fba_4x6_inkjet_300_dpi",
+      "name": "Amazon FBA 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "amazon",
+      "type": "inkjet",
+      "marketplace": "Amazon",
+      "badge": "AMAZON",
+      "badgeColor": "bg-[#FF9900]"
+    }
+  ],
+  "walmart": [
+    {
+      "id": "walmart_fwa_4x6_thermal_203_dpi",
+      "name": "Walmart FWA 4x6 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x6_thermal_300_dpi",
+      "name": "Walmart FWA 4x6 Thermal (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x6_inkjet",
+      "name": "Walmart FWA 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "walmart",
+      "type": "inkjet",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_25x4_thermal_203_dpi",
+      "name": "Walmart FWA 2.5x4 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_25x4_thermal_300_dpi",
+      "name": "Walmart FWA 2.5x4 Thermal (300 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_3x5_thermal_203_dpi",
+      "name": "Walmart FWA 3x5 Thermal (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_3x5_thermal_300_dpi",
+      "name": "Walmart FWA 3x5 Thermal (300 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_2x4_thermal_203_dpi",
+      "name": "Walmart FWA 2x4 Thermal (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x3_thermal_203_dpi",
+      "name": "Walmart FWA 4x3 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x3_thermal_300_dpi",
+      "name": "Walmart FWA 4x3 Thermal (300 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_6x4_thermal_203_dpi",
+      "name": "Walmart FWA 6x4 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_5x3_thermal_203_dpi",
+      "name": "Walmart FWA 5x3 Thermal (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_5x3_thermal_300_dpi",
+      "name": "Walmart FWA 5x3 Thermal (300 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_6x3_thermal_203_dpi",
+      "name": "Walmart FWA 6x3 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x7_thermal_203_dpi",
+      "name": "Walmart FWA 4x7 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_2625x1_thermal_203_dpi",
+      "name": "Walmart FWA 2.625x1 Thermal (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_325x2_thermal_203_dpi",
+      "name": "Walmart FWA 3.25x2 Thermal (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_25x5_thermal_203_dpi",
+      "name": "Walmart FWA 2.5x5 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "walmart",
+      "type": "thermal",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x6_desktop",
+      "name": "Walmart FWA 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "walmart",
+      "type": "desktop",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    },
+    {
+      "id": "walmart_fwa_4x6_inkjet_300_dpi",
+      "name": "Walmart FWA 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "walmart",
+      "type": "inkjet",
+      "marketplace": "Walmart",
+      "badge": "WALMART",
+      "badgeColor": "bg-[#0071CE]"
+    }
+  ],
+  "ebay": [
+    {
+      "id": "ebay_4x6_shipping_label_203_dpi",
+      "name": "eBay 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_shipping_label_300_dpi",
+      "name": "eBay 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_desktop",
+      "name": "eBay 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "desktop",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_inkjet",
+      "name": "eBay 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "inkjet",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_25x4_thermal_203_dpi",
+      "name": "eBay 2.5x4 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_3x5_thermal_203_dpi",
+      "name": "eBay 3x5 Thermal (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x3_thermal_203_dpi",
+      "name": "eBay 4x3 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_6x4_thermal_203_dpi",
+      "name": "eBay 6x4 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_5x3_thermal_203_dpi",
+      "name": "eBay 5x3 Thermal (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x7_thermal_203_dpi",
+      "name": "eBay 4x7 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_2x4_thermal_203_dpi",
+      "name": "eBay 2x4 Thermal (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_6x3_thermal_203_dpi",
+      "name": "eBay 6x3 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_2625x1_thermal_203_dpi",
+      "name": "eBay 2.625x1 Thermal (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_325x2_thermal_203_dpi",
+      "name": "eBay 3.25x2 Thermal (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_25x5_thermal_203_dpi",
+      "name": "eBay 2.5x5 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_thermal_300_dpi_premium",
+      "name": "eBay 4x6 Thermal (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_inkjet_300_dpi",
+      "name": "eBay 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "inkjet",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x6_desktop_letter",
+      "name": "eBay 4x6 Desktop (Letter)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "desktop",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_4x8_thermal_203_dpi",
+      "name": "eBay 4x8 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" × 8\")",
+      "size": "4\" × 8\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    },
+    {
+      "id": "ebay_custom_4x6_thermal",
+      "name": "eBay Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "ebay",
+      "type": "thermal",
+      "marketplace": "eBay",
+      "badge": "EBAY",
+      "badgeColor": "bg-[#E53238]"
+    }
+  ],
+  "shopify": [
+    {
+      "id": "shopify_4x6_shipping_label_203_dpi",
+      "name": "Shopify 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_shipping_label_300_dpi",
+      "name": "Shopify 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_desktop",
+      "name": "Shopify 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "desktop",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_inkjet",
+      "name": "Shopify 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "inkjet",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_25x4_thermal_203_dpi",
+      "name": "Shopify 2.5x4 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_3x5_thermal_203_dpi",
+      "name": "Shopify 3x5 Thermal (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x3_thermal_203_dpi",
+      "name": "Shopify 4x3 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_6x4_thermal_203_dpi",
+      "name": "Shopify 6x4 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_5x3_thermal_203_dpi",
+      "name": "Shopify 5x3 Thermal (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x7_thermal_203_dpi",
+      "name": "Shopify 4x7 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_2x4_thermal_203_dpi",
+      "name": "Shopify 2x4 Thermal (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_6x3_thermal_203_dpi",
+      "name": "Shopify 6x3 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_2625x1_thermal_203_dpi",
+      "name": "Shopify 2.625x1 Thermal (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_325x2_thermal_203_dpi",
+      "name": "Shopify 3.25x2 Thermal (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_25x5_thermal_203_dpi",
+      "name": "Shopify 2.5x5 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_thermal_300_dpi_premium",
+      "name": "Shopify 4x6 Thermal (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_inkjet_300_dpi",
+      "name": "Shopify 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "inkjet",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x6_desktop_letter",
+      "name": "Shopify 4x6 Desktop (Letter)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "desktop",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_4x8_thermal_203_dpi",
+      "name": "Shopify 4x8 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" × 8\")",
+      "size": "4\" × 8\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    },
+    {
+      "id": "shopify_custom_4x6_thermal",
+      "name": "Shopify Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "shopify",
+      "type": "thermal",
+      "marketplace": "Shopify",
+      "badge": "SHOPIFY",
+      "badgeColor": "bg-[#96BF48]"
+    }
+  ],
+  "etsy": [
+    {
+      "id": "etsy_4x6_shipping_label_203_dpi",
+      "name": "Etsy 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x6_shipping_label_300_dpi",
+      "name": "Etsy 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x6_desktop",
+      "name": "Etsy 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "desktop",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x6_inkjet",
+      "name": "Etsy 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "inkjet",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_25x4_thermal_203_dpi",
+      "name": "Etsy 2.5x4 Thermal (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_3x5_thermal_203_dpi",
+      "name": "Etsy 3x5 Thermal (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x3_thermal_203_dpi",
+      "name": "Etsy 4x3 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_6x4_thermal_203_dpi",
+      "name": "Etsy 6x4 Thermal (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_5x3_thermal_203_dpi",
+      "name": "Etsy 5x3 Thermal (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x7_thermal_203_dpi",
+      "name": "Etsy 4x7 Thermal (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_2x4_thermal_203_dpi",
+      "name": "Etsy 2x4 Thermal (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_2625x1_thermal_203_dpi",
+      "name": "Etsy 2.625x1 Thermal (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_325x2_thermal_203_dpi",
+      "name": "Etsy 3.25x2 Thermal (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_4x6_inkjet_300_dpi",
+      "name": "Etsy 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "inkjet",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_custom_4x6_thermal",
+      "name": "Etsy Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    },
+    {
+      "id": "etsy_plus_4x6_shipping_label_203_dpi",
+      "name": "Etsy Plus 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "etsy",
+      "type": "thermal",
+      "marketplace": "Etsy",
+      "badge": "ETSY",
+      "badgeColor": "bg-[#F1641E]"
+    }
+  ],
+  "usps": [
+    {
+      "id": "usps_priority_mail_4x6_203_dpi",
+      "name": "USPS Priority Mail 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x6_300_dpi",
+      "name": "USPS Priority Mail 4x6 (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_first_class_4x6_203_dpi",
+      "name": "USPS First Class 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_express_4x6_203_dpi",
+      "name": "USPS Priority Mail Express 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_media_mail_4x6_203_dpi",
+      "name": "USPS Media Mail 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_ground_advantage_4x6_203_dpi",
+      "name": "USPS Ground Advantage 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_flat_rate_envelope_4x6_203_dpi",
+      "name": "USPS Flat Rate Envelope 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_flat_rate_box_4x6_203_dpi",
+      "name": "USPS Flat Rate Box 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_international_priority_4x6_203_dpi",
+      "name": "USPS International Priority 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_international_express_4x6_203_dpi",
+      "name": "USPS International Express 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_25x4_203_dpi",
+      "name": "USPS Priority Mail 2.5x4 (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" × 4\")",
+      "size": "2.5\" × 4\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_3x5_203_dpi",
+      "name": "USPS Priority Mail 3x5 (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" × 5\")",
+      "size": "3\" × 5\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x3_203_dpi",
+      "name": "USPS Priority Mail 4x3 (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" × 3\")",
+      "size": "4\" × 3\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_6x4_203_dpi",
+      "name": "USPS Priority Mail 6x4 (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" × 4\")",
+      "size": "6\" × 4\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_5x3_203_dpi",
+      "name": "USPS Priority Mail 5x3 (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" × 3\")",
+      "size": "5\" × 3\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x7_203_dpi",
+      "name": "USPS Priority Mail 4x7 (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" × 7\")",
+      "size": "4\" × 7\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_2x4_203_dpi",
+      "name": "USPS Priority Mail 2x4 (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" × 4\")",
+      "size": "2\" × 4\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_6x3_203_dpi",
+      "name": "USPS Priority Mail 6x3 (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" × 3\")",
+      "size": "6\" × 3\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x6_desktop",
+      "name": "USPS Priority Mail 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "desktop",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x6_inkjet",
+      "name": "USPS Priority Mail 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "inkjet",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x6_300_dpi_premium",
+      "name": "USPS Priority Mail 4x6 (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x8_203_dpi",
+      "name": "USPS Priority Mail 4x8 (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" × 8\")",
+      "size": "4\" × 8\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_2625x1_203_dpi",
+      "name": "USPS Priority Mail 2.625x1 (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" × 1\")",
+      "size": "2.625\" × 1\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_325x2_203_dpi",
+      "name": "USPS Priority Mail 3.25x2 (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" × 2\")",
+      "size": "3.25\" × 2\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_25x5_203_dpi",
+      "name": "USPS Priority Mail 2.5x5 (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" × 5\")",
+      "size": "2.5\" × 5\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_4x6_inkjet_300_dpi",
+      "name": "USPS Priority Mail 4x6 Inkjet (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "inkjet",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_retail_ground_4x6_203_dpi",
+      "name": "USPS Retail Ground 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_parcel_select_4x6_203_dpi",
+      "name": "USPS Parcel Select 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_priority_mail_cubic_4x6_203_dpi",
+      "name": "USPS Priority Mail Cubic 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    },
+    {
+      "id": "usps_custom_4x6_thermal",
+      "name": "USPS Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" × 6\")",
+      "size": "4\" × 6\"",
+      "category": "usps",
+      "type": "thermal",
+      "marketplace": "USPS",
+      "badge": "USPS",
+      "badgeColor": "bg-[#333366]"
+    }
+  ],
+  "fedex": [
+    {
+      "id": "fedex_ground_4x6_203_dpi",
+      "name": "FedEx Ground 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x6_300_dpi",
+      "name": "FedEx Ground 4x6 (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_express_4x6_203_dpi",
+      "name": "FedEx Express 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_express_4x6_300_dpi",
+      "name": "FedEx Express 4x6 (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_2day_4x6_203_dpi",
+      "name": "FedEx 2Day 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_overnight_4x6_203_dpi",
+      "name": "FedEx Overnight 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_standard_overnight_4x6_203_dpi",
+      "name": "FedEx Standard Overnight 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_priority_overnight_4x6_203_dpi",
+      "name": "FedEx Priority Overnight 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_first_overnight_4x6_203_dpi",
+      "name": "FedEx First Overnight 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_international_economy_4x6_203_dpi",
+      "name": "FedEx International Economy 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_international_priority_4x6_203_dpi",
+      "name": "FedEx International Priority 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_25x4_203_dpi",
+      "name": "FedEx Ground 2.5x4 (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" Ã— 4\")",
+      "size": "2.5\" Ã— 4\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_3x5_203_dpi",
+      "name": "FedEx Ground 3x5 (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" Ã— 5\")",
+      "size": "3\" Ã— 5\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x3_203_dpi",
+      "name": "FedEx Ground 4x3 (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" Ã— 3\")",
+      "size": "4\" Ã— 3\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_6x4_203_dpi",
+      "name": "FedEx Ground 6x4 (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" Ã— 4\")",
+      "size": "6\" Ã— 4\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_5x3_203_dpi",
+      "name": "FedEx Ground 5x3 (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" Ã— 3\")",
+      "size": "5\" Ã— 3\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x7_203_dpi",
+      "name": "FedEx Ground 4x7 (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" Ã— 7\")",
+      "size": "4\" Ã— 7\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_2x4_203_dpi",
+      "name": "FedEx Ground 2x4 (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" Ã— 4\")",
+      "size": "2\" Ã— 4\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_6x3_203_dpi",
+      "name": "FedEx Ground 6x3 (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" Ã— 3\")",
+      "size": "6\" Ã— 3\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x6_desktop",
+      "name": "FedEx Ground 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "desktop",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x6_inkjet",
+      "name": "FedEx Ground 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "inkjet",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x6_300_dpi_premium",
+      "name": "FedEx Ground 4x6 (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_4x8_203_dpi",
+      "name": "FedEx Ground 4x8 (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" Ã— 8\")",
+      "size": "4\" Ã— 8\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_ground_2625x1_203_dpi",
+      "name": "FedEx Ground 2.625x1 (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" Ã— 1\")",
+      "size": "2.625\" Ã— 1\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    },
+    {
+      "id": "fedex_custom_4x6_thermal",
+      "name": "FedEx Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "fedex",
+      "type": "thermal",
+      "marketplace": "FedEx",
+      "badge": "FEDEX",
+      "badgeColor": "bg-[#4D148C]"
+    }
+  ],
+  "ups": [
+    {
+      "id": "ups_ground_4x6_203_dpi",
+      "name": "UPS Ground 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x6_300_dpi",
+      "name": "UPS Ground 4x6 (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_2nd_day_air_4x6_203_dpi",
+      "name": "UPS 2nd Day Air 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_next_day_air_4x6_203_dpi",
+      "name": "UPS Next Day Air 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_next_day_air_saver_4x6_203_dpi",
+      "name": "UPS Next Day Air Saver 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_next_day_air_early_4x6_203_dpi",
+      "name": "UPS Next Day Air Early 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_3_day_select_4x6_203_dpi",
+      "name": "UPS 3 Day Select 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_worldwide_express_4x6_203_dpi",
+      "name": "UPS Worldwide Express 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_worldwide_expedited_4x6_203_dpi",
+      "name": "UPS Worldwide Expedited 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_worldwide_saver_4x6_203_dpi",
+      "name": "UPS Worldwide Saver 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_25x4_203_dpi",
+      "name": "UPS Ground 2.5x4 (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" Ã— 4\")",
+      "size": "2.5\" Ã— 4\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_3x5_203_dpi",
+      "name": "UPS Ground 3x5 (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" Ã— 5\")",
+      "size": "3\" Ã— 5\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x3_203_dpi",
+      "name": "UPS Ground 4x3 (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" Ã— 3\")",
+      "size": "4\" Ã— 3\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_6x4_203_dpi",
+      "name": "UPS Ground 6x4 (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" Ã— 4\")",
+      "size": "6\" Ã— 4\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_5x3_203_dpi",
+      "name": "UPS Ground 5x3 (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" Ã— 3\")",
+      "size": "5\" Ã— 3\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x7_203_dpi",
+      "name": "UPS Ground 4x7 (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" Ã— 7\")",
+      "size": "4\" Ã— 7\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_2x4_203_dpi",
+      "name": "UPS Ground 2x4 (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" Ã— 4\")",
+      "size": "2\" Ã— 4\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_6x3_203_dpi",
+      "name": "UPS Ground 6x3 (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" Ã— 3\")",
+      "size": "6\" Ã— 3\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x6_desktop",
+      "name": "UPS Ground 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "desktop",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x6_inkjet",
+      "name": "UPS Ground 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "inkjet",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x6_300_dpi_premium",
+      "name": "UPS Ground 4x6 (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_4x8_203_dpi",
+      "name": "UPS Ground 4x8 (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" Ã— 8\")",
+      "size": "4\" Ã— 8\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_2625x1_203_dpi",
+      "name": "UPS Ground 2.625x1 (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" Ã— 1\")",
+      "size": "2.625\" Ã— 1\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_ground_325x2_203_dpi",
+      "name": "UPS Ground 3.25x2 (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" Ã— 2\")",
+      "size": "3.25\" Ã— 2\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    },
+    {
+      "id": "ups_custom_4x6_thermal",
+      "name": "UPS Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ups",
+      "type": "thermal",
+      "marketplace": "UPS",
+      "badge": "UPS",
+      "badgeColor": "bg-[#351C15]"
+    }
+  ],
+  "dhl": [
+    {
+      "id": "dhl_express_4x6_203_dpi",
+      "name": "DHL Express 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x6_300_dpi",
+      "name": "DHL Express 4x6 (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_international_4x6_203_dpi",
+      "name": "DHL Express International 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_worldwide_4x6_203_dpi",
+      "name": "DHL Express Worldwide 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_envelope_4x6_203_dpi",
+      "name": "DHL Express Envelope 4x6 (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_25x4_203_dpi",
+      "name": "DHL Express 2.5x4 (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" Ã— 4\")",
+      "size": "2.5\" Ã— 4\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_3x5_203_dpi",
+      "name": "DHL Express 3x5 (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" Ã— 5\")",
+      "size": "3\" Ã— 5\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x3_203_dpi",
+      "name": "DHL Express 4x3 (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" Ã— 3\")",
+      "size": "4\" Ã— 3\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_6x4_203_dpi",
+      "name": "DHL Express 6x4 (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" Ã— 4\")",
+      "size": "6\" Ã— 4\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_5x3_203_dpi",
+      "name": "DHL Express 5x3 (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" Ã— 3\")",
+      "size": "5\" Ã— 3\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x7_203_dpi",
+      "name": "DHL Express 4x7 (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" Ã— 7\")",
+      "size": "4\" Ã— 7\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_2x4_203_dpi",
+      "name": "DHL Express 2x4 (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" Ã— 4\")",
+      "size": "2\" Ã— 4\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_6x3_203_dpi",
+      "name": "DHL Express 6x3 (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" Ã— 3\")",
+      "size": "6\" Ã— 3\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x6_desktop",
+      "name": "DHL Express 4x6 Desktop",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "desktop",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x6_inkjet",
+      "name": "DHL Express 4x6 Inkjet",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "inkjet",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x6_300_dpi_premium",
+      "name": "DHL Express 4x6 (300 DPI) Premium",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_4x8_203_dpi",
+      "name": "DHL Express 4x8 (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" Ã— 8\")",
+      "size": "4\" Ã— 8\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_2625x1_203_dpi",
+      "name": "DHL Express 2.625x1 (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" Ã— 1\")",
+      "size": "2.625\" Ã— 1\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_express_325x2_203_dpi",
+      "name": "DHL Express 3.25x2 (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" Ã— 2\")",
+      "size": "3.25\" Ã— 2\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    },
+    {
+      "id": "dhl_custom_4x6_thermal",
+      "name": "DHL Custom 4x6 Thermal",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "dhl",
+      "type": "thermal",
+      "marketplace": "DHL",
+      "badge": "DHL",
+      "badgeColor": "bg-[#FFCC00]"
+    }
+  ],
+  "ontrac": [
+    {
+      "id": "ontrac_4x6_shipping_label_203_dpi",
+      "name": "OnTrac 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ontrac",
+      "type": "thermal",
+      "marketplace": "OnTrac",
+      "badge": "ONTRAC",
+      "badgeColor": "bg-[#00A3E0]"
+    },
+    {
+      "id": "ontrac_4x6_shipping_label_300_dpi",
+      "name": "OnTrac 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "ontrac",
+      "type": "thermal",
+      "marketplace": "OnTrac",
+      "badge": "ONTRAC",
+      "badgeColor": "bg-[#00A3E0]"
+    }
+  ],
+  "lasership": [
+    {
+      "id": "lasership_4x6_shipping_label_203_dpi",
+      "name": "LaserShip 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "lasership",
+      "type": "thermal",
+      "marketplace": "LaserShip",
+      "badge": "LASERSHIP",
+      "badgeColor": "bg-[#0066CC]"
+    },
+    {
+      "id": "lasership_4x6_shipping_label_300_dpi",
+      "name": "LaserShip 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "lasership",
+      "type": "thermal",
+      "marketplace": "LaserShip",
+      "badge": "LASERSHIP",
+      "badgeColor": "bg-[#0066CC]"
+    }
+  ],
+  "pitneybowes": [
+    {
+      "id": "pitney_bowes_4x6_shipping_label_203_dpi",
+      "name": "Pitney Bowes 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "pitneybowes",
+      "type": "thermal",
+      "marketplace": "Pitney Bowes",
+      "badge": "PITNEY BOWES",
+      "badgeColor": "bg-[#FF6B35]"
+    },
+    {
+      "id": "pitney_bowes_4x6_shipping_label_300_dpi",
+      "name": "Pitney Bowes 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "pitneybowes",
+      "type": "thermal",
+      "marketplace": "Pitney Bowes",
+      "badge": "PITNEY BOWES",
+      "badgeColor": "bg-[#FF6B35]"
+    }
+  ],
+  "stampscom": [
+    {
+      "id": "stampscom_4x6_shipping_label_203_dpi",
+      "name": "Stamps.com 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "stampscom",
+      "type": "thermal",
+      "marketplace": "Stamps.com",
+      "badge": "STAMPS.COM",
+      "badgeColor": "bg-[#0066CC]"
+    },
+    {
+      "id": "stampscom_4x6_shipping_label_300_dpi",
+      "name": "Stamps.com 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "stampscom",
+      "type": "thermal",
+      "marketplace": "Stamps.com",
+      "badge": "STAMPS.COM",
+      "badgeColor": "bg-[#0066CC]"
+    }
+  ],
+  "shipstation": [
+    {
+      "id": "shipstation_4x6_shipping_label_203_dpi",
+      "name": "ShipStation 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "shipstation",
+      "type": "thermal",
+      "marketplace": "ShipStation",
+      "badge": "SHIPSTATION",
+      "badgeColor": "bg-[#3B5998]"
+    },
+    {
+      "id": "shipstation_4x6_shipping_label_300_dpi",
+      "name": "ShipStation 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "shipstation",
+      "type": "thermal",
+      "marketplace": "ShipStation",
+      "badge": "SHIPSTATION",
+      "badgeColor": "bg-[#3B5998]"
+    }
+  ],
+  "endicia": [
+    {
+      "id": "endicia_4x6_shipping_label_203_dpi",
+      "name": "Endicia 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "endicia",
+      "type": "thermal",
+      "marketplace": "Endicia",
+      "badge": "ENDICIA",
+      "badgeColor": "bg-[#0066CC]"
+    },
+    {
+      "id": "endicia_4x6_shipping_label_300_dpi",
+      "name": "Endicia 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "endicia",
+      "type": "thermal",
+      "marketplace": "Endicia",
+      "badge": "ENDICIA",
+      "badgeColor": "bg-[#0066CC]"
+    }
+  ],
+  "shippo": [
+    {
+      "id": "shippo_4x6_shipping_label_203_dpi",
+      "name": "Shippo 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "shippo",
+      "type": "thermal",
+      "marketplace": "Shippo",
+      "badge": "SHIPPO",
+      "badgeColor": "bg-[#6772E5]"
+    },
+    {
+      "id": "shippo_4x6_shipping_label_300_dpi",
+      "name": "Shippo 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "shippo",
+      "type": "thermal",
+      "marketplace": "Shippo",
+      "badge": "SHIPPO",
+      "badgeColor": "bg-[#6772E5]"
+    }
+  ],
+  "easypost": [
+    {
+      "id": "easypost_4x6_shipping_label_203_dpi",
+      "name": "EasyPost 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "easypost",
+      "type": "thermal",
+      "marketplace": "EasyPost",
+      "badge": "EASYPOST",
+      "badgeColor": "bg-[#5469D4]"
+    },
+    {
+      "id": "easypost_4x6_shipping_label_300_dpi",
+      "name": "EasyPost 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "easypost",
+      "type": "thermal",
+      "marketplace": "EasyPost",
+      "badge": "EASYPOST",
+      "badgeColor": "bg-[#5469D4]"
+    }
+  ],
+  "canadapost": [
+    {
+      "id": "canada_post_4x6_shipping_label_203_dpi",
+      "name": "Canada Post 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "canadapost",
+      "type": "thermal",
+      "marketplace": "Canada Post",
+      "badge": "CANADA POST",
+      "badgeColor": "bg-[#ED1C24]"
+    },
+    {
+      "id": "canada_post_4x6_shipping_label_300_dpi",
+      "name": "Canada Post 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "canadapost",
+      "type": "thermal",
+      "marketplace": "Canada Post",
+      "badge": "CANADA POST",
+      "badgeColor": "bg-[#ED1C24]"
+    }
+  ],
+  "royalmail": [
+    {
+      "id": "royal_mail_4x6_shipping_label_203_dpi",
+      "name": "Royal Mail 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "royalmail",
+      "type": "thermal",
+      "marketplace": "Royal Mail",
+      "badge": "ROYAL MAIL",
+      "badgeColor": "bg-[#E60000]"
+    },
+    {
+      "id": "royal_mail_4x6_shipping_label_300_dpi",
+      "name": "Royal Mail 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "royalmail",
+      "type": "thermal",
+      "marketplace": "Royal Mail",
+      "badge": "ROYAL MAIL",
+      "badgeColor": "bg-[#E60000]"
+    }
+  ],
+  "australiapost": [
+    {
+      "id": "australia_post_4x6_shipping_label_203_dpi",
+      "name": "Australia Post 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "australiapost",
+      "type": "thermal",
+      "marketplace": "Australia Post",
+      "badge": "AUSTRALIA POST",
+      "badgeColor": "bg-[#E60000]"
+    },
+    {
+      "id": "australia_post_4x6_shipping_label_300_dpi",
+      "name": "Australia Post 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "australiapost",
+      "type": "thermal",
+      "marketplace": "Australia Post",
+      "badge": "AUSTRALIA POST",
+      "badgeColor": "bg-[#E60000]"
+    }
+  ],
+  "generic": [
+    {
+      "id": "generic_4x6_shipping_label_203_dpi",
+      "name": "Generic 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x6_shipping_label_300_dpi",
+      "name": "Generic 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_25x4_shipping_label_203_dpi",
+      "name": "Generic 2.5x4 Shipping Label (203 DPI)",
+      "dimensions": "63.5mm × 101.6mm (2.5\" Ã— 4\")",
+      "size": "2.5\" Ã— 4\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_3x5_shipping_label_203_dpi",
+      "name": "Generic 3x5 Shipping Label (203 DPI)",
+      "dimensions": "76.2mm × 127mm (3\" Ã— 5\")",
+      "size": "3\" Ã— 5\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x3_shipping_label_203_dpi",
+      "name": "Generic 4x3 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 76.2mm (4\" Ã— 3\")",
+      "size": "4\" Ã— 3\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_6x4_shipping_label_203_dpi",
+      "name": "Generic 6x4 Shipping Label (203 DPI)",
+      "dimensions": "152.4mm × 101.6mm (6\" Ã— 4\")",
+      "size": "6\" Ã— 4\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_5x3_shipping_label_203_dpi",
+      "name": "Generic 5x3 Shipping Label (203 DPI)",
+      "dimensions": "127mm × 76.2mm (5\" Ã— 3\")",
+      "size": "5\" Ã— 3\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x7_shipping_label_203_dpi",
+      "name": "Generic 4x7 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 177.8mm (4\" Ã— 7\")",
+      "size": "4\" Ã— 7\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_2x4_shipping_label_203_dpi",
+      "name": "Generic 2x4 Shipping Label (203 DPI)",
+      "dimensions": "50.8mm × 101.6mm (2\" Ã— 4\")",
+      "size": "2\" Ã— 4\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_6x3_shipping_label_203_dpi",
+      "name": "Generic 6x3 Shipping Label (203 DPI)",
+      "dimensions": "152.4mm × 76.2mm (6\" Ã— 3\")",
+      "size": "6\" Ã— 3\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x6_desktop_label",
+      "name": "Generic 4x6 Desktop Label",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "generic",
+      "type": "desktop",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x6_inkjet_label",
+      "name": "Generic 4x6 Inkjet Label",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "generic",
+      "type": "inkjet",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_4x8_shipping_label_203_dpi",
+      "name": "Generic 4x8 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 203.2mm (4\" Ã— 8\")",
+      "size": "4\" Ã— 8\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_2625x1_shipping_label_203_dpi",
+      "name": "Generic 2.625x1 Shipping Label (203 DPI)",
+      "dimensions": "66.675mm × 25.4mm (2.625\" Ã— 1\")",
+      "size": "2.625\" Ã— 1\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_325x2_shipping_label_203_dpi",
+      "name": "Generic 3.25x2 Shipping Label (203 DPI)",
+      "dimensions": "82.55mm × 50.8mm (3.25\" Ã— 2\")",
+      "size": "3.25\" Ã— 2\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    },
+    {
+      "id": "generic_25x5_shipping_label_203_dpi",
+      "name": "Generic 2.5x5 Shipping Label (203 DPI)",
+      "dimensions": "63.5mm × 127mm (2.5\" Ã— 5\")",
+      "size": "2.5\" Ã— 5\"",
+      "category": "generic",
+      "type": "thermal",
+      "marketplace": "â€”",
+      "badge": "Â€”",
+      "badgeColor": "bg-gray-500"
+    }
+  ],
+  "woocommerce": [
+    {
+      "id": "woocommerce_4x6_shipping_label_203_dpi",
+      "name": "WooCommerce 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "woocommerce",
+      "type": "thermal",
+      "marketplace": "WooCommerce",
+      "badge": "WOOCOMMERCE",
+      "badgeColor": "bg-[#96588A]"
+    },
+    {
+      "id": "woocommerce_4x6_shipping_label_300_dpi",
+      "name": "WooCommerce 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "woocommerce",
+      "type": "thermal",
+      "marketplace": "WooCommerce",
+      "badge": "WOOCOMMERCE",
+      "badgeColor": "bg-[#96588A]"
+    }
+  ],
+  "bigcommerce": [
+    {
+      "id": "bigcommerce_4x6_shipping_label_203_dpi",
+      "name": "BigCommerce 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "bigcommerce",
+      "type": "thermal",
+      "marketplace": "BigCommerce",
+      "badge": "BIGCOMMERCE",
+      "badgeColor": "bg-[#121118]"
+    },
+    {
+      "id": "bigcommerce_4x6_shipping_label_300_dpi",
+      "name": "BigCommerce 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "bigcommerce",
+      "type": "thermal",
+      "marketplace": "BigCommerce",
+      "badge": "BIGCOMMERCE",
+      "badgeColor": "bg-[#121118]"
+    }
+  ],
+  "magento": [
+    {
+      "id": "magento_4x6_shipping_label_203_dpi",
+      "name": "Magento 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "magento",
+      "type": "thermal",
+      "marketplace": "Magento",
+      "badge": "MAGENTO",
+      "badgeColor": "bg-[#EE672F]"
+    },
+    {
+      "id": "magento_4x6_shipping_label_300_dpi",
+      "name": "Magento 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "magento",
+      "type": "thermal",
+      "marketplace": "Magento",
+      "badge": "MAGENTO",
+      "badgeColor": "bg-[#EE672F]"
+    }
+  ],
+  "prestashop": [
+    {
+      "id": "prestashop_4x6_shipping_label_203_dpi",
+      "name": "PrestaShop 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "prestashop",
+      "type": "thermal",
+      "marketplace": "PrestaShop",
+      "badge": "PRESTASHOP",
+      "badgeColor": "bg-[#DF0067]"
+    },
+    {
+      "id": "prestashop_4x6_shipping_label_300_dpi",
+      "name": "PrestaShop 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "prestashop",
+      "type": "thermal",
+      "marketplace": "PrestaShop",
+      "badge": "PRESTASHOP",
+      "badgeColor": "bg-[#DF0067]"
+    }
+  ],
+  "opencart": [
+    {
+      "id": "opencart_4x6_shipping_label_203_dpi",
+      "name": "OpenCart 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "opencart",
+      "type": "thermal",
+      "marketplace": "OpenCart",
+      "badge": "OPENCART",
+      "badgeColor": "bg-[#2A9FD8]"
+    },
+    {
+      "id": "opencart_4x6_shipping_label_300_dpi",
+      "name": "OpenCart 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "opencart",
+      "type": "thermal",
+      "marketplace": "OpenCart",
+      "badge": "OPENCART",
+      "badgeColor": "bg-[#2A9FD8]"
+    }
+  ],
+  "squarespace": [
+    {
+      "id": "squarespace_4x6_shipping_label_203_dpi",
+      "name": "Squarespace 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "squarespace",
+      "type": "thermal",
+      "marketplace": "Squarespace",
+      "badge": "SQUARESPACE",
+      "badgeColor": "bg-[#000000]"
+    },
+    {
+      "id": "squarespace_4x6_shipping_label_300_dpi",
+      "name": "Squarespace 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "squarespace",
+      "type": "thermal",
+      "marketplace": "Squarespace",
+      "badge": "SQUARESPACE",
+      "badgeColor": "bg-[#000000]"
+    }
+  ],
+  "wix": [
+    {
+      "id": "wix_4x6_shipping_label_203_dpi",
+      "name": "Wix 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "wix",
+      "type": "thermal",
+      "marketplace": "Wix",
+      "badge": "WIX",
+      "badgeColor": "bg-[#0C6EFC]"
+    },
+    {
+      "id": "wix_4x6_shipping_label_300_dpi",
+      "name": "Wix 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "wix",
+      "type": "thermal",
+      "marketplace": "Wix",
+      "badge": "WIX",
+      "badgeColor": "bg-[#0C6EFC]"
+    }
+  ],
+  "depop": [
+    {
+      "id": "depop_4x6_shipping_label_203_dpi",
+      "name": "Depop 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "depop",
+      "type": "thermal",
+      "marketplace": "Depop",
+      "badge": "DEPOP",
+      "badgeColor": "bg-[#FF0000]"
+    },
+    {
+      "id": "depop_4x6_shipping_label_300_dpi",
+      "name": "Depop 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "depop",
+      "type": "thermal",
+      "marketplace": "Depop",
+      "badge": "DEPOP",
+      "badgeColor": "bg-[#FF0000]"
+    }
+  ],
+  "poshmark": [
+    {
+      "id": "poshmark_4x6_shipping_label_203_dpi",
+      "name": "Poshmark 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "poshmark",
+      "type": "thermal",
+      "marketplace": "Poshmark",
+      "badge": "POSHMARK",
+      "badgeColor": "bg-[#8B2F97]"
+    },
+    {
+      "id": "poshmark_4x6_shipping_label_300_dpi",
+      "name": "Poshmark 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "poshmark",
+      "type": "thermal",
+      "marketplace": "Poshmark",
+      "badge": "POSHMARK",
+      "badgeColor": "bg-[#8B2F97]"
+    }
+  ],
+  "mercari": [
+    {
+      "id": "mercari_4x6_shipping_label_203_dpi",
+      "name": "Mercari 4x6 Shipping Label (203 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "mercari",
+      "type": "thermal",
+      "marketplace": "Mercari",
+      "badge": "MERCARI",
+      "badgeColor": "bg-[#E60023]"
+    },
+    {
+      "id": "mercari_4x6_shipping_label_300_dpi",
+      "name": "Mercari 4x6 Shipping Label (300 DPI)",
+      "dimensions": "101.6mm × 152.4mm (4\" Ã— 6\")",
+      "size": "4\" Ã— 6\"",
+      "category": "mercari",
+      "type": "thermal",
+      "marketplace": "Mercari",
+      "badge": "MERCARI",
+      "badgeColor": "bg-[#E60023]"
+    }
+  ]
+}

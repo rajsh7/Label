@@ -18,8 +18,9 @@ import {
   FileText,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { supabase } from "@/lib/supabase/client"
+// import { supabase } from "@/lib/supabase/client" // Removed Supabase import
 import { useRouter } from "next/navigation"
+import templatesData from "@/data/templates.json" // Added local data import
 
 interface Template {
   id: string
@@ -140,53 +141,25 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   const loadAllTemplates = async () => {
     setLoading(true)
     try {
-      const { data: publicData, error: publicError } = await supabase
-        .from('templates')
-        .select('*')
-        .eq('is_public', true)
-        .order('downloads', { ascending: false })
-        .limit(500)
-
-      if (publicError) {
-        console.error('Error fetching templates:', publicError)
-        return
-      }
-
-      let allTemplates = publicData || []
-
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: userData } = await supabase
-          .from('templates')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('updated_at', { ascending: false })
-          
-        if (userData) {
-          const userTemplateIds = new Set(userData.map(t => t.id))
-          allTemplates = [
-            ...userData, 
-            ...allTemplates.filter(t => !userTemplateIds.has(t.id) && t.user_id !== user.id)
-          ]
-        }
-      }
+      // Replaced Supabase logic with local JSON data source
+      // const { data: publicData, error: publicError } = await supabase...
       
-      const transformedTemplates = allTemplates.map(template => ({
-        id: template.id,
-        name: template.name,
-        description: template.description || template.name,
-        elements: template.elements || [],
-        label_format: 'Custom',
-        category: template.category || 'Custom',
+      const allTemplates = Object.values(templatesData).flat().map((t: any) => ({
+        id: t.id,
+        name: t.name,
+        description: t.description || t.name,
+        elements: t.elements || [],
+        label_format: t.type,
+        category: t.category,
         is_favorite: false,
-        usage_count: template.downloads || 0,
-        created_at: template.created_at,
-        updated_at: template.updated_at || template.created_at,
-        image_url: template.image_url || template.preview_url
+        usage_count: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        image_url: t.image_url
       }))
-      
-      setTemplates(transformedTemplates)
-      updateCategoryCounts(transformedTemplates)
+
+      setTemplates(allTemplates)
+      updateCategoryCounts(allTemplates)
     } catch (error) {
       console.error('Error loading templates:', error)
     } finally {
@@ -227,7 +200,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
             return false
         }
       })
-      category.templates = categoryTemplates.slice(0, 50) // Show 50 templates per category
+      category.templates = categoryTemplates // Show all templates in category
     })
   }
 
@@ -253,7 +226,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   const handleQuickAction = (action: string, _template?: Template) => {
     switch (action) {
       case 'edit':
-        router.push('/dashboard/advanced-editor')
+        router.push('/dashboard/editor')
         break
       case 'word':
         window.open('https://www.office.com/', '_blank')
@@ -262,7 +235,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
         window.open('https://docs.google.com/', '_blank')
         break
       case 'pdf':
-        router.push('/dashboard/advanced-editor')
+        router.push('/dashboard/editor')
         break
     }
   }
@@ -326,7 +299,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
             {/* Category Pills */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               <button
-                onClick={() => router.push('/dashboard/advanced-editor')}
+                onClick={() => router.push('/dashboard/editor')}
                 className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-full font-medium transition-all hover:shadow-md hover:bg-blue-100 text-sm"
               >
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -412,7 +385,9 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCategories.map((category) => (
+              {filteredCategories
+                .filter(category => category.templates.length > 0) // Only show categories with templates
+                .map((category) => (
                 <div
                   key={category.id}
                   onClick={() => handleCategoryClick(category.id)}
@@ -492,7 +467,7 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
                   <TemplateCard
                     key={template.id}
                     template={template}
-                    onEdit={() => router.push(`/dashboard/advanced-editor?template=${template.id}`)}
+                    onEdit={() => router.push(`/dashboard/editor?template=${template.id}`)}
                     onQuickAction={handleQuickAction}
                   />
                 ))}

@@ -1,4 +1,8 @@
+'use client'
+
 import Link from "next/link"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase/client"
 
 const footerLinks = {
   Product: ["Features", "Labels", "Pricing", "Integrations"],
@@ -8,12 +12,28 @@ const footerLinks = {
 }
 
 export function Footer() {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user || null)
+    }
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
     <footer className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-t border-border">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 mb-8 md:mb-12">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="text-lg md:text-xl font-bold text-foreground">
+            <Link href={user ? "/dashboard" : "/"} className="text-lg md:text-xl font-bold text-foreground hover:opacity-80 transition-opacity">
               LabelPro
             </Link>
             <p className="mt-3 md:mt-4 text-sm text-muted-foreground max-w-xs">

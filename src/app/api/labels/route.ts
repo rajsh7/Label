@@ -43,13 +43,11 @@ export async function GET() {
   }
 }
 
-/**
- * POST /api/labels
- * Create a new label design for printing
- */
 export async function POST(request: NextRequest) {
   try {
     const { supabase, session } = await createUserClient()
+    
+    console.log('POST /api/labels - Session:', session?.user?.id ? 'Authenticated' : 'Not authenticated')
     
     if (!session?.user) {
       return NextResponse.json(
@@ -58,37 +56,72 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Ensure profile exists (in case database was cleaned but auth session persists)
+    const { data: profile, error: _profileError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', session.user.id)
+      .single()
+
+    if (!profile) {
+        console.log('Creating missing profile for user:', session.user.id)
+        const { error: createProfileError } = await supabase
+            .from('profiles')
+            .insert({
+                id: session.user.id,
+                email: session.user.email || 'unknown@example.com',
+                full_name: session.user.user_metadata?.full_name || 'User',
+                subscription_tier: 'free',
+                labels_used_this_month: 0
+            })
+        
+        if (createProfileError) {
+            console.error('Failed to create profile:', createProfileError)
+            // Continue anyway, maybe it exists now or RLS will handle it
+        }
+    }
+
     const body = await request.json()
+    console.log('POST /api/labels - Request body:', JSON.stringify(body, null, 2))
+    
+    const insertData = {
+      user_id: session.user.id,
+      name: body.name,
+      label_base_id: body.label_base_id || 'custom',
+      elements: body.elements || [],  // JSONB field, no need to stringify
+      width_px: body.width_px || 812,
+      height_px: body.height_px || 1218,
+      dpi: body.dpi || 203,
+      description: body.description || null
+    }
+    
+    console.log('POST /api/labels - Insert data:', JSON.stringify(insertData, null, 2))
     
     const { data, error } = await supabase
       .from('label_designs')
-      .insert({
-        user_id: session.user.id,
-        name: body.name,
-        elements: JSON.stringify(body.elements),
-        label_format: body.label_format,
-        width: body.width,
-        height: body.height
-      })
+      .insert(insertData)
       .select()
       .single()
 
     if (error) {
       console.error('Create label error:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
       return NextResponse.json(
-        { success: false, error: 'Failed to create label' },
+        { success: false, error: error.message || 'Failed to create label', details: error },
         { status: 500 }
       )
     }
 
+    console.log('POST /api/labels - Success:', data)
     return NextResponse.json({
       success: true,
       data
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Create label error:', error)
+    console.error('Error stack:', error?.stack)
     return NextResponse.json(
-      { success: false, error: 'Failed to create label' },
+      { success: false, error: error?.message || 'Failed to create label' },
       { status: 500 }
     )
   }

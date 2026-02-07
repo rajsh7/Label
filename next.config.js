@@ -25,6 +25,16 @@ const nextConfig = {
       },
     ]
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/editor',
+        destination: '/dashboard/editor',
+        permanent: true,
+      },
+    ]
+  },
   
   images: {
     remotePatterns: [
@@ -42,6 +52,7 @@ const nextConfig = {
       },
     ],
   },
+  serverExternalPackages: ['pdfkit'],
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
@@ -51,4 +62,3 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
-

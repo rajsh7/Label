@@ -21,7 +21,7 @@ interface DashboardHeaderProps {
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Templates", href: "/dashboard/templates", icon: Tags },
-  { name: "Editor", href: "/dashboard/advanced-editor", icon: Edit },
+  { name: "Editor", href: "/dashboard/editor", icon: Edit },
   { name: "My Labels", href: "/dashboard/labels", icon: FolderOpen },
 ]
 

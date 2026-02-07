@@ -22,8 +22,8 @@ const initialState: EditorState = {
   elements: [],
   selectedElementId: null,
   canvas: {
-    width_px: 100,
-    height_px: 100,
+    width_px: 1218,
+    height_px: 812,
     dpi: 203,
     zoom_level: 100,
     background: {

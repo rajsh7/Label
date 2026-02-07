@@ -5,34 +5,18 @@ import { getPrinters, deletePrinter, getPrintQueue, deletePrintJob } from "@/ser
 import {
   Printer,
   Plus,
-  MoreHorizontal,
   Wifi,
   Usb,
-  AlertCircle,
   Settings2,
   Trash2,
   RefreshCw,
-  Power,
-  Pause,
-  Play,
-  X,
   FileText,
-  Clock,
-  CheckCircle2,
-  XCircle,
   Loader2,
-  Star,
-  Download,
-  Zap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs"
-import { Progress } from "@/components/ui/progress"
 import {
   Dialog,
   DialogContent,
@@ -42,16 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
-import { DashboardHero } from "@/components/dashboard/hero"
 
 const availablePrinters = [
   { id: 1, name: "HP LaserJet Pro", type: "Network", ip: "192.168.1.45" },
@@ -111,52 +86,48 @@ export function PrintersContent() {
     }
   }
 
-  const getQueueStatusIcon = (status: string) => {
-    switch (status) {
-      case "printing":
-        return <Loader2 className="w-4 h-4 text-accent animate-spin" />
-      case "queued":
-        return <Clock className="w-4 h-4 text-muted-foreground" />
-      case "completed":
-        return <CheckCircle2 className="w-4 h-4 text-green-600" />
-      case "failed":
-        return <XCircle className="w-4 h-4 text-destructive" />
-      default:
-        return null
-    }
+  const getPrinterImage = (name: string) => {
+    const n = name.toLowerCase()
+    if (n.includes('rollo')) return "https://lh3.googleusercontent.com/aida-public/AB6AXuCmVYlehD-Hz6esALuEye78rN62bzW59dqE7ie6GGAAPnnNyScsCSjwVKf_Hrkv2Me67ppkuL5yGMyE-fTka8pLJ4FGk0ygnC6rRKc7UkmorJ1d26N8PNQzxYdetMdV2FyFgT32C8ePAvXUc7M-4x7ITQrSoTwDwQ4XHG9Y-DOJVN9_x8V0lhaocSF7-P0hwENY6J2rT4OGyabLpKsbovNF9e4j85q7TXL_gFamR1KQSSIYNs79gQKDmmgRKsRJHTHIlIgbCztIqoU"
+    if (n.includes('zebra')) return "https://lh3.googleusercontent.com/aida-public/AB6AXuA2s4wv-fSMSEMFEUDzuOJjHpDq0JCagEk4SOZILODUZ3cdClGgah3LH3O36IeFgsQ0psSR6jjCRHSas9LV-v2pawD4IMJFGM-vpa5DShKKByQ02Yn2vtGOZN_frbTdl05ONH6tLqS76KJML_kFo2WU5kyyiYH9fD3W0NvieqkpD_eZk8JQ9lndYJu8zUlB_bER49TWV8scgdep_UxJp4hZyvVT348uJs9FjhEQg2NUia34Zat_y3u1ZYYKq-2rlm2tTejoKMZGJVk"
+    if (n.includes('brother')) return "https://lh3.googleusercontent.com/aida-public/AB6AXuCHK3AbBdluLqrfE2AR2gISB2qzffGCElsGyXI_eZH6uX7Z8I2HeARQDKVs9gdExLSGDkAR4q6t0tbKlHav5xzJI7W7vAHZQmqbFoQoV2T6jJvPjCqYeCqoL8NiXguwD_YRs7D9FrFghD72ic8bqiYZ8Yv6dqdwzfURDFh47L6mXZQ2lhQMp5bYTR4lr7_vfZ9WaiMb7RF_83LscCoOOIfdL4gnsj9oVyemgmH11z6e40YwUrMi5zVIqjUwGVQItK7E69dB7riupWc"
+    return "https://lh3.googleusercontent.com/aida-public/AB6AXuCmVYlehD-Hz6esALuEye78rN62bzW59dqE7ie6GGAAPnnNyScsCSjwVKf_Hrkv2Me67ppkuL5yGMyE-fTka8pLJ4FGk0ygnC6rRKc7UkmorJ1d26N8PNQzxYdetMdV2FyFgT32C8ePAvXUc7M-4x7ITQrSoTwDwQ4XHG9Y-DOJVN9_x8V0lhaocSF7-P0hwENY6J2rT4OGyabLpKsbovNF9e4j85q7TXL_gFamR1KQSSIYNs79gQKDmmgRKsRJHTHIlIgbCztIqoU" // Fallback
   }
 
   if (isLoading) {
-    return <div className="p-6 max-w-6xl mx-auto">Loading...</div>
+    return (
+        <div className="flex items-center justify-center min-h-[50vh]">
+            <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+        </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pb-20">
-      <DashboardHero 
-        title="Printer Management" 
-        description="Manage your connected printers, view print queues, and configure default settings."
-        searchPlaceholder="Search printers..."
-        showPills={false}
-        showBottomPills={false}
-        showSearch={false}
-      />
+    <div className="pb-12 px-6 md:px-12 max-w-[1600px] mx-auto w-full flex flex-col gap-10">
       
-      <div className="max-w-[1920px] mx-auto px-6 -mt-8 relative z-10">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-end">
-             <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <section className="flex flex-col lg:flex-row justify-between lg:items-end gap-6 py-6 relative">
+          <div className="flex flex-col gap-3 max-w-4xl">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-black leading-[0.9]">
+              Printers &amp; <br className="hidden md:block"/>Hardware
+            </h1>
+            <p className="text-slate-500 text-xl max-w-2xl mt-4 font-medium">
+              Monitor device health, manage consumables, and configure your print network.
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
               <DialogTrigger asChild>
-                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 shadow-sm">
-                  <Plus className="w-4 h-4" />
-                  Add Printer
-                </Button>
+                <button className="bg-gradient-to-r from-purple-600 to-blue-500 hover:to-blue-400 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-glow hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-3">
+                    <span className="material-symbols-outlined">add_circle</span>
+                    Connect New Device
+                </button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle>Add a printer</DialogTitle>
                   <DialogDescription>Connect a new printer to your LabelPro account</DialogDescription>
                 </DialogHeader>
-                <div className="py-4 space-y-4">
+                 <div className="py-4 space-y-4">
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -237,412 +208,120 @@ export function PrintersContent() {
               </DialogContent>
             </Dialog>
           </div>
+        </section>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                  <Printer className="w-5 h-5 text-blue-600" />
+        {printers.length === 0 ? (
+            <div className="text-center py-20 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <Printer className="w-10 h-10 text-slate-300" />
                 </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{printers.length}</p>
-                  <p className="text-sm text-gray-500">Connected</p>
-                </div>
-              </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">No printers connected</h3>
+                <p className="text-slate-500 max-w-md mx-auto mb-8">Connect a printer to start printing your shipping labels.</p>
+                <Button onClick={() => setShowAddDialog(true)} size="lg" className="rounded-full">Connect Printer</Button>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-                  <Power className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {printers.filter((p) => p.status === "online").length}
-                  </p>
-                  <p className="text-sm text-gray-500">Online</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-indigo-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {printers.reduce((acc, p) => acc + (p.total_printed || 0), 0).toLocaleString()}
-                  </p>
-                  <p className="text-sm text-gray-500">Total Printed</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center">
-                  <AlertCircle className="w-5 h-5 text-yellow-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {printQueue.filter((p) => p.status === "queued" || p.status === "printing").length}
-                  </p>
-                  <p className="text-sm text-gray-500">In Queue</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Tabs defaultValue="printers" className="space-y-6">
-            <TabsList className="bg-white border border-gray-200 p-1 rounded-lg">
-              <TabsTrigger value="printers" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Printers</TabsTrigger>
-              <TabsTrigger value="queue" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Print Queue</TabsTrigger>
-              <TabsTrigger value="settings" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900">Settings</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="printers" className="space-y-6">
-
-
-          <div className="space-y-4">
-            {printers.map((printer) => (
-              <Card
-                key={printer.id}
-                className={cn(
-                  "transition-all hover:border-accent/30",
-                  printer.isDefault && "border-accent/50 bg-accent/5",
-                )}
-              >
-                <CardContent className="p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                      <div
-                        className={cn(
-                          "w-12 h-12 rounded-xl flex items-center justify-center",
-                          printer.status === "online"
-                            ? "bg-green-500/10"
-                            : printer.status === "paused"
-                              ? "bg-yellow-500/10"
-                              : "bg-muted",
-                        )}
-                      >
-                        <Printer
-                          className={cn(
-                            "w-6 h-6",
-                            printer.status === "online"
-                              ? "text-green-600"
-                              : printer.status === "paused"
-                                ? "text-yellow-600"
-                                : "text-muted-foreground",
-                          )}
+        ) : (
+            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {printers.map(printer => (
+                <div key={printer.id} className="glass-card rounded-[2rem] border border-white p-8 shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-300 group flex flex-col h-auto min-h-[480px]">
+                    <div className="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 className="text-2xl font-bold text-black">{printer.name}</h3>
+                        <p className="text-sm text-slate-500 font-medium mt-1 uppercase">{printer.location || 'Office'} • {printer.type || 'Thermal'}</p>
+                    </div>
+                    {getStatusBadge(printer.status)}
+                    </div>
+                    
+                    <div className="h-48 relative flex items-center justify-center -mx-4 group-hover:scale-105 transition-transform duration-500 my-4">
+                        <img 
+                            alt={`${printer.name} Render`} 
+                            className={`w-full h-full object-contain mix-blend-multiply drop-shadow-2xl opacity-90 ${printer.status === 'offline' ? 'grayscale opacity-60' : ''}`} 
+                            src={getPrinterImage(printer.name)} 
                         />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-semibold text-foreground">{printer.name}</h3>
-                          {getStatusBadge(printer.status)}
-                          {printer.isDefault && (
-                            <Badge className="bg-accent/10 text-accent hover:bg-accent/20 gap-1">
-                              <Star className="w-3 h-3" /> Default
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            {printer.connection === "wifi" ? <Wifi className="w-3 h-3" /> : <Usb className="w-3 h-3" />}
-                            {printer.connection === "wifi" ? "Wi-Fi" : "USB"}
-                          </span>
-                          <span>Paper: {printer.paper_size}</span>
-                          <span>Last used: {printer.last_used ? new Date(printer.last_used).toLocaleString() : 'Never'}</span>
-                        </div>
-                      </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                      <div className="hidden sm:block text-right">
-                        <p className="text-sm font-medium text-foreground">
-                          {printer.labels_remaining > 0 ? `${printer.labels_remaining} labels` : "Out of labels"}
-                        </p>
-                        <Progress
-                          value={printer.labels_remaining > 0 ? (printer.labels_remaining / 500) * 100 : 0}
-                          className="h-1.5 w-24 mt-1"
-                        />
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {printer.status === "online" ? (
-                          <Button variant="outline" size="icon" className="h-9 w-9 bg-transparent">
-                            <Pause className="w-4 h-4" />
-                          </Button>
-                        ) : printer.status === "paused" ? (
-                          <Button variant="outline" size="icon" className="h-9 w-9 bg-transparent">
-                            <Play className="w-4 h-4" />
-                          </Button>
-                        ) : (
-                          <Button variant="outline" size="icon" className="h-9 w-9 bg-transparent">
-                            <RefreshCw className="w-4 h-4" />
-                          </Button>
-                        )}
-
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-9 w-9 bg-transparent">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {!printer.isDefault && (
-                              <DropdownMenuItem className="gap-2">
-                                <Star className="w-4 h-4" />
-                                Set as default
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem
-                              className="gap-2"
-                              onClick={() => {
+                    <div className="mt-auto grid grid-cols-2 gap-4">
+                        <div className="bg-slate-50 rounded-2xl p-4 flex items-center gap-4">
+                            <div className="relative size-12 shrink-0">
+                                <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-blue-500 text-lg">thermometer</span>
+                            </div>
+                            <div>
+                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Status</p>
+                                <p className="text-lg font-bold text-slate-700 capitalize">{printer.status}</p>
+                            </div>
+                        </div>
+                         <div className="bg-slate-50 rounded-2xl p-4 flex items-center gap-4">
+                            <div className="relative size-12 shrink-0">
+                                <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-purple-500 text-lg">imagesearch_roller</span>
+                            </div>
+                            <div>
+                                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Lifetime</p>
+                                <p className="text-lg font-bold text-slate-700">{printer.total_printed || 0}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="pt-6 mt-6 border-t border-slate-100 flex justify-end">
+                        <div className="flex gap-2">
+                             <Button variant="ghost" size="icon" className="rounded-full hover:bg-red-50 hover:text-red-500" onClick={() => handleDeletePrinter(printer.id)}>
+                                <Trash2 className="w-5 h-5" />
+                             </Button>
+                             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => {
                                 setSelectedPrinter(printer)
                                 setShowSettingsDialog(true)
-                              }}
-                            >
-                              <Settings2 className="w-4 h-4" />
-                              Printer settings
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="gap-2">
-                              <FileText className="w-4 h-4" />
-                              Print test page
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="gap-2">
-                              <Download className="w-4 h-4" />
-                              Update firmware
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="gap-2 text-destructive" onClick={() => handleDeletePrinter(printer.id)}>
-                              <Trash2 className="w-4 h-4" />
-                              Remove printer
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="queue" className="space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Print Queue</CardTitle>
-                <CardDescription>Manage your active and pending print jobs</CardDescription>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                  <Pause className="w-4 h-4" />
-                  Pause All
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-destructive hover:text-destructive bg-transparent"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Clear Queue
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {printQueue.map((job) => (
-                  <div
-                    key={job.id}
-                    className={cn(
-                      "flex items-center justify-between p-4 rounded-xl border border-border transition-all",
-                      job.status === "printing" && "border-accent/50 bg-accent/5",
-                      job.status === "failed" && "border-destructive/50 bg-destructive/5",
-                    )}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                        {getQueueStatusIcon(job.status)}
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">{job.file_name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {job.printer?.name || 'Unknown'} · {job.copies} {job.copies === 1 ? "copy" : "copies"}
-                        </p>
-                        {job.error_message && <p className="text-sm text-destructive mt-1">{job.error_message}</p>}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      {job.status === "printing" && (
-                        <div className="w-32 hidden sm:block">
-                          <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                            <span>Printing...</span>
-                            <span>{job.progress}%</span>
-                          </div>
-                          <Progress value={job.progress} className="h-1.5" />
+                             }}>
+                                <Settings2 className="w-5 h-5" />
+                             </Button>
                         </div>
-                      )}
-
-                      <p className="text-sm text-muted-foreground hidden sm:block">{job.created_at ? new Date(job.created_at).toLocaleString() : ''}</p>
-
-                      <Badge
-                        variant="secondary"
-                        className={cn(
-                          "capitalize",
-                          job.status === "printing" && "bg-accent/10 text-accent",
-                          job.status === "completed" && "bg-green-500/10 text-green-600",
-                          job.status === "failed" && "bg-destructive/10 text-destructive",
-                        )}
-                      >
-                        {job.status}
-                      </Badge>
-
-                      {(job.status === "queued" || job.status === "printing") && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                          onClick={() => handleDeleteJob(job.id)}
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      )}
-
-                      {job.status === "failed" && (
-                        <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                          <RefreshCw className="w-3 h-3" />
-                          Retry
-                        </Button>
-                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                </div>
+            ))}
+            </section>
+        )}
 
-        <TabsContent value="settings" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Default Print Settings</CardTitle>
-              <CardDescription>Configure default settings for all print jobs</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label>Default printer</Label>
-                  <Select defaultValue="1">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {printers.map((printer) => (
-                        <SelectItem key={printer.id} value={printer.id}>
-                          {printer.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Print quality</Label>
-                  <Select defaultValue="high">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft (Fast)</SelectItem>
-                      <SelectItem value="normal">Normal</SelectItem>
-                      <SelectItem value="high">High Quality</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Default paper size</Label>
-                  <Select defaultValue="4x6">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="4x6">4&quot; x 6&quot; (Shipping)</SelectItem>
-                      <SelectItem value="address">Address Label</SelectItem>
-                      <SelectItem value="barcode">Barcode (2&quot; x 1&quot;)</SelectItem>
-                      <SelectItem value="custom">Custom Size</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Color mode</Label>
-                  <Select defaultValue="mono">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mono">Monochrome</SelectItem>
-                      <SelectItem value="color">Color</SelectItem>
-                      <SelectItem value="auto">Auto-detect</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="border-t border-border pt-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">Auto-print after resize</p>
-                    <p className="text-sm text-muted-foreground">Automatically send labels to printer after resizing</p>
-                  </div>
-                  <Switch />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">Print preview</p>
-                    <p className="text-sm text-muted-foreground">Show preview before printing each label</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">Duplex printing</p>
-                    <p className="text-sm text-muted-foreground">Print on both sides when supported</p>
-                  </div>
-                  <Switch />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">Low paper alerts</p>
-                    <p className="text-sm text-muted-foreground">Get notified when label roll is running low</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-accent" />
-                Printer Drivers
-              </CardTitle>
-              <CardDescription>Download drivers for your label printers</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {["DYMO", "Zebra", "Brother", "Rollo"].map((brand) => (
-                  <Button key={brand} variant="outline" className="h-auto py-4 flex-col gap-2 bg-transparent">
-                    <Download className="w-5 h-5" />
-                    <span>{brand} Driver</span>
-                  </Button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        <section className="mt-8 mb-12">
+           <div className="flex items-center justify-between mb-8">
+            <h3 className="text-3xl font-bold text-black">Print History</h3>
+            <button className="text-slate-500 hover:text-primary font-bold text-sm flex items-center gap-2 transition-colors">
+              View Full Logs <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+          </div>
+          <div className="glass-card rounded-[2rem] border border-white shadow-lg overflow-hidden">
+             {printQueue.length === 0 ? (
+                 <div className="p-12 text-center text-slate-500">No recent print jobs.</div>
+             ) : (
+                 <div className="divide-y divide-slate-100">
+                    {printQueue.map(job => (
+                         <div key={job.id} className="p-5 hover:bg-slate-50/50 transition-colors flex flex-col md:flex-row md:items-center gap-6 group">
+                            <div className="size-14 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
+                               <FileText className="w-6 h-6 text-slate-400" />
+                            </div>
+                             <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                                <div className="md:col-span-5">
+                                    <h4 className="font-bold text-lg text-black truncate">{job.file_name}</h4>
+                                    <p className="text-sm text-slate-500">{job.printer?.name || 'Unknown Printer'} • {new Date(job.created_at).toLocaleTimeString()}</p>
+                                </div>
+                                <div className="md:col-span-3">
+                                    <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-lg">
+                                    <span className="material-symbols-outlined text-sm">description</span> {job.copies} Copies
+                                    </span>
+                                </div>
+                                <div className="md:col-span-2">
+                                     <span className={`font-bold text-sm flex items-center gap-1 ${job.status === 'completed' ? 'text-green-600' : 'text-slate-500'}`}>
+                                      <span className="material-symbols-outlined text-lg">check</span> {job.status}
+                                    </span>
+                                </div>
+                                <div className="md:col-span-2 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-red-50 hover:text-red-500" onClick={() => handleDeleteJob(job.id)}>
+                                        <Trash2 className="w-5 h-5" />
+                                    </Button>
+                                </div>
+                             </div>
+                         </div>
+                    ))}
+                 </div>
+             )}
+          </div>
+        </section>
 
       <Dialog open={showSettingsDialog} onOpenChange={setShowSettingsDialog}>
         <DialogContent className="sm:max-w-lg">
@@ -657,7 +336,7 @@ export function PrintersContent() {
             </div>
             <div className="space-y-2">
               <Label>Paper size</Label>
-              <Select defaultValue={selectedPrinter?.paper_size}>
+              <Select defaultValue={selectedPrinter?.paper_size || "4x6 Shipping"}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -698,8 +377,6 @@ export function PrintersContent() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-        </div>
-      </div>
     </div>
   )
 }

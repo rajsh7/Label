@@ -166,7 +166,7 @@ export function DashboardTemplatesGrid({ initialTemplates }: DashboardTemplatesG
         {templates.map((template) => (
           <Link
             key={template.id}
-            href={`/dashboard/advanced-editor?template=${template.id}`}
+            href={`/dashboard/editor?template=${template.id}`}
             className="group block"
           >
             <div className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100/50">
