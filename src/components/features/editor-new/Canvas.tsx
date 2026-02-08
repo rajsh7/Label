@@ -86,11 +86,22 @@ function DraggableElement({ element, isSelected, onSelect, onUpdate }: { element
                 <div 
                     contentEditable={isSelected}
                     suppressContentEditableWarning
-                    onBlur={(e) => onUpdate({ content: e.currentTarget.textContent })}
+                    onBlur={(e) => onUpdate({ 
+                        properties: { ...element.properties, text: e.currentTarget.textContent } 
+                    })}
                     className="w-full h-full outline-none"
-                    style={{ whiteSpace: 'nowrap' }}
+                    style={{ 
+                        whiteSpace: 'nowrap',
+                        ...element.style,
+                        fontFamily: element.properties?.font || 'Arial',
+                        fontSize: `${element.properties?.fontSize || 24}px`,
+                        fontWeight: element.properties?.fontWeight || 400,
+                        color: element.properties?.color || '#000000',
+                        textAlign: element.properties?.align || 'left',
+                        lineHeight: element.properties?.lineHeight || 1.2
+                    }}
                 >
-                    {element.content}
+                    {element.properties?.text || element.content}
                 </div>
             )}
             
@@ -101,22 +112,26 @@ function DraggableElement({ element, isSelected, onSelect, onUpdate }: { element
             {element.type === 'image' && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img 
-                    src={element.content} 
-                    alt="element" 
+                    src={element.properties?.image_url || element.content} 
+                    alt={element.properties?.alt_text || "element"} 
                     className="w-full h-full object-contain pointer-events-none"
-                    style={element.style}
+                    style={{
+                        ...element.style,
+                        opacity: element.properties?.opacity ?? 1
+                    }}
                 />
             )}
 
             {element.type === 'barcode' && (
                 <div className="w-full h-full flex items-center justify-center bg-white pointer-events-none" style={element.style}>
                      <Barcode 
-                        value={element.content}
-                        width={element.width ? Math.max(1, element.width / (element.content.length * 10)) : 2} // Adaptive width
+                        value={element.properties?.barcode_value || element.content}
+                        width={element.width ? Math.max(1, element.width / ((element.properties?.barcode_value || element.content || '').length * 10)) : 2} // Adaptive width
                         height={element.height || 50}
-                        displayValue={element.displayValue !== undefined ? element.displayValue : false}
+                        displayValue={element.properties?.human_readable !== undefined ? element.properties.human_readable : false}
                         margin={0}
                         background="transparent"
+                        fontSize={element.properties?.human_readable_font_size || 10}
                      />
                 </div>
             )}

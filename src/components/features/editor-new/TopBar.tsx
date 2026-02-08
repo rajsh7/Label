@@ -42,6 +42,10 @@ export function TopBar() {
       
       if (response.ok && result.success) {
         toast.success("Label saved to My Labels!")
+        // Trigger notification
+        window.dispatchEvent(new CustomEvent('template:created', { 
+          detail: { name: labelData.name } 
+        }))
       } else {
         toast.error(result.error || "Failed to save label")
       }
@@ -103,6 +107,11 @@ export function TopBar() {
         
         toast.dismiss(loadingToast)
         toast.success("High-quality PNG downloaded!")
+        
+        // Trigger notification
+        window.dispatchEvent(new CustomEvent('template:downloaded', { 
+          detail: { name: selectedLabel?.name || 'Label' } 
+        }))
 
     } catch (error) {
         console.error("PDF Generation Error:", error)

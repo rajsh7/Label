@@ -23,10 +23,10 @@ export function LayersPanel() {
 
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Desktop Toggle Button (Hidden on Mobile) */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="md:hidden fixed bottom-4 left-4 z-50 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
+        className="hidden md:flex fixed bottom-6 left-6 z-50 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
       >
         <span className="material-symbols-outlined text-xl">layers</span>
       </button>

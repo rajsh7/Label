@@ -2,16 +2,27 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { Search, Bell, Tags, LogOut } from "lucide-react"
+import { Search, Bell, Tags, LogOut, LayoutDashboard, FolderOpen, Settings, Edit, Layers, Printer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-import { useRouter } from "next/navigation"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
+import { useRouter, usePathname } from "next/navigation"
 import { supabase } from "@/lib/supabase/client"
+import { cn } from "@/lib/utils/cn"
+import { useNotifications } from "@/lib/notifications/context"
 
 export function TopNavigation() {
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState<any>(null)
+  const { notifications, markAsRead, clearAll } = useNotifications()
+  const unreadCount = notifications.filter(n => !n.isRead).length
 
 
   useEffect(() => {
@@ -38,8 +49,8 @@ export function TopNavigation() {
   
   return (
     <div id="main-top-navigation" className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
-      <div className="w-full max-w-[1440px] bg-[#f6f5f8]/80 dark:bg-[#161022]/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-full shadow-sm">
-        <header className="flex items-center justify-between gap-4 px-6 py-3">
+      <div className="w-full max-w-[1800px] bg-[#f6f5f8]/80 dark:bg-[#161022]/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-full shadow-sm">
+        <header className="flex items-center justify-between gap-4 px-8 py-4">
           <div className="flex items-center gap-8">
             {/* Logo */}
             <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-3 group">
@@ -93,24 +104,129 @@ export function TopNavigation() {
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
               {user ? (
                 <>
-                  <Button size="icon" variant="ghost" className="rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    <Bell className="w-5 h-5" />
-                  </Button>
-                  <Button 
-                    size="icon" 
-                    variant="ghost" 
-                    className="rounded-full text-slate-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 transition"
-                    onClick={handleLogout}
-                    title="Logout"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </Button>
-                  <Link href="/dashboard/settings">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition relative"
+                      >
+                        <Bell className="w-5 h-5" />
+                        {unreadCount > 0 && (
+                          <span className="absolute -top-1 -right-1 size-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                            {unreadCount > 9 ? '9+' : unreadCount}
+                          </span>
+                        )}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-80 max-h-96 overflow-y-auto z-[100]">
+                      <div className="flex items-center justify-between px-2 py-2 border-b">
+                        <h3 className="font-bold text-sm">Notifications</h3>
+                        {notifications.length > 0 && (
+                          <button onClick={clearAll} className="text-xs text-blue-600 hover:underline">
+                            Clear All
+                          </button>
+                        )}
+                      </div>
+                      {notifications.length === 0 ? (
+                        <div className="px-4 py-8 text-center text-sm text-slate-500">
+                          No notifications yet
+                        </div>
+                      ) : (
+                        notifications.map((notification) => (
+                          <DropdownMenuItem
+                            key={notification.id}
+                            onClick={() => markAsRead(notification.id)}
+                            className={cn(
+                              "flex flex-col items-start gap-1 p-3 cursor-pointer",
+                              !notification.isRead && "bg-blue-50 dark:bg-blue-950/20"
+                            )}
+                          >
+                            <div className="flex items-start justify-between w-full gap-2">
+                              <span className="font-semibold text-sm">{notification.title}</span>
+                              {!notification.isRead && (
+                                <span className="size-2 bg-blue-600 rounded-full flex-shrink-0 mt-1"></span>
+                              )}
+                            </div>
+                            <p className="text-xs text-slate-600 dark:text-slate-400">{notification.message}</p>
+                            <span className="text-[10px] text-slate-400">
+                              {new Date(notification.timestamp).toLocaleTimeString()}
+                            </span>
+                          </DropdownMenuItem>
+                        ))
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Avatar className="size-9 ring-2 ring-white dark:ring-slate-800 shadow-sm cursor-pointer hover:ring-[#590df2] transition-all lg:hidden">
+                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" />
+                        <AvatarFallback>U</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 z-[100]">
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard" && "bg-blue-50 text-blue-600")}>
+                          <LayoutDashboard className="w-4 h-4" />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/templates" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/templates" && "bg-blue-50 text-blue-600")}>
+                          <Tags className="w-4 h-4" />
+                          Templates
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/labels" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/labels" && "bg-blue-50 text-blue-600")}>
+                          <FolderOpen className="w-4 h-4" />
+                          My Labels
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/settings" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/settings" && "bg-blue-50 text-blue-600")}>
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/editor" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/editor" && "bg-blue-50 text-blue-600")}>
+                          <Edit className="w-4 h-4" />
+                          Editor
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/batch" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/batch" && "bg-blue-50 text-blue-600")}>
+                          <Layers className="w-4 h-4" />
+                          Batch
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/printers" className={cn("flex items-center gap-2 cursor-pointer", pathname === "/dashboard/printers" && "bg-blue-50 text-blue-600")}>
+                          <Printer className="w-4 h-4" />
+                          Printers
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer focus:text-red-700 focus:bg-red-50">
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Link href="/dashboard/settings" className="hidden lg:block">
                     <Avatar className="size-9 ring-2 ring-white dark:ring-slate-800 shadow-sm cursor-pointer hover:ring-[#590df2] transition-all">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" />
                       <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                   </Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full text-slate-600 dark:text-slate-400 hover:text-white hover:bg-red-500 transition-all text-sm font-medium"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
                 </>
               ) : (
                 <div className="flex items-center gap-3">

@@ -40,6 +40,9 @@ export function LabelsContent() {
   const [labels, setLabels] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('popular')
+  const [labelSizes, setLabelSizes] = useState<string[]>([])
+  const [printerTypes, setPrinterTypes] = useState<string[]>([])
   
   // Fetch real data
   useEffect(() => {
@@ -234,7 +237,46 @@ export function LabelsContent() {
 
   const filteredLabels = labels.filter(label => 
     label.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  ).filter(label => {
+    // Size filter
+    if (labelSizes.length > 0) {
+      const matches = labelSizes.some(size => {
+        if (size === '4x6') return label.size?.includes('4" × 6"') || label.size?.includes('4\" × 6\"')
+        if (size === '2.5x4') return label.size?.includes('2.5" × 4"') || label.size?.includes('2.5\" × 4\"')
+        if (size === '3x5') return label.size?.includes('3" × 5"') || label.size?.includes('3\" × 5\"')
+        if (size === '2x4') return label.size?.includes('2" × 4"') || label.size?.includes('2\" × 4\"')
+        return false
+      })
+      if (!matches) return false
+    }
+    // Printer type filter
+    if (printerTypes.length > 0) {
+      const matches = printerTypes.some(type => {
+        if (type === 'thermal') return label.print_method === 'thermal' || label.type === 'thermal'
+        if (type === 'inkjet') return label.print_method === 'inkjet' || label.type === 'inkjet'
+        if (type === 'desktop') return label.print_method === 'desktop' || label.type === 'desktop'
+        return false
+      })
+      if (!matches) return false
+    }
+    return true
+  }).sort((a, b) => {
+    if (sortBy === 'newest') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    if (sortBy === 'oldest') return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    return 0 // popular - no sorting
+  })
+
+  const toggleSize = (size: string) => {
+    setLabelSizes(prev => 
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    )
+  }
+
+  const togglePrinter = (type: string) => {
+    setPrinterTypes(prev => 
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col gap-8 font-display">
@@ -287,15 +329,15 @@ export function LabelsContent() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Sort By</h3>
             <div className="space-y-2">
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input defaultChecked className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
+                <input checked={sortBy === 'popular'} onChange={() => setSortBy('popular')} className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Most Popular</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
+                <input checked={sortBy === 'newest'} onChange={() => setSortBy('newest')} className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Newest Arrivals</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
+                <input checked={sortBy === 'oldest'} onChange={() => setSortBy('oldest')} className="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="sort" type="radio"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Trending Now</span>
               </label>
             </div>
@@ -306,31 +348,31 @@ export function LabelsContent() {
             <div className="space-y-3">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={labelSizes.includes('4x6')} onChange={() => toggleSize('4x6')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">4" x 6" (Shipping)</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={labelSizes.includes('2.5x4')} onChange={() => toggleSize('2.5x4')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2.25" x 1.25"</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2.5" x 4"</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={labelSizes.includes('3x5')} onChange={() => toggleSize('3x5')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">3" x 3" (Square)</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">3" x 5"</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={labelSizes.includes('2x4')} onChange={() => toggleSize('2x4')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Round Die-Cut</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2" x 4"</span>
               </label>
             </div>
           </div>
@@ -340,24 +382,24 @@ export function LabelsContent() {
             <div className="space-y-3">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={printerTypes.includes('thermal')} onChange={() => togglePrinter('thermal')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Thermal Roll</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Thermal</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={printerTypes.includes('inkjet')} onChange={() => togglePrinter('inkjet')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Inkjet Sheet</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Inkjet</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
+                  <input checked={printerTypes.includes('desktop')} onChange={() => togglePrinter('desktop')} className="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-slate-600 rounded bg-transparent checked:bg-primary checked:border-primary transition-colors" type="checkbox"/>
                   <span className="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Industrial Laser</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Desktop</span>
               </label>
             </div>
           </div>

@@ -89,16 +89,35 @@ const getLogoForCategory = (category: string): string => {
 export default function TemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [itemsToShow, setItemsToShow] = useState(50) // Show 50 templates initially
+  const [itemsToShow, setItemsToShow] = useState(50)
+  const [labelSizes, setLabelSizes] = useState<string[]>([])
 
   const filteredTemplates = useMemo(() => {
     return ALL_TEMPLATES.filter(template => {
       const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             template.type.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = selectedCategory ? template.category === selectedCategory : true
-      return matchesSearch && matchesCategory
+      const matchesCategory = selectedCategory ? template.category.toLowerCase() === selectedCategory.toLowerCase() : true
+      
+      // Size filter
+      let matchesSize = true
+      if (labelSizes.length > 0) {
+        matchesSize = labelSizes.some(size => {
+          if (size === '4x6') return template.size?.includes('4"') && template.size?.includes('6"')
+          if (size === '2.25x1.25') return template.size?.includes('2.25"') || template.size?.includes('2.625"')
+          if (size === '3x3') return template.size?.includes('3"') && !template.size?.includes('x 5') && !template.size?.includes('x 2')
+          return false
+        })
+      }
+      
+      return matchesSearch && matchesCategory && matchesSize
     })
-  }, [searchQuery, selectedCategory])
+  }, [searchQuery, selectedCategory, labelSizes])
+
+  const toggleSize = (size: string) => {
+    setLabelSizes(prev => 
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    )
+  }
 
   const displayedTemplates = useMemo(() => {
     return filteredTemplates.slice(0, itemsToShow)
@@ -191,15 +210,15 @@ export default function TemplatesPage() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Label Size</h3>
             <div className="space-y-3">
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
+                <input checked={labelSizes.includes('4x6')} onChange={() => toggleSize('4x6')} className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">4" x 6" (Shipping)</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
+                <input checked={labelSizes.includes('2.25x1.25')} onChange={() => toggleSize('2.25x1.25')} className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2.25" x 1.25"</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer group">
-                <input className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
+                <input checked={labelSizes.includes('3x3')} onChange={() => toggleSize('3x3')} className="w-4 h-4 rounded text-primary border-slate-300 focus:ring-primary" type="checkbox"/>
                 <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">3" x 3" (Square)</span>
               </label>
             </div>

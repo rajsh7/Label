@@ -30,7 +30,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       timestamp: new Date(),
       isRead: false
     }
-    setNotifications(prev => [newNotification, ...prev])
+    setNotifications(prev => [newNotification, ...prev].slice(0, 50))
   }
 
   const markAsRead = (id: string) => {
@@ -42,38 +42,28 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   }
 
   useEffect(() => {
-    const handleUserSignup = () => {
+    const handleTemplateCreated = (e: any) => {
       addNotification({
         type: 'success',
-        title: 'Welcome to LabelPro!',
-        message: 'Your account has been created successfully. Start creating amazing labels!'
+        title: 'Template Created',
+        message: e.detail?.name ? `"${e.detail.name}" has been created successfully.` : 'Your template has been created successfully.'
       })
     }
 
-    const handleTemplateCreated = () => {
-      addNotification({
-        type: 'success',
-        title: 'Template saved',
-        message: 'Your custom label template has been saved successfully.'
-      })
-    }
-
-    const handleLabelPrinted = () => {
+    const handleTemplateDownloaded = (e: any) => {
       addNotification({
         type: 'info',
-        title: 'Label printed',
-        message: 'Your label has been sent to the printer successfully.'
+        title: 'Template Downloaded',
+        message: e.detail?.name ? `"${e.detail.name}" has been downloaded.` : 'Your template has been downloaded successfully.'
       })
     }
 
-    window.addEventListener('user:signup', handleUserSignup)
     window.addEventListener('template:created', handleTemplateCreated)
-    window.addEventListener('label:printed', handleLabelPrinted)
+    window.addEventListener('template:downloaded', handleTemplateDownloaded)
 
     return () => {
-      window.removeEventListener('user:signup', handleUserSignup)
       window.removeEventListener('template:created', handleTemplateCreated)
-      window.removeEventListener('label:printed', handleLabelPrinted)
+      window.removeEventListener('template:downloaded', handleTemplateDownloaded)
     }
   }, [])
 

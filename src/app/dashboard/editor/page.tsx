@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useEditorStore } from '@/lib/store/editorStore'
 import { supabase } from '@/lib/supabase/client'
@@ -10,6 +10,7 @@ import { SidebarLeft } from '@/components/features/editor-new/SidebarLeft'
 import { SidebarRight } from '@/components/features/editor-new/SidebarRight'
 import { EditorCanvas } from '@/components/features/editor-new/Canvas'
 import { LayersPanel } from '@/components/features/editor-new/LayersPanel'
+import { MobileEditor } from '@/components/features/editor-new/MobileEditor'
 import templatesData from '@/data/templates.json'
 
 // Helper to parse dimensions string like "101.6mm × 152.4mm (4" × 6")"
@@ -28,6 +29,18 @@ function parseDimensions(dimStr: string) {
 export default function EditorPage() {
   const searchParams = useSearchParams()
   const { resetEditor, setCanvasZoom, setSelectedLabel } = useEditorStore()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // Check mobile status
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     const templateId = searchParams.get('template')
@@ -342,6 +355,10 @@ export default function EditorPage() {
     }
 
   }, [searchParams])
+
+  if (isMobile) {
+    return <MobileEditor />
+  }
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background-light selection:bg-primary/30 selection:text-primary is-editor-page text-black font-display">

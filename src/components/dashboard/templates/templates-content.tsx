@@ -132,6 +132,8 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
   const [searchTerm, setSearchTerm] = useState(searchQuery)
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(false)
+  const [labelSizes, setLabelSizes] = useState<string[]>([])
+  const [printerTypes, setPrinterTypes] = useState<string[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -248,7 +250,42 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
     searchTerm === '' || 
     template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     template.description.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  ).filter(template => {
+    // Size filter
+    if (labelSizes.length > 0) {
+      const matches = labelSizes.some(size => {
+        if (size === '4x6') return template.name?.includes('4" × 6"') || template.name?.includes('4\" × 6\"') || template.name?.includes('4x6')
+        if (size === '2.5x4') return template.name?.includes('2.5" × 4"') || template.name?.includes('2.5\" × 4\"') || template.name?.includes('2.5x4')
+        if (size === '3x5') return template.name?.includes('3" × 5"') || template.name?.includes('3\" × 5\"') || template.name?.includes('3x5')
+        if (size === '2x4') return template.name?.includes('2" × 4"') || template.name?.includes('2\" × 4\"') || template.name?.includes('2x4')
+        return false
+      })
+      if (!matches) return false
+    }
+    // Printer type filter
+    if (printerTypes.length > 0) {
+      const matches = printerTypes.some(type => {
+        if (type === 'thermal') return template.label_format === 'thermal'
+        if (type === 'inkjet') return template.label_format === 'inkjet'
+        if (type === 'desktop') return template.label_format === 'desktop'
+        return false
+      })
+      if (!matches) return false
+    }
+    return true
+  })
+
+  const toggleSize = (size: string) => {
+    setLabelSizes(prev => 
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    )
+  }
+
+  const togglePrinter = (type: string) => {
+    setPrinterTypes(prev => 
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -429,6 +466,52 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
           /* Templates List */
           <div className="space-y-8">
             {/* Back Button & Category Header */}
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Filters Sidebar */}
+              <aside className="w-full lg:w-64 flex-shrink-0 space-y-6">
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Label Size</h3>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={labelSizes.includes('4x6')} onChange={() => toggleSize('4x6')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">4" x 6" (Shipping)</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={labelSizes.includes('2.5x4')} onChange={() => toggleSize('2.5x4')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2.5" x 4"</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={labelSizes.includes('3x5')} onChange={() => toggleSize('3x5')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">3" x 5"</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={labelSizes.includes('2x4')} onChange={() => toggleSize('2x4')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">2" x 4"</span>
+                    </label>
+                  </div>
+                </div>
+                <hr className="border-slate-200 dark:border-slate-800"/>
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Printer Type</h3>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={printerTypes.includes('thermal')} onChange={() => togglePrinter('thermal')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Thermal</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={printerTypes.includes('inkjet')} onChange={() => togglePrinter('inkjet')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Inkjet</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input checked={printerTypes.includes('desktop')} onChange={() => togglePrinter('desktop')} className="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" type="checkbox"/>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">Desktop</span>
+                    </label>
+                  </div>
+                </div>
+              </aside>
+
+              {/* Templates Content */}
+              <div className="flex-1 space-y-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <Button
                 variant="outline"
@@ -473,6 +556,8 @@ export function TemplatesContent({ searchQuery = '' }: TemplatesContentProps) {
                 ))}
               </div>
             )}
+              </div>
+            </div>
           </div>
         )}
       </div>

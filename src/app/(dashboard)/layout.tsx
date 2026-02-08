@@ -28,7 +28,7 @@ export default async function DashboardLayout({
           <TopNavigation />
 
           {/* Main Content Area */}
-          <main className="flex-1 w-full max-w-[1440px] mx-auto pt-24 pb-12 px-6 md:px-12">
+          <main className="flex-1 w-full max-w-[1800px] mx-auto pt-24 pb-12 px-4 md:px-6">
             {children}
           </main>
           

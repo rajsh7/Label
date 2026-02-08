@@ -17,6 +17,12 @@ export function SidebarRight() {
     )
   }
 
+  const handleUpdateProperty = (key: string, value: any) => {
+    updateElement(selectedElement.id, {
+      properties: { ...selectedElement.properties, [key]: value }
+    } as any)
+  }
+
   const handleUpdateStyle = (key: string, value: any) => {
     updateElement(selectedElement.id, {
       style: { ...selectedElement.style, [key]: value }
@@ -42,7 +48,11 @@ export function SidebarRight() {
           </div>
           <div className="grid grid-cols-6 gap-1 bg-gray-50 p-1 rounded-lg border border-border-light">
              {['left', 'center', 'right', 'top', 'center', 'bottom'].map((align, i) => (
-                <button key={i} className="p-1.5 rounded hover:bg-white hover:shadow-sm text-gray-500 hover:text-black transition">
+                <button 
+                  key={i} 
+                  className="p-1.5 rounded hover:bg-white hover:shadow-sm text-gray-500 hover:text-black transition"
+                  onClick={() => i < 3 ? handleUpdateProperty('align', align) : null}
+                >
                   <span className="material-symbols-outlined text-[18px]">
                     {i < 3 ? `align_horizontal_${align}` : `align_vertical_${align}`}
                   </span>
@@ -101,8 +111,8 @@ export function SidebarRight() {
                 <div className="relative">
                   <select 
                     className="w-full bg-white border border-border-light rounded-lg px-3 py-2 text-sm text-black focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer"
-                    value={selectedElement.style?.fontFamily}
-                    onChange={(e) => handleUpdateStyle('fontFamily', e.target.value)}
+                    value={selectedElement.properties?.font || 'Manrope'}
+                    onChange={(e) => handleUpdateProperty('font', e.target.value)}
                   >
                     <option value="Manrope">Manrope (Display)</option>
                     <option value="Playfair Display">Playfair Display (Serif)</option>
@@ -114,14 +124,14 @@ export function SidebarRight() {
                     <input 
                       className="w-full bg-white border border-border-light rounded-lg py-2 pl-3 pr-8 text-sm text-black focus:ring-1 focus:ring-primary focus:border-primary shadow-sm border-gray-200" 
                       type="number" 
-                      value={parseInt(selectedElement.style?.fontSize || '24')}
-                      onChange={(e) => handleUpdateStyle('fontSize', parseInt(e.target.value))}
+                      value={parseInt(String(selectedElement.properties?.fontSize || '24'))}
+                      onChange={(e) => handleUpdateProperty('fontSize', parseInt(e.target.value))}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">pt</span>
                   </div>
                 </div>
                 <div className="flex gap-2 bg-gray-50 p-2 rounded-lg border border-border-light justify-between">
-                    <button className="p-2 rounded hover:bg-white transition" onClick={() => handleUpdateStyle('fontWeight', 'bold')}><b>B</b></button>
+                    <button className="p-2 rounded hover:bg-white transition" onClick={() => handleUpdateProperty('fontWeight', 700)}><b>B</b></button>
                     <button className="p-2 rounded hover:bg-white transition" onClick={() => handleUpdateStyle('fontStyle', 'italic')}><i>I</i></button>
                     <button className="p-2 rounded hover:bg-white transition" onClick={() => handleUpdateStyle('textDecoration', 'underline')}><u>U</u></button>
                 </div>
@@ -130,8 +140,8 @@ export function SidebarRight() {
                   <div className="flex items-center gap-2">
                     <input 
                         type="color" 
-                        value={selectedElement.style?.color || '#000000'}
-                        onChange={(e) => handleUpdateStyle('color', e.target.value)}
+                        value={selectedElement.properties?.color || '#000000'}
+                        onChange={(e) => handleUpdateProperty('color', e.target.value)}
                         className="w-6 h-6 rounded-full border border-gray-200 cursor-pointer p-0 overflow-hidden"
                     />
                   </div>

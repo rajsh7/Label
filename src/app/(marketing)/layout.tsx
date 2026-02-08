@@ -1,6 +1,7 @@
 import React from 'react'
 import { TopNavigation } from '@/components/dashboard/top-navigation'
 import { MarketingFooter } from '@/components/marketing/footer'
+import { NotificationProvider } from '@/lib/notifications/context'
 
 export default function MarketingLayout({
   children,
@@ -9,7 +10,9 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="min-h-screen bg-white">
-      <TopNavigation />
+      <NotificationProvider>
+        <TopNavigation />
+      </NotificationProvider>
       <main>
         {children}
       </main>

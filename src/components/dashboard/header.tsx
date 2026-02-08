@@ -219,10 +219,62 @@ export function DashboardHeader({ className }: DashboardHeaderProps) {
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="h-6 w-px bg-white/20 mx-2" />
-        <Button variant="ghost" size="sm" onClick={handleLogout} className="text-slate-700 hover:text-red-600 gap-2">
-          <LogOut className="w-4 h-4" />
-          <span className="hidden sm:inline">Logout</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button" className="relative flex shrink-0 overflow-hidden rounded-full size-9 ring-2 ring-white shadow-sm cursor-pointer hover:ring-blue-600 transition-all focus:outline-none focus:ring-blue-600">
+              <img className="aspect-square h-full w-full" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User avatar" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56 z-[100]">
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard" className="flex items-center gap-2 cursor-pointer">
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/templates" className="flex items-center gap-2 cursor-pointer">
+                <Tags className="w-4 h-4" />
+                Templates
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/labels" className="flex items-center gap-2 cursor-pointer">
+                <FolderOpen className="w-4 h-4" />
+                My Labels
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/settings" className="flex items-center gap-2 cursor-pointer">
+                <Settings className="w-4 h-4" />
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/editor" className="flex items-center gap-2 cursor-pointer">
+                <Edit className="w-4 h-4" />
+                Editor
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/batch" className="flex items-center gap-2 cursor-pointer">
+                <Layers className="w-4 h-4" />
+                Batch
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/printers" className="flex items-center gap-2 cursor-pointer">
+                <Printer className="w-4 h-4" />
+                Printers
+              </Link>
+            </DropdownMenuItem>
+            <div className="h-px bg-gray-200 my-1" />
+            <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer focus:text-red-700 focus:bg-red-50">
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   )
